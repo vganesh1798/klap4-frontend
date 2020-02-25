@@ -3,7 +3,6 @@
     <nav>
 
         <router-link to="/"><img src="../../src/assets/radio.png" class="logo"></router-link>
-
         <router-link to="/About" class="items">About</router-link>
         <router-link to="/Charts" class="items">Charts</router-link>
         <router-link to="/Playlists" class="items">Playlists</router-link>
@@ -35,9 +34,18 @@
         margin-left: 1.5em;
         margin-top: 0.6em;
         float: left;
-        height: 200px;
+        animation: fade ease 3s;
+        height: 300px;
 
     }
+
+    @keyframes fade {
+        0% {
+            opacity: 0;
+            }
+        100% {
+            opacity: 1;
+             } }
 
     #Header .items{
         margin-top: 1.4em;
@@ -45,6 +53,7 @@
         margin-left: 35px;
         outline: none;
         font-size: 24px;
+        animation: fade ease 4s;
         color: black;
 
         text-decoration: none;
