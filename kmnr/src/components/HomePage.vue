@@ -25,28 +25,29 @@
 
     .heading-primary-main {
         display: block;
-        font-size: 60px;
+        font-size: 150px;
         font-weight: 100;
+        padding-bottom: 45%;
         animation-name: moveInleft;
         animation-duration: 2s;
-        color: white;
-        font-family: Montserrat;
+        color: Black;
+        font-family: 'Covered By Your Grace';
     }
 
     .heading-primary-sub {
         display: block;
-        font-size: 16.5px;
-
-        font-family: Copperplate;
+        font-size: 50px;
+        padding-top: 30%;
+        font-family: Montserrat;
         margin-top: 10px;
         animation-name: moveInright;
         animation-duration: 2s;
-        color: white; }
+        color: black; }
 
     @keyframes moveInleft {
         0% {
             opacity: 0;
-            transform: translateX(-20px); }
+            transform: translateX(-180px); }
         100% {
             opacity: 1;
             transform: translate(0); } }
@@ -54,7 +55,7 @@
     @keyframes moveInright {
         0% {
             opacity: 0;
-            transform: translateX(20px); }
+            transform: translateX(180px); }
         100% {
             opacity: 1;
             transform: translate(0); } }

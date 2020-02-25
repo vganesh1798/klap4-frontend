@@ -43,8 +43,8 @@
         float: right;
         margin-left: 35px;
         outline: none;
-        font-size: 20px;
-        color: white;
+        font-size: 24px;
+        color: black;
 
         text-decoration: none;
             &:hover {
