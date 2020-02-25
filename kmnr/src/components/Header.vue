@@ -27,14 +27,14 @@
         width: 95%;
         color: white;
         min-height: 50px;
-        font-family: 'Arvo';
+        font-family: Arvo;
     }
 
     #Header .logo {
         margin-left: 1.5em;
         margin-top: 0.6em;
         float: left;
-        height: 150px;
+        height: 200px;
 
     }
 
