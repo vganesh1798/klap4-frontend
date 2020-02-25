@@ -27,7 +27,7 @@
         display: block;
         font-size: 150px;
         font-weight: 100;
-        padding-bottom: 45%;
+        padding-bottom: 65%;
         animation-name: moveInleft;
         animation-duration: 2s;
         color: Black;
