@@ -34,7 +34,7 @@
         margin-left: 1.5em;
         margin-top: 0.6em;
         float: left;
-        animation: fade ease 3s;
+        animation: fade ease 5s;
         height: 300px;
 
     }
