@@ -4,13 +4,14 @@
 
         <router-link to="/"><img src="../../src/assets/radio.png" class="logo"></router-link>
 
-        <router-link to="/Blog" class="items">Blog</router-link>
-        <router-link to="/Schedule" class="items">Schedule</router-link>
-        <router-link to="/Djs" class="items">DJ's</router-link>
-        <router-link to="/News" class="items">News</router-link>
+        <router-link to="/About" class="items">About</router-link>
         <router-link to="/Charts" class="items">Charts</router-link>
         <router-link to="/Playlists" class="items">Playlists</router-link>
-        <router-link to="/About" class="items">About</router-link>
+        <router-link to="/Blog" class="items">Blog</router-link>
+        <router-link to="/Schedule" class="items">Schedule</router-link>
+        <router-link to="/Djs" class="items">DJs</router-link>
+        <router-link to="/News" class="items">News</router-link>
+
 
     </nav>
     </div>
