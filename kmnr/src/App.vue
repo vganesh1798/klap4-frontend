@@ -1,21 +1,21 @@
 <template>
   <div>
     <Header />
-  <HomePage />
+    <router-view />
   </div>
 </template>
 
-<script>
-import HomePage from "./components/HomePage";
-import Header from "./components/Header";
+<script lang="ts">
+import Vue from 'vue';
 
-export default {
+import Header from './components/Header.vue';
+
+export default Vue.extend({
   name: 'App',
   components: {
-      HomePage,
       Header
   }
-}
+});
 </script>
 
 <style>

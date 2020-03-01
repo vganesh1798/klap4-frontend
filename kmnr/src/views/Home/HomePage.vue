@@ -9,11 +9,7 @@
     </div>
 </template>
 
-<script>
-    export default {
-        name: "home-page"
-    }
-</script>
+<script lang='ts' src="./HomePage.ts" />
 
 <style >
     .text {

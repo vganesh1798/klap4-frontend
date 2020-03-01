@@ -1,25 +1,25 @@
 <template>
     <div id="Header">
-    <nav>
-
-        <router-link to="/"><img src="../../src/assets/radio.png" class="logo"></router-link>
-        <router-link to="/About" class="items">About</router-link>
-        <router-link to="/Charts" class="items">Charts</router-link>
-        <router-link to="/Playlists" class="items">Playlists</router-link>
-        <router-link to="/Blog" class="items">Blog</router-link>
-        <router-link to="/Schedule" class="items">Schedule</router-link>
-        <router-link to="/Djs" class="items">DJs</router-link>
-        <router-link to="/News" class="items">News</router-link>
-
-
-    </nav>
+        <nav>
+            <router-link to="/"><img src="../../src/assets/radio.png" class="logo"></router-link>
+            <router-link to="/login" class="items">Log In</router-link>
+            <router-link to="/about" class="items">About</router-link>
+            <router-link to="/charts" class="items">Charts</router-link>
+            <router-link to="/playlists" class="items">Playlists</router-link>
+            <router-link to="/blog" class="items">Blog</router-link>
+            <router-link to="/schedule" class="items">Schedule</router-link>
+            <router-link to="/djs" class="items">DJs</router-link>
+            <router-link to="/news" class="items">News</router-link>
+        </nav>
     </div>
 </template>
 
-<script>
-    export default {
+<script lang='ts'>
+    import Vue from 'vue';
+
+    export default Vue.extend({
         name: "Header"
-    }
+    });
 </script>
 
 <style lang="scss">
@@ -36,6 +36,7 @@
         float: left;
         animation: fade ease 5s;
         height: 300px;
+        cursor: pointer;
 
     }
 
