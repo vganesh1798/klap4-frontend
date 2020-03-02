@@ -1,7 +1,9 @@
 <template>
   <div>
     <Header />
+<!--    <Albums />-->
     <router-view />
+
   </div>
 </template>
 
@@ -9,15 +11,14 @@
 import Vue from 'vue';
 
 import Header from './components/Header.vue';
-
 export default Vue.extend({
   name: 'App',
   components: {
-      Header
+      Header,
   }
 });
 </script>
 
-<style>
+<style scoped>
 
 </style>
