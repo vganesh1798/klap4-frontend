@@ -41,6 +41,11 @@ export default new Router({
             meta: {title: 'Playlists'}
         },
         {
+            path: '/albums',
+            component: HomePage,
+            meta: {title: 'Albums'}
+        },
+        {
             path: '/blog',
             component: HomePage,
             meta: {title: 'Blog'}

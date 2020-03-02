@@ -6,10 +6,12 @@
             <router-link to="/about" class="items">About</router-link>
             <router-link to="/charts" class="items">Charts</router-link>
             <router-link to="/playlists" class="items">Playlists</router-link>
+            <router-link to="/albums" class="items">Albums</router-link>
             <router-link to="/blog" class="items">Blog</router-link>
             <router-link to="/schedule" class="items">Schedule</router-link>
             <router-link to="/djs" class="items">DJs</router-link>
             <router-link to="/news" class="items">News</router-link>
+
         </nav>
     </div>
 </template>
