@@ -37,7 +37,7 @@
         margin-top: 0.6em;
         float: left;
         animation: fade ease 5s;
-        height: 300px;
+        height: 200px;
         cursor: pointer;
 
     }

@@ -2,7 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import HomePage from './views/Home/HomePage';
-import Albums from "./components/Albums";
+// import Albums from "./components/Album-comp/Albums";
+import Album_home from "./components/Album-comp/Album_home";
 Vue.use(Router);
 
 // Setting mode to history so we can do proper navigation
@@ -42,7 +43,7 @@ export default new Router({
         },
         {
             path: '/albums',
-            component: Albums,
+            component: Album_home,
             meta: {title: 'Albums'}
         },
         {

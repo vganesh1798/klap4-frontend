@@ -12,6 +12,14 @@
 <script lang='ts' src="./HomePage.ts" />
 
 <style >
+    /*body{*/
+    /*    background-image: url('../../../public/back.jpg');*/
+    /*    background-size: cover;*/
+    /*    background-repeat: no-repeat;*/
+    /*    background-attachment: fixed;*/
+    /*    background-position: center;*/
+    /*    color: white;*/
+    /*}*/
     .text {
         position: absolute;
         top: 45%;
