@@ -31,39 +31,39 @@ export default new Router({
             meta: {title: 'About'}
         },
         {
-            path: '/charts',
+            path: '/new-charts',
             component: HomePage,
-            meta: {title: 'Charts'}
+            meta: {title: 'New Charts'}
         },
         {
-            path: '/playlists',
+            path: '/all-charts',
             component: HomePage,
-            meta: {title: 'Playlists'}
+            meta: {title: 'All Charts'}
         },
         {
-            path: '/blog',
+            path: '/albums',
             component: HomePage,
-            meta: {title: 'Blog'}
+            meta: {title: 'Albums'}
         },
         {
-            path: '/schedule',
+            path: '/artists',
             component: HomePage,
-            meta: {title: 'Schedule'}
+            meta: {title: 'Artists'}
         },
         {
-            path: '/djs',
+            path: '/log',
             component: HomePage,
-            meta: {title: 'DJs'}
+            meta: {title: 'Log'}
         },
         {
-            path: '/about',
+            path: '/stream',
             component: HomePage,
-            meta: {title: 'About'}
+            meta: {title: 'Stream'}
         },
         {
-            path: '/news',
+            path: '/search',
             component: HomePage,
-            meta: {title: 'News'}
+            meta: {title: 'Search'}
         },
         {
             path: '*',
