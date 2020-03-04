@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import HomePage from './views/Home/HomePage';
+import HomePage from './views/Home/HomePage.vue';
+import Charts from './views/Charts/Charts.vue'
 
 Vue.use(Router);
 
@@ -32,7 +33,7 @@ export default new Router({
         },
         {
             path: '/charts',
-            component: HomePage,
+            component: Charts,
             meta: {title: 'Charts'}
         },
         {
