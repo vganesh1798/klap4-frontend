@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="Home">
         <div class="text">
             <h1 class="heading-primary">
                 <span class="heading-primary-main">KMNR</span>

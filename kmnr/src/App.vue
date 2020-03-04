@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="full-home">
     <Header />
     <router-view />
   </div>
@@ -19,5 +19,14 @@ export default Vue.extend({
 </script>
 
 <style>
+#full-home {
+  background-image: url('./assets/images/back.jpg');
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment:fixed;
+  background-position: center;
+  color: white; 
+  height: 100%;
+}
 
 </style>
