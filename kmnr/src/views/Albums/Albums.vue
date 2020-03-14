@@ -1,8 +1,11 @@
 <template>
   <div id="Albums-page">
       <img class="back" src="../../../public/back.jpg" />
-      Routing works!
+      <h1 class = "albums-heading">
+          <span class="albums-heading-main">Explore Albums</span>
+           </h1>
   </div>
+ 
 </template>
 
 <script>
@@ -22,4 +25,15 @@ export default {
     -o-filter: scale(1.1);
     -ms-filter: scale(1.1);
 }
+.albums-heading-main {
+    display: block;
+    font-size: 100px;
+    font-weight: 100;
+    padding-top: 3%;
+    padding-left: 35%;
+    padding-bottom: 1%;
+    color: Black;
+    font-family: 'Covered By Your Grace';
+}
+
 </style>
