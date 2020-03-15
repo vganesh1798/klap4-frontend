@@ -20,7 +20,7 @@
                     <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
                 </div>
             </div>
-            <div class="row justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-8">
                 
                     <div class="d-flex justify-content-start flex-wrap" id="albums_container">
@@ -148,11 +148,6 @@ export default {
 .cancelSearch {
   font-size: 14px;
   text-align: right;
-}
-
-#albums_container {
-  padding-top: 10px;
-  background-color: white;
 }
 
 .container_pagination {
