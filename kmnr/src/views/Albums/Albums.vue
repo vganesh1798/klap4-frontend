@@ -12,6 +12,28 @@
                     <button class="btn btn-light">Go</button>          
                 </div>
             </div>
+            <div class="row justify-content-between">
+                <div class="col-3 offset-2">
+                  <h3 class="albums_header">Albums</h3>  
+                </div>
+                <div class="col-5">
+                    <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+            <div class="col-8">
+                
+                    <div class="d-flex justify-content-start flex-wrap" id="albums_container">
+                    <display v-for="album in albumsPaginated" 
+                            :key="album.id.attributes.id" 
+                            :id-album="album.id.attributes['im:id']"
+                            :album="album">
+                    </display>    
+                    
+                    </div>
+
+            </div>
+        </div>
         </div>
         </h1>
   </div>
@@ -20,9 +42,76 @@
 
 <script>
 "./Albums.ts"
+import axios from "axios"
+import display from './display'
 export default {
-
-}
+  components: {
+    display
+  },
+  data() {
+    return {
+      albums: [],
+      range: 0,
+      albumSearch: "",
+      cancelSearchVisibility: "hidden",
+      previousBtnVisibility: "visible",
+      nextBtnVisibility: "visible"
+    };
+  },
+  computed: {
+    albumsPaginated() {
+      return this.albums.slice(this.range, this.range + 8);
+    }
+  },
+  methods: {
+    getAlbums() {
+      axios
+        .get("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
+        .then(response => {
+          this.albums = response.data.feed.entry;
+        })
+        .catch(error => {
+          alert(error);
+        });
+    },
+    hidePreviousBtn() {
+      this.previousBtnVisibility = "hidden";
+    },
+    showPreviousBtn() {
+      this.previousBtnVisibility = "visible";
+    },
+    hideNextBtn() {
+      this.nextBtnVisibility = "hidden";
+    },
+    showNextBtn() {
+      this.nextBtnVisibility = "visible";
+    },
+    nextAlbums() {
+      if (this.albums.length - this.range > 8) {
+        this.range += 8;
+      }
+    },
+    previousAlbums() {
+      if (this.range > 0) {
+        this.range -= 8;
+      }
+    },
+    SearchByAlbumName() {
+      this.albums = this.albums.filter(alb => {
+        return alb["im:name"].label.toLowerCase().includes(this.albumSearch);
+      });
+      this.cancelSearchVisibility = "visible";
+    },
+    CancelSearch() {
+      this.getAlbums();
+      this.albumSearch = "";
+      this.cancelSearchVisibility = "hidden";
+    }
+  },
+  created() {
+    this.getAlbums();
+  }
+};
 </script>
 <style scoped>
 .back {
@@ -47,5 +136,30 @@ export default {
 }
 #search_bar {
   margin-bottom: 30px;
+}
+
+.albums_header {
+  text-align: left;
+  font-weight: bolder;
+  padding-left: 5px;
+  color: black;
+}
+
+.cancelSearch {
+  font-size: 14px;
+  text-align: right;
+}
+
+#albums_container {
+  padding-top: 10px;
+  background-color: white;
+}
+
+.container_pagination {
+  padding-top: 10px;
+}
+.container_pagination nav ul li a {
+  border: none;
+  background: transparent;
 }
 </style>
