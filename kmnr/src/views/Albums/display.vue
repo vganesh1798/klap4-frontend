@@ -33,10 +33,11 @@ export default {
 
 <style scoped>
 .album_container {
-  max-width: 175px;
+  max-width: 155px;
   max-height: inherit;
   padding: 0;
   margin: 5px 20px;
+  display: inline-block
 }
 
 img {

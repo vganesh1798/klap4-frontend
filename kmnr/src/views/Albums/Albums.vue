@@ -3,7 +3,7 @@
       <img class="back" src="../../../public/back.jpg" />
       <h1 class = "albums-heading">
           <span class="albums-heading-main">Explore Albums</span>
-          <div class="container">
+    <div class="container">
             <div class="row justify-content-center" id="search_bar">
                 <div class="col-6">
                     <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">             
@@ -12,6 +12,8 @@
                     <button class="btn btn-light">Go</button>          
                 </div>
             </div>
+
+
             <div class="row justify-content-between">
                 <div class="col-3 offset-2">
                   <h3 class="albums_header">Albums</h3>  
@@ -20,10 +22,12 @@
                     <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
                 </div>
             </div>
+
+
         <div class="row justify-content-center">
             <div class="col-8">
                 
-                    <div class="d-flex justify-content-start flex-wrap" id="albums_container">
+                    <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
                     <display v-for="album in albumsPaginated" 
                             :key="album.id.attributes.id" 
                             :id-album="album.id.attributes['im:id']"
@@ -34,7 +38,21 @@
 
             </div>
         </div>
+
+
+        <div class="row justify-content-center container_pagination">
+            <div class="col-md-2">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                            <li class="page-item"><a class="page-link" @click="previousAlbums()">Previous</a></li>
+                            <li class="page-item"><a class="page-link" @click="nextAlbums()">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
+
+
+    </div>
         </h1>
   </div>
  
@@ -150,6 +168,9 @@ export default {
   text-align: right;
 }
 
+#albums_container {
+  padding-top: 10px;
+}
 .container_pagination {
   padding-top: 10px;
 }
@@ -157,4 +178,5 @@ export default {
   border: none;
   background: transparent;
 }
+
 </style>
