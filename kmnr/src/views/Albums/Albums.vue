@@ -3,7 +3,17 @@
       <img class="back" src="../../../public/back.jpg" />
       <h1 class = "albums-heading">
           <span class="albums-heading-main">Explore Albums</span>
-           </h1>
+          <div class="container">
+            <div class="row justify-content-center" id="search_bar">
+                <div class="col-6">
+                    <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">             
+                </div>
+                <div class="col-1">
+                    <button class="btn btn-light">Go</button>          
+                </div>
+            </div>
+        </div>
+        </h1>
   </div>
  
 </template>
@@ -14,7 +24,7 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
 .back {
     position: fixed;
     z-index: -1;
@@ -35,5 +45,7 @@ export default {
     color: Black;
     font-family: 'Covered By Your Grace';
 }
-
+#search_bar {
+  margin-bottom: 30px;
+}
 </style>
