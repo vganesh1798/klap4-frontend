@@ -25,8 +25,7 @@
 
 
         <div class="row justify-content-center">
-            <div class="col-8">
-                
+            <div class="col-8"> 
                     <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
                     <display v-for="album in albumsPaginated" 
                             :key="album.id.attributes.id" 
@@ -39,18 +38,17 @@
             </div>
         </div>
  
-    </div>
-            <div class="row justify-content-center container_pagination">
-            <div class="col-md-2">
+      
+            <div class="container_pagination">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                            <li class="page-item"><a class="page-link" @click="previousAlbums()">Previous</a></li>
-                            <li class="page-item"><a class="page-link" @click="nextAlbums()">Next</a></li>
+                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
+                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
                     </ul>
                 </nav>
-            </div>
         </div>
-        </h1>
+        </div>
+      </h1>
   </div>
  
 </template>
@@ -170,19 +168,21 @@ export default {
 }
 .container_pagination {
   padding-top: 10px;
+  text-align: center;
 }
+
 .container_pagination nav ul li a {
   border: none;
   background: transparent;
 }
-
+.page-link{
+  color: black;
+}
 #submit{
   padding-top: 1%;
 }
 
-
 .btn{
     float: right;
 }
-
 </style>
