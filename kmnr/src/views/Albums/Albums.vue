@@ -8,8 +8,8 @@
                 <div class="col-6">
                     <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">             
                 </div>
-                <div class="col-1">
-                    <button class="btn btn-light">Go</button>          
+                <div class="col-1" id="submit">
+                    <button class="btn btn-light"><img src="https://img.icons8.com/color/24/000000/guitar-amp.png"></button>          
                 </div>
             </div>
 
@@ -38,9 +38,9 @@
 
             </div>
         </div>
-
-
-        <div class="row justify-content-center container_pagination">
+ 
+    </div>
+            <div class="row justify-content-center container_pagination">
             <div class="col-md-2">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -50,9 +50,6 @@
                 </nav>
             </div>
         </div>
-
-
-    </div>
         </h1>
   </div>
  
@@ -177,6 +174,15 @@ export default {
 .container_pagination nav ul li a {
   border: none;
   background: transparent;
+}
+
+#submit{
+  padding-top: 1%;
+}
+
+
+.btn{
+    float: right;
 }
 
 </style>
