@@ -20,7 +20,7 @@ export default Vue.extend({
 
 <style>
 #full-home {
-  background-image: url('./assets/images/back.jpg');
+  background-image: url('./assets/back.jpg');
   background-size: cover;
   background-repeat: repeat;
   background-attachment:fixed;
