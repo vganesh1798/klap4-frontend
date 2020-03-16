@@ -9,7 +9,7 @@
                     <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">             
                 </div>
                 <div class="col-1" id="submit">
-                    <button class="btn btn-light"><img src="https://img.icons8.com/color/24/000000/guitar-amp.png"></button>          
+                    <button class="btn btn-light" @click="SearchByAlbumName()"><img src="https://img.icons8.com/color/24/000000/guitar-amp.png"></button>          
                 </div>
             </div>
 
@@ -64,6 +64,8 @@ export default {
   data() {
     return {
       albums: [],
+      songs: [],
+      albumId: 0,
       range: 0,
       albumSearch: "",
       cancelSearchVisibility: "hidden",
