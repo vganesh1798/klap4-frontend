@@ -5,9 +5,12 @@
           <span class="album-heading-main">{{album['im:name'].label}}</span>
           
     <div class="main_container">
-          <div class="album-image">
+
+      <div class="row justify-content-between">
+          <div class="albums_image">
             <img :src="album['im:image'][2].label">
             </div>
+      </div>
     </div>
     </h1>
     </div>
@@ -43,7 +46,7 @@ export default {
     -ms-filter: scale(1.1);
 }
 
-.main_container {
+/* .main_container {
     position: absolute;
     top: 30%;
     left: 50%;
@@ -51,7 +54,7 @@ export default {
     margin-left: -50px;
     width: 100px;
     height: 100px;
-}
+} */
 .album-heading-main{
   display: block;
     font-size: 60px;
@@ -61,5 +64,12 @@ export default {
     padding-bottom: 1%;
     color: Black;
     font-family: 'Covered By Your Grace';
+}
+
+.albums_image {
+  text-align: left;
+  font-weight: bolder;
+  padding-left: 5px;
+  color: black;
 }
 </style>
