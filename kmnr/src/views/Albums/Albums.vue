@@ -12,21 +12,17 @@
                 <div class="col-1" id="submit">
                     <button class="btn btn-light" @click="SearchByAlbumName()"><img src="https://img.icons8.com/color/24/000000/guitar-amp.png"></button>          
                 </div>
-              <div>
+                                <div class="col-5">
                     <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
                 </div>
             </div>
-            </div>
-
 
 
             <div class="row justify-content-between">
                 <div class="col-3 offset-2">
                   <h3 class="albums_header">Albums</h3>  
                 </div>
-                            
-                            
-        <div class="container_pagination">
+                            <div class="container_pagination">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                             <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
@@ -35,6 +31,7 @@
                 </nav>
         </div>
 
+            </div>
 
 
         <div class="row justify-content-center">
