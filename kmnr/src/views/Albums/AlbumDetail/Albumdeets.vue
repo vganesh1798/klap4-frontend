@@ -2,7 +2,7 @@
     <div id="Albums-page">
       <img class="back" src="../../../../public/back.jpg" />
       <h1 class = "albums-heading">
-          <span class="albums-heading-main">{{album['im:name'].label}}</span>
+          <span class="albums-heading-main">Album Information</span>
     <!-- <div class="container">
       
             <div class="row justify-content-center" id="search_bar">
@@ -89,8 +89,8 @@ export default {
     display: block;
     font-size: 60px;
     font-weight: 60;
-    padding-top: 10%;
-    padding-left: 30%;
+    padding-top: 5%;
+    padding-left: 35%;
     padding-bottom: 1%;
     color: Black;
     font-family: 'Montserrat';
