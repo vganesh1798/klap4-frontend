@@ -4,7 +4,7 @@
     <h1 class = "albums-heading">
           <span class="album-heading-main">{{album['im:name'].label}}</span>
           
-    <div class="row justify-content-center main_container">
+    <div class="main_container">
           <div class="album-image">
             <img :src="album['im:image'][2].label">
             </div>

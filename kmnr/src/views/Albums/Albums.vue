@@ -4,6 +4,7 @@
       <h1 class = "albums-heading">
           <span class="albums-heading-main">Explore Albums</span>
     <div class="container">
+      
             <div class="row justify-content-center" id="search_bar">
                 <div class="col-6">
                     <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">             
@@ -18,6 +19,14 @@
                 <div class="col-3 offset-2">
                   <h3 class="albums_header">Albums</h3>  
                 </div>
+                            <div class="container_pagination">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
+                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
+                    </ul>
+                </nav>
+        </div>
                 <div class="col-5">
                     <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
                 </div>
@@ -39,14 +48,7 @@
         </div>
  
       
-            <div class="container_pagination">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
-                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
-                    </ul>
-                </nav>
-        </div>
+
         </div>
       </h1>
   </div>
