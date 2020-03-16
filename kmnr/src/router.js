@@ -3,7 +3,7 @@ import Router from 'vue-router';
 
 import HomePage from './views/Home/HomePage';
 import Albums from './views/Albums/Albums';
-import Albumdeets from './views/Album-details/Albumdeets'
+import AlbumDetail from './views/Albums/AlbumDetail/Albumdeets'
 Vue.use(Router);
 
 // Setting mode to history so we can do proper navigation
@@ -78,9 +78,9 @@ export default new Router({
         },
         {
             path: "/album-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
-            component: Albumdeets,
-            name: 'Albumdeets',
-            meta: {title: 'Album-detail'}
+            component: AlbumDetail,
+            name: 'AlbumDetail',
+            props: true,
         }
     ]
 });

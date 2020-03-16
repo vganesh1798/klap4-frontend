@@ -64,8 +64,6 @@ export default {
   data() {
     return {
       albums: [],
-      songs: [],
-      albumId: 0,
       range: 0,
       albumSearch: "",
       cancelSearchVisibility: "hidden",
