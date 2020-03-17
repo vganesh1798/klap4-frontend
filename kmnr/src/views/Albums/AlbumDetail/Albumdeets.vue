@@ -4,7 +4,7 @@
           <span class="albums-heading-main">Album Information</span>
       </h1>
       <div id="flex-container">
-      <div class="flex-child">
+      <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child">
               <md-card>
               <md-card-media>
                 <img  class = "album-image" :src="album['im:image'][2].label" >
@@ -44,7 +44,7 @@
 
 
 
-    <div class="flex-child">
+    <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child">
     <md-table v-model="Tracks" md-card >
       <md-table-toolbar >
         <h1 class="md-title">Tracks</h1>
@@ -54,6 +54,8 @@
         <md-table-cell md-label="Track" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
         <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
         <md-table-cell md-label="Runtime" md-sort-by="title">{{ item.run }}</md-table-cell>
+        <md-table-cell md-label="Plays" md-sort-by="title">{{ item.plays }}</md-table-cell>
+
       </md-table-row>
     </md-table>
   </div>
@@ -75,37 +77,45 @@ export default {
         {
           id: 1,
           name: 'Shawna Dubbin',
-          run: '3:56'
+          run: '3:56',
+          plays: '245'
         },
         {
           id: 2,
           name: 'Odette Demageard',
-          run: '4:12'
+          run: '4:12',
+          plays: '2422'
+          
         },
         {
           id: 3,
           name: 'Lonnie Izkovitz',
-          run: '3:02'
+          run: '3:02',
+          plays: '445'
         },
         {
           id: 4,
           name: 'Thatcher Stave',
-          run: '3:42'
+          run: '3:42',
+          plays: '3545'
         },
         {
           id: 5,
           name: 'Clarinda Marieton',
-          run: '5:00'
+          run: '5:00',
+          plays: '335'
         },
                 {
           id: 6,
           name: 'Clarinda Marieton',
-          run: '5:00'
+          run: '5:00',
+          plays: '345'
         },
                 {
           id: 7,
           name: 'Clarinda Marieton',
-          run: '5:00'
+          run: '5:00',
+          plays: '665'
         }
       ]
     };
@@ -165,7 +175,11 @@ export default {
   margin-left: 3%;
 }
 
+.md-card{
+  opacity: 90%
+}
 .md-table{
   width: 100%;
+  opacity: 90%;
 }
 </style>

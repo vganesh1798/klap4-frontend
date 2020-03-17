@@ -3,7 +3,7 @@
       <!-- <img class="back" src="../../../public/back.jpg" /> -->
       <h1>
           <span class="albums-heading-main">Explore Albums</span>
-    <div class="container">
+    <div class="container animated bounceIn ease-in-quad d-2 mt4">
       
             <div class="row justify-content-center" id="search_bar">
                 <div class="col-6">
