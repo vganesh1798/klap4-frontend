@@ -4,6 +4,7 @@ import HomePage from '../views/HomePage/HomePage.vue';
 import PlaylistPage from '../views/PlaylistPage/PlaylistPage.vue';
 import LogPage from '../views/LogPage/LogPage.vue';
 import Albums from '../views/Albums/Albums.vue';
+import AlbumDetail from '../views/Albums/AlbumDetail/Albumdeets.vue';
 import Charts from '../views/Charts/Charts.vue';
 import NewAlbums from '../views/NewAlbums/NewAlbums.vue';
 
@@ -29,6 +30,12 @@ const routes = [
     path: '/albums',
     name: 'Album',
     component: Albums
+  },
+  {
+    path: "/album-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
+    name: 'AlbumDetail',
+    component: AlbumDetail,
+    props: true,
   },
   {
     path: '/all-charts',
