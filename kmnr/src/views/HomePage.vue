@@ -1,16 +1,24 @@
 <template>
     <div class="full-home">
-        <div class="text">
-            <h1 class="heading-primary">
-                <span class="heading-primary-main">KMNR</span>
-                <span class="heading-primary-sub">89.7FM</span>
-            </h1>
+        <div class="bg-home">
+            <div class="text">
+                <h1 class="heading-primary">
+                    <span class="heading-primary-main">KMNR</span>
+                    <span class="heading-primary-sub">89.7FM</span>
+                </h1>
+            </div>
         </div>
-
+        
         <div class="container row">
             <div id="cards">
-                <HomeCard class="card col s12 l4"/>
-                <HomeCard class="card col s12 l4 offset-l6"/>
+                <HomeCard class="card card-left-on-scroll col s12 l6" :style="{
+                        'visibility': scrolledL ? 'visible' : 'hidden',
+                        'animation-name': scrolledL ? 'moveInLeft' : ''
+                    }"/>
+                <HomeCard class="card card-right-on-scroll col s12 l6 offset-l4" :style="{
+                        'visibility': scrolledR ? 'visible' : 'hidden',
+                        'animation-name': scrolledR ? 'moveInRight' : ''
+                    }"/>
             </div>
         </div>
     </div>
@@ -20,12 +28,16 @@
 
 <style lang="scss">
     .full-home {
+        height: 200%;
+    }
+
+    .bg-home {
         background-image: url('../assets/back.jpg');
         background-size: cover;
         background-repeat: repeat;
         background-attachment:local;
         background-position: center;
-        height: 100%;
+        height: 50%;
     }
 
     .text {
@@ -41,7 +53,7 @@
         font-size: 150px;
         font-weight: 100;
         padding-bottom: 65%;
-        animation-name: moveInleft;
+        animation-name: moveInLeft;
         animation-duration: 2s;
         color: Black;
         font-family: 'Covered By Your Grace';
@@ -53,12 +65,29 @@
         padding-top: 60%;
         font-family: Montserrat;
         margin-top: 10px;
-        animation-name: moveInright;
+        animation-name: moveInRight;
         animation-duration: 2s;
         color: black; 
     }
 
-    @keyframes moveInleft {
+    #cards {
+        top: 85%;
+        position: absolute;
+    }
+    
+    .card {
+        margin-top: 10em;
+    }
+
+    .card-left-on-scroll {
+        animation-duration: 2s;
+    }
+
+    .card-right-on-scroll {
+        animation-duration: 2s;
+    }
+
+    @keyframes moveInLeft {
         0% {
             opacity: 0;
             transform: translateX(-180px); 
@@ -69,7 +98,7 @@
         } 
     }
 
-    @keyframes moveInright {
+    @keyframes moveInRight {
         0% {
             opacity: 0;
             transform: translateX(180px);
@@ -80,12 +109,14 @@
         }
     }
 
-    #cards {
-        top: 85%;
-        position: absolute;
-    }
-    
-    .card {
-        margin-top: 10em;
+    @keyframes moveInFront {
+        0% {
+            opacity: 0;
+            transform: scale(.5);
+        }
+        100% {
+            opacity: 1;
+            transform: scale(1);
+        }
     }
 </style>

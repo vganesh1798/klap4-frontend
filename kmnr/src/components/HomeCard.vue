@@ -28,7 +28,6 @@
         @Prop({default: "Title!", type: String}) private title!: string
         constructor() {
             super()
-            console.log(this.image_link)
         }
 
         loadImage() {
