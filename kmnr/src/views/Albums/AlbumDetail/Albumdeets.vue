@@ -40,7 +40,23 @@
             </md-card>
       </div>
 
+        <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child">
+      <md-field>
+      <label id="first">First Name</label>
+      <md-input v-model="firstname"></md-input>
+    </md-field>
 
+    <md-field>
+      <label id="last">Last Name</label>
+      <md-input v-model="lastname"></md-input>
+    </md-field>
+
+      <md-field>
+      <label id="review">Write a review</label>
+      <md-textarea v-model="Review"></md-textarea>
+      </md-field>
+      <md-button class="md-raised md-accent">Submit</md-button>
+  </div>
 
 
 
@@ -172,7 +188,7 @@ export default {
 }
 
 .flex-child{
-  margin-left: 3%;
+  margin-left: 10%;
 }
 
 .md-card{
@@ -182,4 +198,15 @@ export default {
   width: 100%;
   opacity: 90%;
 }
+
+#first {
+  color: black;
+}
+#review {
+  color: black;
+}
+#last {
+  color: black;
+}
+
 </style>

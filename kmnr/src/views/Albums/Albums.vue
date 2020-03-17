@@ -1,6 +1,5 @@
 <template>
   <div id="Albums-page">
-      <!-- <img class="back" src="../../../public/back.jpg" /> -->
       <h1>
           <span class="albums-heading-main">Explore Albums</span>
     <div class="container animated bounceIn ease-in-quad d-2 mt4">
@@ -15,6 +14,14 @@
                                 <div class="col-5">
                     <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
                 </div>
+                                    <div class="container_pagination">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
+                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
+                    </ul>
+                </nav>
+        </div>
             </div>
 
         <div class="row justify-content-center">
@@ -25,14 +32,7 @@
                             :id-album="album.id.attributes['im:id']"
                             :album="album">
                     </display>    
-                    <div class="container_pagination">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
-                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
-                    </ul>
-                </nav>
-        </div>
+
                     </div>
 
             </div>
