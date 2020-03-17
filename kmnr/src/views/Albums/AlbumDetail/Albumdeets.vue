@@ -1,56 +1,15 @@
 <template>
     <div id="Albums-page">
       <img class="back" src="../../../../public/back.jpg" />
-      <h1 class = "albums-heading">
+      <h1>
           <span class="albums-heading-main">Album Information</span>
-    <!-- <div class="container">
-      
-            <div class="row justify-content-center" id="search_bar">
-                <div class="col-6">
-                    <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">             
-                </div>
-                <div class="col-1" id="submit">
-                    <button class="btn btn-light" @click="SearchByAlbumName()"><img src="https://img.icons8.com/color/24/000000/guitar-amp.png"></button>          
-                </div>
-                                <div class="col-5">
-                    <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Cancel search </a>
-                </div>
-            </div>
-
-
-            <div class="row justify-content-between">
+          <div class="container">
+            <div class="row justify-content-between " >
                 <div class="col-3 offset-2">
-                  <h3 class="albums_header">Albums</h3>  
+                  <img  class = "album-image" :src="album['im:image'][2].label" >  
                 </div>
-                            <div class="container_pagination">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
-                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
-                    </ul>
-                </nav>
-        </div>
-
             </div>
-
-
-        <div class="row justify-content-center">
-            <div class="col-8"> 
-                    <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
-                    <display v-for="album in albumsPaginated" 
-                            :key="album.id.attributes.id" 
-                            :id-album="album.id.attributes['im:id']"
-                            :album="album">
-                    </display>    
-                    
-                    </div>
-
             </div>
-        </div>
- 
-       -->
-
-        <!-- </div> -->
       </h1>
   </div>
  
@@ -95,42 +54,10 @@ export default {
     color: Black;
     font-family: 'Montserrat';
 }
-#search_bar {
-  margin-bottom: 30px;
-}
-
-.albums_header {
-  text-align: left;
-  font-weight: bolder;
-  padding-left: 5px;
-  color: black;
-}
-
-.cancelSearch {
-  font-size: 14px;
-  text-align: right;
-}
-
-#albums_container {
-  padding-top: 10px;
-}
-.container_pagination {
-  padding-top: 10px;
-  text-align: center;
-}
-
-.container_pagination nav ul li a {
-  border: none;
-  background: transparent;
-}
-.page-link{
-  color: black;
-}
-#submit{
-  padding-top: 1%;
-}
-
-.btn{
-    float: right;
+.album-image {
+  border: 7px solid black;
+  border-radius: 50%;
+  padding: 2px;
+  width: 20%;
 }
 </style>
