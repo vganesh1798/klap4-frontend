@@ -6,7 +6,7 @@
           <h6 class="title_header">{{album['im:name'].label}}</h6>
           <p class="artist_header">{{album['im:artist'].label}}</p>
           <p class="category_header">{{ album.category.attributes.label }}</p>
-          <router-link :to="{name:'AlbumDetail',params:{albumParam:album} }">Details</router-link> 
+          <router-link :to="{name:'AlbumDetail',params:{albumParam:album} }"><p class="details">Details</p></router-link> 
             
 </div>
 </template>
@@ -78,5 +78,8 @@ img {
 
 a {
   font-size: 14px;
+}
+.details{
+  color: black;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="Albums-page">
-      <img class="back" src="../../../public/back.jpg" />
-      <h1 class = "albums-heading">
+      <!-- <img class="back" src="../../../public/back.jpg" /> -->
+      <h1>
           <span class="albums-heading-main">Explore Albums</span>
     <div class="container">
       
@@ -17,23 +17,6 @@
                 </div>
             </div>
 
-
-            <div class="row justify-content-between">
-                <div class="col-3 offset-2">
-                  <h3 class="albums_header">Albums</h3>  
-                </div>
-                            <div class="container_pagination">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
-                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
-                    </ul>
-                </nav>
-        </div>
-
-            </div>
-
-
         <div class="row justify-content-center">
             <div class="col-8"> 
                     <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
@@ -42,7 +25,14 @@
                             :id-album="album.id.attributes['im:id']"
                             :album="album">
                     </display>    
-                    
+                    <div class="container_pagination">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                            <li class="page-item"><a class="page-link" @click="previousAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a></li>
+                            <li class="page-item"><a class="page-link" @click="nextAlbums()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a></li>
+                    </ul>
+                </nav>
+        </div>
                     </div>
 
             </div>
@@ -130,16 +120,6 @@ export default {
 };
 </script>
 <style scoped>
-.back {
-    position: fixed;
-    z-index: -1;
-    /* Allows the background pic to not have any white lines on edge */
-    transform: scale(1.3);
-    -webkit-filter: scale(1.1);
-    -moz-filter: scale(1.1);
-    -o-filter: scale(1.1);
-    -ms-filter: scale(1.1);
-}
 .albums-heading-main {
     display: block;
     font-size: 100px;
@@ -152,13 +132,6 @@ export default {
 }
 #search_bar {
   margin-bottom: 30px;
-}
-
-.albums_header {
-  text-align: left;
-  font-weight: bolder;
-  padding-left: 5px;
-  color: black;
 }
 
 .cancelSearch {

@@ -1,6 +1,5 @@
 <template>
     <div id="Albums-page">
-      <img class="back" src="../../../assets/new.jpg" />
       <h1>
           <span class="albums-heading-main">Album Information</span>
           <div class="container .card-expansion">
@@ -12,16 +11,19 @@
       <md-card-header>
         <div class="md-title">{{album['im:name'].label}}</div>
         <div class="md-subhead">{{album['im:artist'].label}}</div>
+        
       </md-card-header>
-
       <md-card-expand>
         <md-card-actions md-alignment="space-between">
+          <md-button class="md-icon-button">
+            <md-icon>favorite</md-icon>
+          </md-button>
           <div>
-            <md-button>Action</md-button>
+            <md-button>Rate</md-button>
           </div>
-
+          
           <md-card-expand-trigger>
-            <md-button>Learn more</md-button>
+            <md-button>Details</md-button>
           </md-card-expand-trigger>
         </md-card-actions>
 
@@ -34,11 +36,6 @@
         </md-card-expand-content>
       </md-card-expand>
     </md-card>
-            <!-- <div class="row justify-content-between " >
-                <div class="col-3 offset-2">
-                    
-                </div>
-            </div> -->
             </div>
       </h1>
   </div>
@@ -89,6 +86,7 @@ export default {
   /* border-radius: 50%; */
   padding: 2px;
   width: 100%;
+  background-color: black;
 }
 .card-expansion {
     height: 480px;
