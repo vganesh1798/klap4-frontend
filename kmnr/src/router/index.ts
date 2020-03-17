@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomePage from '../views/HomePage/HomePage.vue';
 import PlaylistPage from '../views/PlaylistPage/PlaylistPage.vue';
+import LogPage from '../views/LogPage/LogPage.vue';
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/playlists',
     name: 'Playlist',
     component: PlaylistPage
+  },
+  {
+    path: '/log',
+    name: 'Log',
+    component: LogPage
   },
   {
     path: '*',
