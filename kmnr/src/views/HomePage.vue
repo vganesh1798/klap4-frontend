@@ -9,16 +9,18 @@
             </div>
         </div>
         
-        <div class="container row">
-            <div id="cards">
-                <HomeCard class="card card-left-on-scroll col s12 l6" :style="{
-                        'visibility': scrolledL ? 'visible' : 'hidden',
-                        'animation-name': scrolledL ? 'moveInLeft' : ''
-                    }"/>
-                <HomeCard class="card card-right-on-scroll col s12 l6 offset-l4" :style="{
-                        'visibility': scrolledR ? 'visible' : 'hidden',
-                        'animation-name': scrolledR ? 'moveInRight' : ''
-                    }"/>
+        <div class="bg-cards">
+            <div class="container row">
+                <div id="cards">
+                    <HomeCard class="card card-left-on-scroll col s12 l6" :style="{
+                            'visibility': scrolledL ? 'visible' : 'hidden',
+                            'animation-name': scrolledL ? 'moveInLeft' : ''
+                        }"/>
+                    <HomeCard class="card card-right-on-scroll col s12 l6 offset-l4" :style="{
+                            'visibility': scrolledR ? 'visible' : 'hidden',
+                            'animation-name': scrolledR ? 'moveInRight' : ''
+                        }"/>
+                </div>
             </div>
         </div>
     </div>
@@ -75,6 +77,11 @@
         position: absolute;
     }
     
+    .bg-cards {
+        background-color: whitesmoke;
+        height: 50%;
+    }
+
     .card {
         margin-top: 10em;
     }

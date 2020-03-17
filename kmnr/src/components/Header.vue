@@ -75,7 +75,7 @@
         }
 
         navScroll() {
-            this.scrolledTop = window.scrollY > 10
+            this.scrolledTop = window.scrollY > 0
         }
     }
 </script>
@@ -193,6 +193,7 @@
     @keyframes fadeIn {
         0% {
             height: 0%;
+            min-height: 0px;
         }
     }
 
