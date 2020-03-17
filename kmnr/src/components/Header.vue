@@ -11,46 +11,67 @@
                 'logo-full': scrolledTop,
                 'preload': preload
             }" class="logo"></router-link>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/login">Log In</router-link>
+
+            <div id="dropdown" :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }">Charts<i class="material-icons">arrow_drop_down</i>
+                <div id="dropdown-list">
+                    <router-link :class="{
+                        'items-top': !scrolledTop,
+                        'items-full': scrolledTop,
+                        'preload': preload
+                    }" to="/new-charts" class="dropdown-item">New Charts</router-link>
+                    <router-link :class="{
+                        'items-top': !scrolledTop,
+                        'items-full': scrolledTop,
+                        'preload': preload
+                    }" to="/all-charts" class="dropdown-item">All Charts</router-link>
+                </div>
+            </div>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/about">About</router-link>
+            }" to="/artists">Artists</router-link>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/charts">Charts</router-link>
+            }" to="/albums">Albums</router-link>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/playlists">Playlists</router-link>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/blog">Blog</router-link>
+            }" to="/stream">Stream</router-link>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/schedule">Schedule</router-link>
+            }" to="/search">Search</router-link>
+
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/djs">DJs</router-link>
-            <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
-            }" to="/news">News</router-link>
+            }" to="/about">About</router-link>
         </nav>
     </div>
 </template>
@@ -247,6 +268,41 @@
     @keyframes scaleUp {
         0% {
             width: 75px;
+        }
+    }
+
+    #dropdown {
+        overflow: hidden;
+
+        .material-icons {
+            vertical-align: middle;
+        }
+
+        #dropdown-list {
+            display: none;
+            overflow: hidden;
+            position: absolute;
+            background-color: rgba(100, 100, 100, .25);
+            min-width: 1em;
+            z-index: 1;
+
+            animation: fadeOut .3s;
+
+            .dropdown-item {
+                float: none;
+                color: black;
+                padding: .25em .35em;
+                display: block;
+                text-align: left;
+                font-family: inherit;
+                margin: 0;
+                font-size: 20px;
+            }
+        }
+
+        &:hover #dropdown-list {
+            display: block;
+            animation: fade .3s;
         }
     }
 </style>
