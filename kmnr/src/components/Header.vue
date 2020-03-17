@@ -2,6 +2,7 @@
     <div id="Header">
         <nav :class="{
                 'nav-top': !scrolledTop,
+                'preload-nav': preload,
                 'nav-full': scrolledTop,
                 'nav': true
             }">
@@ -66,12 +67,22 @@
             window.addEventListener('scroll', this.navScroll)
         }
 
+        mounted() {
+            document.getElementsByClassName('nav')[0].style.animation = "none";
+        }
+
         beforeDestroy() {
             window.removeEventListener('scroll', this.navScroll)
         }
 
         updated() {
             this.preload = false
+            if (document.getElementsByClassName('nav-top').length > 0) {
+                document.getElementsByClassName('nav-top')[0].style.animation = 'fadeOut ease-in .5s'
+            }
+            if (document.getElementsByClassName('nav-full').length > 0) {
+                document.getElementsByClassName('nav-full')[0].style.animation = 'fadeIn ease-in .5s'
+            }
         }
 
         navScroll() {
@@ -81,14 +92,18 @@
 </script>
 
 <style lang="scss">
+    $purple: rgb(170,50,200);
+
     #Header .nav-top {
         color: white;
         min-height: 0px;
         height: 0px;
         background-color: rgba(255,255,255,0);
+        animation: fadeOut ease-in .5s;
     }
 
     .nav {
+        position: fixed;
         font-family: Arvo;
     }
 
@@ -106,8 +121,7 @@
     }
 
     #Header .nav-full {
-        position: fixed;
-        background-color: rgb(255,255,255);
+        background-color: $purple;
         z-index: 1;
         animation-name: fadeIn;
         animation-duration: .5s
@@ -194,6 +208,17 @@
         0% {
             height: 0%;
             min-height: 0px;
+        }
+    }
+
+    @keyframes fadeOut {
+        0% {
+            height: 6.5%;
+            background-color: $purple;
+        }
+        100% {
+            height: 0px;
+            background-color: $purple;
         }
     }
 
