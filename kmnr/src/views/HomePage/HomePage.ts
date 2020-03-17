@@ -1,5 +1,5 @@
 import { Component, Watch, Vue } from 'vue-property-decorator';
-import HomeCard from '../components/HomeCard.vue';
+import HomeCard from '../../components/HomeCard.vue';
 
 @Component({
     components: {HomeCard}

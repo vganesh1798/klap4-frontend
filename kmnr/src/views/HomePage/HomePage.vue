@@ -34,7 +34,7 @@
     }
 
     .bg-home {
-        background-image: url('../assets/back.jpg');
+        background-image: url('../../assets/back.jpg');
         background-size: cover;
         background-repeat: repeat;
         background-attachment:local;
