@@ -1,6 +1,6 @@
 <template>
     <div id="Header">
-        <nav>
+        <nav class="nav">
             <router-link to="/"><img src="../../src/assets/radio.png" class="logo"></router-link>
             <router-link to="/login" class="items">Log In</router-link>
             <router-link to="/about" class="items">About</router-link>
@@ -23,11 +23,13 @@
 </script>
 
 <style lang="scss">
-    #Header nav {
+    #Header .nav {
         width: 95%;
         color: white;
-        min-height: 50px;
+        min-height: 0px;
+        height: 0px;
         font-family: Arvo;
+        background-color: rgba(255,255,255,0);
     }
 
     #Header .logo {

@@ -1,23 +1,40 @@
 <template>
-    <div>
+    <div class="full-home">
         <div class="text">
             <h1 class="heading-primary">
                 <span class="heading-primary-main">KMNR</span>
                 <span class="heading-primary-sub">89.7FM</span>
             </h1>
         </div>
+
+        <div class="container row">
+            <div id="cards">
+                <HomeCard class="card col s12 l4"/>
+                <HomeCard class="card col s12 l4 offset-l6"/>
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang='ts' src="./HomePage.ts" />
 
-<style >
+<style lang="scss">
+    .full-home {
+        background-image: url('../assets/back.jpg');
+        background-size: cover;
+        background-repeat: repeat;
+        background-attachment:local;
+        background-position: center;
+        height: 100%;
+    }
+
     .text {
         position: absolute;
-        top: 45%;
+        top: 48%;
         left: 50%;
         transform: translate(-50%, -50%);
-        text-align: center; }
+        text-align: center;
+    }
 
     .heading-primary-main {
         display: block;
@@ -33,28 +50,42 @@
     .heading-primary-sub {
         display: block;
         font-size: 50px;
-        padding-top: 30%;
+        padding-top: 60%;
         font-family: Montserrat;
         margin-top: 10px;
         animation-name: moveInright;
         animation-duration: 2s;
-        color: black; }
+        color: black; 
+    }
 
     @keyframes moveInleft {
         0% {
             opacity: 0;
-            transform: translateX(-180px); }
+            transform: translateX(-180px); 
+        }
         100% {
             opacity: 1;
-            transform: translate(0); } }
+            transform: translate(0); 
+        } 
+    }
 
     @keyframes moveInright {
         0% {
             opacity: 0;
-            transform: translateX(180px); }
+            transform: translateX(180px);
+        }
         100% {
             opacity: 1;
-            transform: translate(0); } }
+            transform: translate(0); 
+        }
+    }
 
-
+    #cards {
+        top: 85%;
+        position: absolute;
+    }
+    
+    .card {
+        margin-top: 10em;
+    }
 </style>
