@@ -11,24 +11,18 @@
 </div>
 </template>
 
-<script>
-export default {
-  props: {
-    idAlbum: {
-      type: String,
-      required: true
-    },
-    album:{
-      type:Object,
-      required:true
-    }
-  },
-  data(){
-    return{
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
-    }
+@Component({})
+export default class Display extends Vue {
+  constructor() {
+    super()
   }
-};
+
+  @Prop(String) idAlbum!: string
+  @Prop(Object) album!: object
+}
 </script>
 
 <style scoped>
