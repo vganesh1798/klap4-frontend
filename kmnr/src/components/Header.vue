@@ -67,11 +67,11 @@
                 'preload': preload
             }" to="/search">Search</router-link>
 
-            <router-link :class="{
+            <a :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/about">About</router-link>
+            }" href="http://www.cleveland.kmnr.org">ARSE</a>
         </nav>
     </div>
 </template>

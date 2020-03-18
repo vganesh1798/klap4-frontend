@@ -4,17 +4,27 @@
         <div class="form">
             <form>
                 <label for="song">Song</label>
-                <input type="text" id="song" />
+                <input v-model="song" required type="text" id="song" />
 
                 <label for="artist">Artist</label>
-                <input type="text" id="artist" />
+                <input v-model="artist" required type="text" id="artist" />
 
                 <label for="album">Album</label>
-                <input type="text" id="album" />
+                <input v-model="album" required type="text" id="album" />
 
-                <button type="submit">Add to log!</button>
+                <button type="button" v-on:click="addSong">Add to log!</button>
+                <br/>
+
+                <button type="submit">Post playlist!</button>
+                <button type="submit">Save playlist for later</button>
             </form>
         </div>
+        <ol>
+            <li v-for="entry in entries" :key="entry.num">
+                {{ entry.song }} {{ entry.artist }} {{ entry.album }}
+            </li>
+        </ol> 
+        <button type="button" v-on:click="removeSong">X</button>     
     </div>
 </template>
 
