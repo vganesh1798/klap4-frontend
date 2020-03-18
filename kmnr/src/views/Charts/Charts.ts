@@ -1,27 +1,29 @@
 import { Component, Vue } from 'vue-property-decorator';
-import axios from "axios";
+import axios from "axios"
 
-import favbutton from "../../components/favbutton.vue";
+import favbutton from "../../components/favbutton.vue"
 
 @Component({
-    components: {
-        favbutton,
-    }
+    components: { favbutton }
 })
 export default class ChartsPage extends Vue {
-    columns: string[] = ['Recommended', 'Album', 'Artist', 'Runtime', 'Album Tag', 'Artist Tag', 'Release Date', 'Total Plays'];
-    charts: string[] = [];
-    range: number = 0;
-    chartsSearch: string = "";
-    cancelSearchVisibility: string = "hidden";
-    previousBtnVisibility: string = "visible";
-    nextBtnVisibility: string = "visible";
-    isToggle: boolean = true; 
+  constructor() {
+    super()
+  }
 
-    chartsPaginated() {
+    columns = ['Recommended', 'Album', 'Artist', 'Runtime', 'Album Tag', 'Artist Tag', 'Release Date', 'Total Plays'];
+    charts = [];
+    range = 0;
+    chartsSearch = "";
+    cancelSearchVisibility = "hidden";
+    previousBtnVisibility = "visible";
+    nextBtnVisibility = "visible";
+    isToggle = true;
+
+    get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
     }
-    
+
     getCharts() {
         axios
         .get("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
@@ -62,9 +64,10 @@ export default class ChartsPage extends Vue {
     }
 
     SearchByChartName() {
-        this.charts = this.charts.filter(alb => {
+        this.charts = this.charts.filter((alb: any) => {
         return alb['category'].attributes.label.toLowerCase().includes(this.chartsSearch);
         });
+
         this.cancelSearchVisibility = "visible";
     }
 
@@ -73,8 +76,8 @@ export default class ChartsPage extends Vue {
         this.chartsSearch = "";
         this.cancelSearchVisibility = "hidden";
     }
-    
+
     created() {
         this.getCharts();
       }
-}
+};

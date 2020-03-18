@@ -6,7 +6,6 @@
                 'nav-full': scrolledTop,
                 'nav': true
             }">
-            <div class="nav-wrapper">
 
             <router-link to="/"><img src="../../src/assets/radio.png" :class="{
                 'logo-top': !scrolledTop,
@@ -14,15 +13,14 @@
                 'preload': preload
             }" class="logo"></router-link>
 
-
-            <div class="input-field right" :class="{
+            <div id="search-bar" :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
             }">
-              <input id="search" placeholder="Search" type="search">
-              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-              <i class="material-icons">close</i>
+              <!--label class="label-icon" for="search"><i class="material-icons">search</i></label-->
+              <input class="search" id="search" placeholder="Search" type="search">
+              <!--i class="material-icons">close</i-->
             </div>
 
 
@@ -75,20 +73,12 @@
                 'preload': preload
             }" to="/stream">Stream</router-link>
 
-            <!--router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
-            }" to="/search">Search</router-link--->
-
             <a :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">ARSE</a>
-            </div>
         </nav>
-
     </div>
 </template>
 
@@ -322,4 +312,24 @@
             animation: fade .3s;
         }
     }
+
+    #search-bar .search {
+      color: black !important;
+      border-bottom-color: black;
+      font-family: Arvo;
+      font-size: 24px;
+      border-bottom-width: 2px;
+      width: 200px
+    }
+
+    #search-bar .search:focus {
+      border-bottom-color: black;
+      border-bottom-width: 2px;
+    }
+
+
+    #search-bar ::placeholder {
+      color: #595959 !important;
+    }
+
 </style>

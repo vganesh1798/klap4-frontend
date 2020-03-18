@@ -1,3 +1,7 @@
+.full-container {
+  padding-top: 10%;
+}
+
 .heading-charts-main {
     display: block;
     font-size: 100px;
@@ -67,4 +71,9 @@ table.striped > tbody > tr:nth-child(odd){
 
 .chartsLink:hover {
   font-weight: bold;
+}
+
+.cancelSearch {
+  font-size: 14px;
+  text-align: right;
 }
