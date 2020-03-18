@@ -37,7 +37,7 @@
                 {{ entry.song }} {{ entry.artist }} {{ entry.album }}
             </li>
         </ol> 
-        <button class="btn" type="button" v-on:click="removeSong">X</button>     
+        <button class="btn" type="button" v-if="entries.length > 0" v-on:click="removeSong">X</button>     
     </div>
 </template>
 

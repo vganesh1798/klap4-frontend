@@ -74,7 +74,7 @@
             <div class="input-field col s4">
               <label for="review">Write a review</label>
               <textarea type="text" class="materialize-textarea" id="review"></textarea>
-              <button class="btn purple">Submit</button>
+              <button class="btn">Submit</button>
             </div>
           </div>
       </div>
