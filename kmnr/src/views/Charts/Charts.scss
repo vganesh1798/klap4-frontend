@@ -52,3 +52,19 @@ table.striped > tbody > tr:nth-child(odd){
   background-color: #659EC7;
   /*background-color: #6495ED;*/
 }
+
+.albumsLink {
+  color: black;
+}
+
+.albumsLink:hover {
+  font-weight: bold;
+}
+
+.chartsLink {
+  color: black;
+}
+
+.chartsLink:hover {
+  font-weight: bold;
+}

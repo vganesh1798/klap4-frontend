@@ -1,16 +1,30 @@
 <template>
     <div id="Header">
-        <nav :class="{
+      <nav :class="{
                 'nav-top': !scrolledTop,
                 'preload-nav': preload,
                 'nav-full': scrolledTop,
                 'nav': true
             }">
+            <div class="nav-wrapper">
+
             <router-link to="/"><img src="../../src/assets/radio.png" :class="{
                 'logo-top': !scrolledTop,
                 'logo-full': scrolledTop,
                 'preload': preload
             }" class="logo"></router-link>
+
+
+            <div class="input-field right" :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }">
+              <input id="search" placeholder="Search" type="search">
+              <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons">close</i>
+            </div>
+
 
             <router-link :class="{
                 'items-top': !scrolledTop,
@@ -61,18 +75,21 @@
                 'preload': preload
             }" to="/stream">Stream</router-link>
 
-            <router-link :class="{
+            <!--router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/search">Search</router-link>
+            }" to="/search">Search</router-link--->
 
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/about">About</router-link>
+
+</div>
         </nav>
+
     </div>
 </template>
 
@@ -152,7 +169,7 @@
         float: left;
         cursor: pointer;
     }
-    
+
     #Header .logo-top {
         width: 300px;
         margin-left: 1.5em;
@@ -225,6 +242,7 @@
         }
     }
 
+
     @keyframes fadeIn {
         0% {
             height: 0%;
@@ -246,7 +264,7 @@
     @keyframes floatUp {
         0% {
             margin-top: 1.4em;
-            font-size: 24px; 
+            font-size: 24px;
         }
     }
 

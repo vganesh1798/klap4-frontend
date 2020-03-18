@@ -39,12 +39,12 @@
                   <span></span>
                 </favbutton>
               </p>
-              <p v-else-if="col==='Album'">
+              <a v-else-if="col==='Album'" class="albumsLink" href="#" @click="goToAlbum()">
                 {{ item['im:name'].label}}
-              </p>
-              <p v-else-if="col==='Artist'">
+              </a>
+              <a v-else-if="col==='Artist'" class="chartsLink" href="#" @click="goToArtist(item['im:artist'].label)">
                 {{ item['im:artist'].label}}
-              </p>
+              </a>
               <p v-else-if="col==='Runtime'">
               </p>
               <p v-else-if="col==='Album Tag'">
@@ -145,6 +145,12 @@ export default {
       this.getCharts();
       this.chartsSearch = "";
       this.cancelSearchVisibility = "hidden";
+    },
+    goToAlbum() {
+
+    },
+    goToArtist() {
+
     }
   },
   created() {
