@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomePage from '../views/HomePage/HomePage.vue';
+import LoginPage from '../views/LoginPage/LoginPage.vue';
 import PlaylistPage from '../views/PlaylistPage/PlaylistPage.vue';
 import LogPage from '../views/LogPage/LogPage.vue';
 import Albums from '../views/Albums/Albums.vue';
@@ -16,6 +17,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: HomePage
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginPage
   },
   {
     path: '/playlists',
