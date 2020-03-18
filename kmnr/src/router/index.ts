@@ -10,6 +10,7 @@ import ArtistPage from '../views/Artists/ArtistPage.vue';
 import Charts from '../views/Charts/Charts.vue';
 import NewAlbums from '../views/NewAlbums/NewAlbums.vue';
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -58,6 +59,11 @@ const routes = [
     path: '/new-charts',
     name: 'NewAlbums',
     component: NewAlbums
+  },
+  {
+    path: '/artists',
+    name: 'Artists',
+    component: ArtistPage
   },
   {
     path: '*',

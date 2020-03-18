@@ -7,11 +7,11 @@
             <form class="col offset-s3 s6">
                 <div class="row">
                     <div class="input-field col s6">
-                        <label for="name">Name</label>
+                        <label required for="name">Name</label>
                         <input type="text" id="name" />
                     </div>
                     <div class="input-field col s6">
-                        <label for="show">Show</label>
+                        <label required for="show">Show</label>
                         <input type="text" id="show" />
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <label for="comment">Comment</label>
-                        <input class="col lg6" type="text" id="label" />
+                        <input required class="col lg6" type="text" id="label" />
                     </div>
                 </div>
                 <button class="btn purple" type="submit" v-on:click="jumpLog">Create new Playlist</button>
