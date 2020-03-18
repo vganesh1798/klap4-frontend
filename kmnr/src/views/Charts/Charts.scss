@@ -54,7 +54,7 @@ table.striped > tbody > tr:nth-child(odd){
 }
 
 .albumsLink {
-  color: black;
+  color: black !important;
 }
 
 .albumsLink:hover {
@@ -62,7 +62,7 @@ table.striped > tbody > tr:nth-child(odd){
 }
 
 .chartsLink {
-  color: black;
+  color: black !important;
 }
 
 .chartsLink:hover {

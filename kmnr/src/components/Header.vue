@@ -86,6 +86,7 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">ARSE</a>
+            </div>
         </nav>
 
     </div>

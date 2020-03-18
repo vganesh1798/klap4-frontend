@@ -12,10 +12,10 @@
           <input v-model="chartsSearch" type="text" class="form-control" placeholder="Search by genre">
         </div>
         <div class="col l1" id="submit">
-          <button class="btn btn-light" @click="SearchByChartName()" v-on:keyup.enter="SearchByChartName()">Search</button>
+          <button class="btn btn-light" @click="SearchByChartName" v-on:keyup.enter="SearchByChartName">Search</button>
         </div>
         <div class="col l1">
-            <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch()"> Clear </a>
+            <a :style="{visibility:cancelSearchVisibility}" class="cancelSearch" href="#" @click.prevent="CancelSearch"> Clear </a>
         </div>
       </div>
       <table class="table striped highlight centered sorted">
@@ -32,14 +32,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in chartsPaginated" v-bind:key="item.id">
+          <tr v-for="item in chartsPaginated()" v-bind:key="item.id">
             <td v-for="col in columns" v-bind:key="col.id">
               <p v-if="col==='Recommended'">
                 <favbutton>
                   <span></span>
                 </favbutton>
               </p>
-              <a v-else-if="col==='Album'" class="albumsLink" href="#" @click="goToAlbum()">
+              <a v-else-if="col==='Album'" class="albumsLink" href="#" @click="goToAlbum">
                 {{ item['im:name'].label}}
               </a>
               <a v-else-if="col==='Artist'" class="chartsLink" href="#" @click="goToArtist(item['im:artist'].label)">
@@ -66,10 +66,10 @@
       <div class="row">
         <div class="col l10"></div>
         <div class="col l1">
-          <a class="page-link" @click="previousCharts()"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a>
+          <a class="page-link" @click="previousCharts"><img src="https://img.icons8.com/plasticine/64/000000/back.png"/></a>
         </div>
         <div class="col l1">
-          <a class="page-link" @click="nextCharts()"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a>
+          <a class="page-link" @click="nextCharts"><img src="https://img.icons8.com/plasticine/64/000000/forward.png"/></a>
         </div>
       </div>
     </div>
