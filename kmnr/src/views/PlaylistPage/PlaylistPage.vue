@@ -22,7 +22,7 @@
                         <input required class="col lg6" type="text" id="label" />
                     </div>
                 </div>
-                <button class="btn purple" type="submit" v-on:click="jumpLog">Create new Playlist</button>
+                <button class="btn" type="submit" v-on:click="jumpLog">Create new Playlist</button>
             </form>
         </div>
     </div>

@@ -143,7 +143,6 @@
 
     created() {
       this.album = this.$route.params.albumParam
-      console.log(this.album)
     }
   }
 </script>

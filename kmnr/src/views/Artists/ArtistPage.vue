@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="container">
     <h1>
           <span class="albums-heading-main">Artists Page</span>
     </h1>
@@ -199,7 +199,7 @@ a{
     display: block;
     font-size: 60px;
     font-weight: 60;
-    padding-top: 20%;
+    padding-top: 10%;
     padding-left: 45%;
     padding-bottom: 1%;
     color: Black;
@@ -217,5 +217,18 @@ a{
 }
 .flex-child{
   margin-left: 10%;
+}
+
+h1 {
+  height: 15rem !important;
+  margin-top: 0px;
+}
+
+.container {
+  margin-left: 10% !important;
+}
+
+#flex-container {
+  margin-left: 0px;
 }
 </style>

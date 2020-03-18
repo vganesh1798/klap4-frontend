@@ -18,9 +18,9 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }">
-              <!--label class="label-icon" for="search"><i class="material-icons">search</i></label-->
-              <input class="search" id="search" placeholder="Search" type="search">
-              <!--i class="material-icons">close</i-->
+              <input id="search" placeholder="Search" type="search">
+              <!--<label class="label-icon" for="search"><i class="material-icons">search</i></label>
+              <i class="material-icons" v-if="searching">close</i>-->
             </div>
 
 
@@ -83,19 +83,35 @@
 </template>
 
 <script lang='ts'>
-    import { Component, Vue } from 'vue-property-decorator';
+    import { Component, Vue, Watch } from 'vue-property-decorator';
+    import router from '../router/index'
 
     @Component
     export default class Header extends Vue {
+        searching = false
+        homepage = true
         scrolledTop = false
         preload = true
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
+            this.homepage = router.currentRoute.path === '/home' || router.currentRoute.path === '/' ? true : false
+            if (!this.homepage) {
+                this.scrolledTop = true
+            }
         }
 
         mounted() {
             (document.getElementsByClassName('nav') as HTMLCollectionOf<HTMLElement>)[0].style.animation = "none";
+            router.afterEach(to => {
+                if (to.path !== '/' && to.path !== '/home') {
+                    this.homepage = false
+                    this.scrolledTop = true
+                } else {
+                    this.homepage = true
+                    this.scrolledTop = (scrollY > 0)
+                }
+            })
         }
 
         beforeDestroy() {
@@ -113,13 +129,13 @@
         }
 
         navScroll() {
-            this.scrolledTop = window.scrollY > 0
+            this.scrolledTop = (!this.homepage || (this.homepage && (scrollY > 0)))
         }
     }
 </script>
 
 <style lang="scss">
-    $purple: rgb(170,50,200);
+    $purple: rgb(209, 189, 189);
 
     #Header .nav-top {
         color: white;
@@ -293,8 +309,6 @@
             min-width: 1em;
             z-index: 1;
 
-            animation: fadeOut .3s;
-
             .dropdown-item {
                 float: none;
                 color: black;
@@ -304,12 +318,13 @@
                 font-family: inherit;
                 margin: 0;
                 font-size: 20px;
+                animation: fade .3s !important;
             }
         }
 
         &:hover #dropdown-list {
             display: block;
-            animation: fade .3s;
+            animation: fade .3s !important;
         }
     }
 
@@ -332,4 +347,8 @@
       color: #595959 !important;
     }
 
+    .material-icons {
+        display: inline !important;
+        color: black !important;
+    }
 </style>
