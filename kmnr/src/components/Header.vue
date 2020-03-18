@@ -89,7 +89,7 @@
         }
 
         mounted() {
-            document.getElementsByClassName('nav')[0].style.animation = "none";
+            (document.getElementsByClassName('nav') as HTMLCollectionOf<HTMLElement>)[0].style.animation = "none";
         }
 
         beforeDestroy() {
@@ -99,10 +99,10 @@
         updated() {
             this.preload = false
             if (document.getElementsByClassName('nav-top').length > 0) {
-                document.getElementsByClassName('nav-top')[0].style.animation = 'fadeOut ease-in .5s'
+                (document.getElementsByClassName('nav-top') as HTMLCollectionOf<HTMLElement>)[0].style.animation = 'fadeOut ease-in .5s'
             }
             if (document.getElementsByClassName('nav-full').length > 0) {
-                document.getElementsByClassName('nav-full')[0].style.animation = 'fadeIn ease-in .5s'
+                (document.getElementsByClassName('nav-full') as HTMLCollectionOf<HTMLElement>)[0].style.animation = 'fadeIn ease-in .5s'
             }
         }
 

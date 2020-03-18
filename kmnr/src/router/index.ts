@@ -9,7 +9,6 @@ import AlbumDetail from '../views/Albums/AlbumDetail/Albumdeets.vue';
 import ArtistPage from '../views/Artists/ArtistPage.vue';
 import Charts from '../views/Charts/Charts.vue';
 import NewAlbums from '../views/NewAlbums/NewAlbums.vue';
-import ArtistPage from '../views/Artists/ArtistPage.vue'
 
 
 Vue.use(VueRouter)
