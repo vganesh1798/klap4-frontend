@@ -7,10 +7,12 @@ import axios from 'axios'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  // The variable to be shared between components
   state: {
     // An empty list of logs to be stored when called
     logs: Array<Log>()
   },
+  // A function to be accessed with commit to modify any states
   mutations: {
     // Mutations are necessary to push any changes to states
     addLog(state, newLog: Log) {
@@ -18,6 +20,7 @@ export default new Vuex.Store({
       state.logs.push(newLog)
     }
   },
+  // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
   actions: {
     getAllLogs() {
       return axios
@@ -33,6 +36,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
       }
   },
+  // Used if we create separate stores (state, mutations, actions, etc.) to import
   modules: {
   }
 })
