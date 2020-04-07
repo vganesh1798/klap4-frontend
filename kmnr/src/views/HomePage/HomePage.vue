@@ -36,7 +36,7 @@
     .bg-home {
         background-image: url('../../assets/back.jpg');
         background-size: cover;
-        background-repeat: repeat;
+        background-repeat: no-repeat;
         background-attachment:local;
         background-position: center;
         height: 50%;
@@ -50,10 +50,14 @@
         text-align: center;
     }
 
+    .heading-primary{
+            width: 50%;
+            margin: 0 auto;
+    }
     .heading-primary-main {
         display: block;
         font-size: 150px;
-        font-weight: 100;
+        font-weight: 50;
         padding-bottom: 65%;
         animation-name: moveInLeft;
         animation-duration: 2s;
@@ -73,17 +77,21 @@
     }
 
     #cards {
-        top: 85%;
+        top: 90%;
         position: absolute;
     }
     
     .bg-cards {
-        background-color: whitesmoke;
+        background-image: url('../../assets/back1.jpg');
         height: 50%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     .card {
         margin-top: 10em;
+        opacity: 1;
     }
 
     .card-left-on-scroll {

@@ -40,4 +40,13 @@
     .card-action {
         align-content: left !important;
     }
+    .card{
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .card-stacked{
+        opacity: 1;
+    }
+    .card-image{
+        opacity: 1;
+    }
 </style>
