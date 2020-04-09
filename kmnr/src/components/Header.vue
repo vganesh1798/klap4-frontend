@@ -10,6 +10,7 @@
             <router-link to="/schedule" class="items">Schedule</router-link>
             <router-link to="/djs" class="items">DJs</router-link>
             <router-link to="/news" class="items">News</router-link>
+            <router-link to="/stream" class="items">Stream</router-link>
         </nav>
     </div>
 </template>

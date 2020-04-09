@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import HomePage from './views/Home/HomePage';
+import StreamPage from './views/Stream/StreamPage';
 
 Vue.use(Router);
 
@@ -64,6 +65,11 @@ export default new Router({
             path: '/news',
             component: HomePage,
             meta: {title: 'News'}
+        },
+        {
+            path: '/stream',
+            component: StreamPage,
+            meta: {title: 'Stream'}
         },
         {
             path: '*',
