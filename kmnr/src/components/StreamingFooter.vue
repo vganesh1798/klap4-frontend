@@ -6,8 +6,8 @@
         <div class="controlsOuter">
             <div class="controlsInner">
                 <div id="loading"></div>
-                <div class="btn" id="playBtn"></div>
-                <div class="btn" id="pauseBtn"></div>
+                <div class="btn" id="playBtn" v-show="!playing" @click="play()"></div>
+                <div class="btn" id="pauseBtn" v-show="playing" @click="pause()"></div>
                 <div class="btn" id="prevBtn"></div>
                 <div class="btn" id="nextBtn"></div>
             </div>
@@ -19,9 +19,46 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import {Howl} from 'howler'
 
     export default Vue.extend({
         name: "StreamingFooter",
+        props: {
+            // musicList: Array
+        },
+        data() {
+            return {
+                index: 0,
+                sound: undefined,
+                playing: false,
+                musicList: ['../music/bitches_aint_shit.mp3']
+            }
+        },
+        methods: {
+            nextSong() {
+                this.sound = new Howl({
+                    src: [this.musicList[this.index]],
+                    onend: function() {
+                        this.index++
+                        this.nextSong()
+                    },
+                })
+            },
+            play() {
+                if (this.sound) {
+                    this.sound.play()
+                }
+                else {
+                    this.nextSong()
+                    this.sound.play()
+                }
+                this.playing = true
+            },
+            pause() {
+                this.sound.pause()
+                this.playing = false
+            }
+        }
     });
 </script>
 
@@ -90,7 +127,6 @@
   height: 70px;
   left: 50%;
   margin: auto -34.5px;
-  display: none;
 }
 #prevBtn {
   background-image: url("../assets/prev.png");

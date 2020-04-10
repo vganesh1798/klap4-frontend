@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div class="bg-home"></div>
         <div class="text">
             <h1 class="heading-primary">
                 <span class="heading-primary-main">KMNR</span>
@@ -12,6 +13,14 @@
 <script lang='ts' src="./HomePage.ts" />
 
 <style >
+    .bg-home {
+        background-image: url(../../assets/back.jpg);
+        background-size: cover;
+        background-repeat: repeat;
+        background-attachment:local;
+        background-position: center;
+        height: 50%;
+    }
     .text {
         position: absolute;
         top: 45%;
