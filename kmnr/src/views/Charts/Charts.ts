@@ -1,10 +1,10 @@
 import { Component, Vue } from 'vue-property-decorator';
-import axios from "axios"
+import axios from "axios";
 
-import favbutton from "../../components/favbutton.vue"
+import defaultTable from "../../components/Table.vue";
 
 @Component({
-    components: { favbutton }
+    components: { defaultTable }
 })
 export default class ChartsPage extends Vue {
   constructor() {
@@ -19,6 +19,8 @@ export default class ChartsPage extends Vue {
     previousBtnVisibility = "visible";
     nextBtnVisibility = "visible";
     isToggle = true;
+    num = 0;
+    loggedIn = true;
 
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
@@ -65,7 +67,7 @@ export default class ChartsPage extends Vue {
 
     SearchByChartName() {
         this.charts = this.charts.filter((alb: any) => {
-        return alb['category'].attributes.label.toLowerCase().includes(this.chartsSearch);
+        return alb['category'].attributes.label.toLowerCase().includes(this.chartsSearch.toLowerCase());
         });
 
         this.cancelSearchVisibility = "visible";

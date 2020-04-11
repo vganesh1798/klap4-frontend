@@ -1,79 +1,163 @@
 .full-container {
-  padding-top: 10%;
+  padding-top: 3%;
+}
+
+.bg-charts {
+  background-image: url('../../assets/background.jpg');
+  background-size: 100% auto;
+  background-repeat: repeat;
+}
+
+.table-container {
+  padding: 4% 10% 0% 10%;
 }
 
 .heading-charts-main {
-    display: block;
-    font-size: 100px;
-    font-weight: 100;
-    padding-top: 3%;
-    padding-left: 35%;
-    padding-bottom: 1%;
-    color: Black;
-    font-family: 'Covered By Your Grace';
+  display: block;
+  font-size: 100px;
+  text-align:center;
+  padding-bottom: 2%;
+  color: rgb(70, 68, 68);
+  font-family: 'Covered By Your Grace';
 }
 
-.back {
-    position: fixed;
-    z-index: -1;
-
-    /* Allows the background pic to not have any white lines on edge */
-    transform: scale(1.3);
-    -webkit-filter: scale(1.1);
-    -moz-filter: scale(1.1);
-    -o-filter: scale(1.1);
-    -ms-filter: scale(1.1);
+.class-ranking {
+  font-size: 40px;
+  margin: 0 0 0 0;  //this makes the row narrower
 }
 
-i.icon-yellow {
-  color: #f4f797;
+.rank {
+  width: 10%;
+  text-align: center;
+  padding-left: 4%;
 }
 
-.table {
-  color: black;
-  width: 1100px;
-  font-size: 16px;
-  font-family: Montserrat;
+.names {
+  width: 50%;
 }
 
-tbody > tr {
-  height: 15px;
+.explore {
+  width: 15%;
 }
 
-table.highlight > tbody > tr:hover {
-  /*background-color: #595959 !important;*/
-  background-color: #566D7E !important;
+.liked {
+  width: 15%;
 }
 
-table.striped > tbody > tr:nth-child(even){
-  background-color:  #a0cfec;
-  /*background-color: #AFDCEC;*/
-  /*background-color: #1569C7;*/
+.more {
+  width: 5%;
 }
 
-table.striped > tbody > tr:nth-child(odd){
-  /*background-color:#0099cc;*/
-  background-color: #659EC7;
-  /*background-color: #6495ED;*/
+.numfav {
+    position: relative;
+    bottom: 25px;
+    left: 115px;
+    width: 30px;
+    height: 30px;
+    color: white;
+    margin: 0 0 0 0;  //affects height of row
 }
 
-.albumsLink {
-  color: black !important;
+i.nav-icon {
+  color:rgb(70, 68, 68) !important;
+  font-size: 60px;
 }
 
-.albumsLink:hover {
-  font-weight: bold;
+i.fav-icon {
+  color:rgb(70, 68, 68) !important;
+  position: relative;
+  top: 15px;
+  left: 100px;
+  font-size: 45px;
 }
 
-.chartsLink {
-  color: black !important;
+i.gray-icon {
+  color:rgb(70, 68, 68) !important;
 }
 
-.chartsLink:hover {
-  font-weight: bold;
+.search-bar {
+  color:rgb(70, 68, 68);
+  height: 20px;
+  margin: 0;
+  padding-right: 30px;
+  width: 100%;
 }
 
-.cancelSearch {
-  font-size: 14px;
-  text-align: right;
+.search-bar::placeholder {
+  color:rgb(70, 68, 68);
+}
+
+.inputSearch {
+  position: relative;
+  padding: 0 0 0 20px;
+  margin: 0 20px;
+}
+
+input:focus {
+  border-bottom: 1px rgb(70, 68, 68) !important;
+  box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
+}
+
+.borderless-btn {
+  text-align: center;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 0px;
+  outline: none;
+}
+
+.borderless-btn:focus {
+  background: none !important;
+  box-shadow: none;
+  border-radius: 0px;
+  outline: none;
+}
+
+.clr-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+}
+
+.search-btn {
+  position: absolute;
+  bottom: 15px;
+  right: -35px;
+}
+
+#dropdown {
+  overflow: hidden;
+
+  .material-icons {
+      vertical-align: middle;
+  }
+
+  #dropdown-list {
+      display: none;
+      overflow: hidden;
+      position: absolute;
+      background-color: rgba(100, 100, 100, .25);
+      min-width: 1em;
+      z-index: 1;
+
+      .dropdown-item {
+          float: none;
+          color: black;
+          padding: .25em .35em;
+          display: block;
+          text-align: left;
+          font-family: inherit;
+          margin: 0;
+          font-size: 20px;
+          animation: fade .3s !important;
+      }
+  }
+
+  &:hover #dropdown-list {
+      display: block;
+      animation: fade .3s !important;
+  }
 }

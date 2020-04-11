@@ -1,0 +1,34 @@
+<template>
+    <div id="defaultTable">
+    </div>
+</template>
+
+<script lang='ts'>
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component
+export default class favbutton extends Vue {
+    isToggled = false
+}
+</script>
+
+<style lang="scss">
+.defaultTable {
+  background-color: rgba(70, 68, 68, .07);
+  color:rgb(70, 68, 68);
+  width: 100%;
+  font-size: 14px;
+  font-family: Montserrat;
+  table-layout: fixed !important;
+  border-radius: 3%;
+}
+
+.defaultTable tr {
+  height: 40px !important;
+}
+
+.defaultTable td {
+  height: 20px !important;
+  padding: 0 0 0 0%;
+}
+</style>
