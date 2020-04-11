@@ -45,19 +45,20 @@
     .text {
         position: absolute;
         top: 48%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        left: 48%;
+        transform: translate(-90%, -30%);
         text-align: center;
     }
 
     .heading-primary{
-            width: 50%;
+            width: 10vw;
             margin: 0 auto;
     }
     .heading-primary-main {
         display: block;
-        font-size: 150px;
+        font-size: 6vw;
         font-weight: 50;
+        text-align: left;
         padding-bottom: 65%;
         animation-name: moveInLeft;
         animation-duration: 2s;
@@ -67,8 +68,8 @@
 
     .heading-primary-sub {
         display: block;
-        font-size: 50px;
-        padding-top: 60%;
+        font-size: 3vw;
+        padding-left: 60%;
         font-family: Montserrat;
         margin-top: 10px;
         animation-name: moveInRight;
