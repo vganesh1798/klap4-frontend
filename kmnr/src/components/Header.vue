@@ -24,30 +24,22 @@
             </div>
 
 
-            <router-link :class="{
+            <div id="login" :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
-                'preload': preload
-            }" to="/login">Log In</router-link>
-
-            <div id="dropdown" :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
-            }">Charts<i class="material-icons">arrow_drop_down</i>
-                <div id="dropdown-list">
-                    <router-link :class="{
-                        'items-top': !scrolledTop,
-                        'items-full': scrolledTop,
-                        'preload': preload
-                    }" to="/new-charts" class="dropdown-item">New Charts</router-link>
-                    <router-link :class="{
-                        'items-top': !scrolledTop,
-                        'items-full': scrolledTop,
-                        'preload': preload
-                    }" to="/all-charts" class="dropdown-item">All Charts</router-link>
-                </div>
+                'preload': preload,
+                'open' : loginOpen,
+                'closed' : !loginOpen
+            }" @click="openLogin">
+                Log In
+                <login v-if="loginOpen"></login>
             </div>
+
+           <router-link :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }" to="/charts">Charts</router-link>
 
             <router-link :class="{
                 'items-top': !scrolledTop,
@@ -65,7 +57,7 @@
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/playlists">Playlists</router-link>
+            }" to="/log">Playlists</router-link>
 
             <router-link :class="{
                 'items-top': !scrolledTop,
@@ -84,14 +76,19 @@
 
 <script lang='ts'>
     import { Component, Vue, Watch } from 'vue-property-decorator';
-    import router from '../router/index'
+    import router from '../router/index';
 
-    @Component
+    import login from './login.vue';
+
+    @Component({
+    components: { login }
+})
     export default class Header extends Vue {
         searching = false
         homepage = true
         scrolledTop = false
         preload = true
+        loginOpen = false
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
@@ -130,6 +127,14 @@
 
         navScroll() {
             this.scrolledTop = (!this.homepage || (this.homepage && (scrollY > 0)))
+        }
+
+        openLogin() {
+            this.loginOpen = true;
+        }
+
+        closeLogin() {
+            this.loginOpen = false;
         }
     }
 </script>
@@ -299,6 +304,7 @@
 
         .material-icons {
             vertical-align: middle;
+
         }
 
         #dropdown-list {

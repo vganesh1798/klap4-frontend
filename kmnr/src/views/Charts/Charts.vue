@@ -5,6 +5,15 @@
         <div class="row">
           <span class="heading-charts-main">Explore Charts</span>
         </div>
+        <div class="row">
+          <div class="col l5"></div>
+          <div class="col l1">
+            <button class="borderless-btn topBtn" @click="getCharts()">Top Charts</button>
+          </div>
+          <div class="col l2">
+            <button class="borderless-btn topBtn" @click="getNewCharts()">New Charts</button>
+          </div>
+        </div>
         
         <div class="row">
           <div class="col l3"></div>
@@ -21,12 +30,16 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col l1">
         <div id="dropdown">Sort By:<i class="material-icons">arrow_drop_down</i>
           <div id="dropdown-list">
             <a class="dropdown-item">Genre></a>
             <a class="dropdown-item">Artist</a>
             <a class="dropdown-item">Release Date</a>
             <a class="dropdown-item">Number of Likes</a>
+          </div>
+        </div>
           </div>
         </div>
 

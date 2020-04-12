@@ -37,6 +37,17 @@ export default class ChartsPage extends Vue {
         });
     }
 
+    getNewCharts() {
+        axios
+        .get("https://itunes.apple.com/us/rss/topalbums/limit=5/json")
+        .then(response => {
+            this.charts = response.data.feed.entry;
+        })
+        .catch(error => {
+            alert(error);
+        });
+    }
+
     hidePreviousBtn() {
         this.previousBtnVisibility = "hidden";
     }

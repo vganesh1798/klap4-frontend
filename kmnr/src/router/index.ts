@@ -51,14 +51,9 @@ const routes = [
     component: ArtistPage
   },
   {
-    path: '/all-charts',
+    path: '/charts',
     name: 'Charts',
     component: Charts
-  },
-  {
-    path: '/new-charts',
-    name: 'NewAlbums',
-    component: NewAlbums
   },
   {
     path: '/artists',

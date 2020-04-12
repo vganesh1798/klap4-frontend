@@ -7,8 +7,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class favbutton extends Vue {
-    isToggled = false
+export default class Table extends Vue {
 }
 </script>
 
