@@ -135,7 +135,7 @@
 </script>
 
 <style lang="scss">
-    $purple: rgb(209, 189, 189);
+    $blue: rgb(17, 2, 65);
 
     #Header .nav-top {
         color: white;
@@ -164,7 +164,7 @@
     }
 
     #Header .nav-full {
-        background-color: $purple;
+        background-color: $blue;
         z-index: 1;
         animation-name: fadeIn;
         animation-duration: .5s
@@ -226,7 +226,7 @@
         font-size: 18px;
         animation-name: floatUp;
         animation-duration: .5s;
-        color: black;
+        color: white;
 
         text-decoration: none;
             &:hover {
@@ -258,11 +258,11 @@
     @keyframes fadeOut {
         0% {
             height: 6.5%;
-            background-color: $purple;
+            background-color: $blue;
         }
         100% {
             height: 0px;
-            background-color: $purple;
+            background-color: $blue;
         }
     }
 
