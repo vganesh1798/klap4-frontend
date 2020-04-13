@@ -1,7 +1,7 @@
 <template>
   <div id="navigation-mobile">
     <div class="search">
-      <input type="text" placeholder="Search..." />
+      <input type="text" placeholder="Search" />
     </div>
     <ul>
       <li><router-link to="/">Home</router-link></li>

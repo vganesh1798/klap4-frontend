@@ -51,15 +51,16 @@
     }
 
     .heading-primary{
-            width: 10vw;
-            margin: 0 auto;
+            display: flex;
+
     }
     .heading-primary-main {
-        display: block;
-        font-size: 6vw;
+        font-size: 12vw;
         font-weight: 50;
+        float: left;
         text-align: left;
-        padding-bottom: 65%;
+        margin-top: 5vw;
+        padding-left: 250vw;
         animation-name: moveInLeft;
         animation-duration: 2s;
         color: Black;
@@ -67,11 +68,11 @@
     }
 
     .heading-primary-sub {
-        display: block;
-        font-size: 3vw;
-        padding-left: 60%;
+        flex-direction: row;
+        float: right;
+        font-size: 8vw;
         font-family: Montserrat;
-        margin-top: 10px;
+        padding-top: 25vw;
         animation-name: moveInRight;
         animation-duration: 2s;
         color: black; 
