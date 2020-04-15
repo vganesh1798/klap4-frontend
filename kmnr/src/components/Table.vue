@@ -29,5 +29,8 @@ export default class Table extends Vue {
 .defaultTable td {
   height: 20px !important;
   padding: 0 0 0 0%;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
 }
 </style>

@@ -30,9 +30,9 @@
                 'preload': preload,
                 'open' : loginOpen,
                 'closed' : !loginOpen
-            }" @click="openLogin">
+            }" @click="openLogin()">
                 Log In
-                <login v-if="loginOpen"></login>
+                <mylogin v-if="loginOpen"></mylogin>
             </div>
 
            <router-link :class="{
@@ -78,10 +78,10 @@
     import { Component, Vue, Watch } from 'vue-property-decorator';
     import router from '../router/index';
 
-    import login from './login.vue';
+    import mylogin from './login.vue';
 
     @Component({
-    components: { login }
+    components: { mylogin }
 })
     export default class Header extends Vue {
         searching = false
@@ -89,6 +89,8 @@
         scrolledTop = false
         preload = true
         loginOpen = false
+        on = false
+        modalOpen = false
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
@@ -108,6 +110,12 @@
                     this.homepage = true
                     this.scrolledTop = (scrollY > 0)
                 }
+            })
+        }
+
+        created() {
+            this.$on('close-log-in', () => {
+                this.closeLogin();
             })
         }
 
@@ -131,12 +139,31 @@
 
         openLogin() {
             this.loginOpen = true;
+            return this.loginOpen;
         }
 
-        closeLogin() {
-            this.loginOpen = false;
+        openModal() {
+            this.modalOpen = !this.modalOpen;
         }
-    }
+
+        //closeLogin() {
+        //    this.on = true;
+        //    this.loginOpen = false;
+        //    return this.loginOpen;
+        //}
+
+        toggleLogin() {
+            this.loginOpen = !this.loginOpen;
+            return this.loginOpen;
+        }
+
+        @Watch('close-log-in')
+            closeLogin() {
+                this.on = true;
+                this.loginOpen = false;
+                return this.loginOpen;
+            }
+}
 </script>
 
 <style lang="scss">
@@ -296,41 +323,6 @@
     @keyframes scaleUp {
         0% {
             width: 75px;
-        }
-    }
-
-    #dropdown {
-        overflow: hidden;
-
-        .material-icons {
-            vertical-align: middle;
-
-        }
-
-        #dropdown-list {
-            display: none;
-            overflow: hidden;
-            position: absolute;
-            background-color: rgba(100, 100, 100, .25);
-            min-width: 1em;
-            z-index: 1;
-
-            .dropdown-item {
-                float: none;
-                color: black;
-                padding: .25em .35em;
-                display: block;
-                text-align: left;
-                font-family: inherit;
-                margin: 0;
-                font-size: 20px;
-                animation: fade .3s !important;
-            }
-        }
-
-        &:hover #dropdown-list {
-            display: block;
-            animation: fade .3s !important;
         }
     }
 

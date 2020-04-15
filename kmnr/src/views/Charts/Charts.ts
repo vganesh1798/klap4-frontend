@@ -2,9 +2,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import axios from "axios";
 
 import defaultTable from "../../components/Table.vue";
+import defaultButton from "../../components/Button.vue";
 
 @Component({
-    components: { defaultTable }
+    components: { defaultTable,
+                  defaultButton }
 })
 export default class ChartsPage extends Vue {
   constructor() {
@@ -21,6 +23,7 @@ export default class ChartsPage extends Vue {
     isToggle = true;
     num = 0;
     loggedIn = true;
+    sort_selection = "Pop"
 
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
@@ -93,4 +96,8 @@ export default class ChartsPage extends Vue {
     created() {
         this.getCharts();
       }
+
+    sortBy(field) {
+        this.sort_selection = field;
+    }
 };

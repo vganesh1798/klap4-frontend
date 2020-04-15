@@ -1,22 +1,22 @@
 <template>
     <div class="full-page">
         <div class="container log-container">
-            <!--treat this like the login page where it will load a component--->
-            <button class="btn uploadButton">Upload A Playlist</button>
-            <button class="btn editButton">Edit A Playlist</button>
+            <button class="btn uploadButton" @click="allowUpload()">Upload A Playlist
+                <uploadBox v-if="uploadBox"></uploadBox>
+            </button>
+            <button class="btn editButton">Switch Playlist</button>
             <h1>Playlists</h1>
-            <div class="row">
-                <div class="col l4">
-                    <h2 v-if="savedPlaylists.length > 0">Saved Playlists</h2>
-                    <h2 v-else></h2>
+            <!--div class="row">
+                <div class="col s4">
+                    <h2>Saved Playlists</h2>
                 </div>
-                <div class="col l5"></div>
-                <div class="col l3">
-                    <h2 v-if="entries.length > 0">Playlist Name</h2>
+                <div class="col s5"></div>
+                <div class="col s3">
+                    <h2> {{ playlist_name }}</h2>
                 </div>
-            </div>
+            </div-->
             <div class="row">
-                <div class="col l3">
+                <div class="col s2">
                     <!--h2>Your Saved Playlists</h2--->
                     <!--table class="defaultTable savedPlaylists" v-if="savedPlaylists.length > 0">
                     <thead>
@@ -45,8 +45,8 @@
                         </tbody>
                     </table-->
                 </div>
-                <div class="col l1"></div>
-                <div class="col l4">
+                <div class="col s1"></div>
+                <div class="col s6">
                     <div class="form">
                         <form>
                             <div class="row">
@@ -76,9 +76,9 @@
                     </div>
                 </div>
 
-                <div class="col l1"></div>
-                <div class="col l3">
-                    <table class="defaultTable newPlaylist" v-if="entries.length > 0">
+                <div class="col s1"></div>
+                <div class="col s2">
+                    <table class="defaultTable newPlaylist" v-if="entries.length > 0" v-bind="entries">
                         <thead>
                         <tr>
                             <th>Song</th>
@@ -88,9 +88,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="entry in entries" :key="entry.num">
+                            <tr v-for="(entry, index) in entries" :key="entry.id">
                                 <td>
-                                    <p>{{entry.num}}</p>
+                                    <p>{{ entry.song }}</p>
                                 </td>
                                 <td>
                                     <p>{{entry.artist}}</p>
@@ -99,7 +99,7 @@
                                     <p>{{entry.album}}</p>
                                 </td>
                                 <td>
-                                    <button class="borderless-btn" v-on:click="removeSong(entry.num)">
+                                    <button class="borderless-btn" v-on:click="removeSong(index)">
                                         <i class="material-icons">clear</i>
                                     </button>
                                 </td>
@@ -113,9 +113,9 @@
 </template>
 
 <script lang="ts" src="./LogPage.ts" />
+    
 
 <style lang="scss" scoped>
-
 h1 {
     margin-top: 0px;
     font-size: 70px;
@@ -136,7 +136,7 @@ h2 {
 }
 
 .full-page {
-    background-image: url('../../assets/background.jpg');
+    background-image: url('../../assets/new7.jpg');
     background-size: 100% auto;
     background-repeat: repeat;
     padding-top: 7%;
@@ -145,9 +145,11 @@ h2 {
 }
 
 .newPlaylist {
+    position: absolute;
+    right: 2%;
     display: block;
-    height: 500px;
-    width: 450px;
+    height: 550px;
+    width: 475px;
     overflow: auto;
 }
 
@@ -183,11 +185,6 @@ td.last {
     white-space: nowrap;
 }
 
-.filedrop { 
-    //padding: 20% 20%;
-    //background-color: green;
-}
-
 .form {
     padding: 5% 5%;
     background-color: rgba(114, 107, 107, 0.2);
@@ -196,15 +193,21 @@ td.last {
     margin-top: 50px;
 }
 
+input {
+    color: rgb(70,68,68);
+    border-bottom: 1px rgb(70, 68, 68) !important;
+    box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
+}
+
+label {
+    color: rgb(70,68,68);
+}
+
 .log-container { 
     width: 100% !important;
     //padding-left: 2% !important;
     //padding-right: 2% !important;
 }
-
-//.new-table td {
-//    height: 20px !important;
-//}
 
 .delete {
     width: 5%;
@@ -213,7 +216,7 @@ td.last {
 .mybtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 176px;
+    width: 270px;
 }
 .browsebtn {
     background-color: rgba(100, 100, 100, .2);
@@ -225,6 +228,7 @@ td.last {
 .longbtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 360px;
+    width: 550px;
+    
 }
 </style>

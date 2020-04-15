@@ -3,7 +3,7 @@
 }
 
 .bg-charts {
-  background-image: url('../../assets/background.jpg');
+  background-image: url('../../assets/new7.jpg');
   background-size: 100% auto;
   background-repeat: repeat;
 }
@@ -32,47 +32,25 @@
   padding-left: 4%;
 }
 
-.names {
-  width: 50%;
-}
-
-.explore {
-  width: 15%;
-}
-
-.liked {
-  width: 15%;
-}
-
-.more {
-  width: 5%;
-}
-
 .numfav {
     position: relative;
     bottom: 25px;
-    left: 115px;
+    left: 57%;
     width: 30px;
     height: 30px;
     color: white;
     margin: 0 0 0 0;  //affects height of row
 }
 
-i.nav-icon {
-  color:rgb(70, 68, 68) !important;
-  font-size: 60px;
+i.material-icons {
+  color: rgb(70, 68, 68) !important;
 }
 
 i.fav-icon {
-  color:rgb(70, 68, 68) !important;
   position: relative;
+  left: 50%;
   top: 15px;
-  left: 100px;
   font-size: 45px;
-}
-
-i.gray-icon {
-  color:rgb(70, 68, 68) !important;
 }
 
 .search-bar {
@@ -89,8 +67,6 @@ i.gray-icon {
 
 .inputSearch {
   position: relative;
-  padding: 0 0 0 20px;
-  margin: 0 20px;
 }
 
 input:focus {
@@ -99,6 +75,8 @@ input:focus {
 }
 
 .borderless-btn {
+  font-family: Montserrat;
+  font-size: 14px;
   text-align: center;
   border: 0;
   background: none;
@@ -114,19 +92,24 @@ input:focus {
   outline: none;
 }
 
+.coloredBtn {
+  background-color: rgba(100, 100, 100, .2);
+  border-radius: 5%;
+  padding: .5%;
+}
+
+.exportBtn {
+  position: absolute;
+  top: 80px;
+  left: 25px;
+}
+
 .clr-btn {
   position: absolute;
   bottom: 15px;
   right: 8px;
   width: 30px;
   height: 30px;
-}
-
-.topBtn {
-  font-family: Montserrat;
-  font-size: 14px;
-  background-color: rgba(100, 100, 100, .2);
-  border-radius: 3px;
 }
 
 .search-btn {
@@ -146,9 +129,10 @@ input:focus {
       display: none;
       overflow: hidden;
       position: absolute;
-      background-color: rgba(100, 100, 100, .25);
+      background-color: rgba(100, 100, 100, 1);
       min-width: 1em;
       z-index: 1;
+      border-radius: 3%;
 
       .dropdown-item {
           float: none;
