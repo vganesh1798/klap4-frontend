@@ -1,12 +1,13 @@
 <template>
     <div>
         <div class="stream-container"></div>
-        <div id="timer">0:00</div>
-        <div id="duration">0:00</div>
+
+        <!-- <div id="timer">0:00</div>
+        <div id="duration">0:00</div> -->
+
         <div class="controlsOuter">
             <div class="controlsInner">
-                <div id="loading"></div>
-                <div class="btn" id="playBtn" v-show="!playing" @click="play()"></div>
+                <div class="btn" id="playBtn" v-show="!playing" @click="play(curIndex)"></div>
                 <div class="btn" id="pauseBtn" v-show="playing" @click="pause()"></div>
                 <div class="btn" id="prevBtn"></div>
                 <div class="btn" id="nextBtn"></div>
@@ -18,48 +19,53 @@
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
     import {Howl} from 'howler'
 
-    export default Vue.extend({
+    export default {
         name: "StreamingFooter",
         props: {
-            // musicList: Array
+            playlist: Array,
+            newIndex: Number
         },
         data() {
             return {
-                index: 0,
-                sound: undefined,
                 playing: false,
-                musicList: ['../music/bitches_aint_shit.mp3']
+                curIndex: 0
             }
         },
         methods: {
-            nextSong() {
-                this.sound = new Howl({
-                    src: [this.musicList[this.index]],
-                    onend: function() {
-                        this.index++
-                        this.nextSong()
-                    },
-                })
-            },
-            play() {
-                if (this.sound) {
-                    this.sound.play()
+            play(index) {
+                this.curIndex = index
+                if (this.playlist[this.curIndex].song) {
+                    this.playlist[this.curIndex].song.play()
                 }
                 else {
-                    this.nextSong()
-                    this.sound.play()
+                    this.playlist[this.curIndex].song = new Howl({
+                        src: [this.playlist[this.curIndex].file],
+                        onend: function() {
+                            console.log("here")
+                            // BUG: next line is not called when song stops playing
+                            this.playing = false
+                        }
+                    })
+                    this.playlist[this.curIndex].song.play()
                 }
                 this.playing = true
             },
             pause() {
-                this.sound.pause()
+                this.playlist[this.curIndex].song.stop()
                 this.playing = false
             }
+        },
+        watch: {
+            newIndex: function(newVal) {
+                if (this.playlist[this.curIndex].song && this.playlist[this.curIndex].song.playing) {
+                    this.playlist[this.curIndex].song.stop()
+                }
+                this.play(newVal)
+            }
         }
-    });
+    };
 </script>
 
 <style lang="scss" scoped>
