@@ -10,7 +10,7 @@
                 {{this.description}}
             </div>
             <div class="card-action">
-                <router-link to="/" class="btn-floating right waves-effect waves-light">
+                <router-link to="/" class="btn right waves-effect waves-light">
                     <i class="material-icons">keyboard_arrow_right</i>
                 </router-link>
             </div>
@@ -23,7 +23,7 @@
 
     @Component
     export default class HomeCard extends Vue {
-        @Prop({default: "radio.png", type: String}) private image_link!: string
+        @Prop({default: "logo.png", type: String}) private image_link!: string
         @Prop({default: "The developer forgot to pass in an actual text. Congratulations, you played yourself.", type: String}) private description!: string
         @Prop({default: "Title!", type: String}) private title!: string
         constructor() {
@@ -39,5 +39,21 @@
 <style lang="scss" scoped>
     .card-action {
         align-content: left !important;
+    }
+    .card{
+        background: rgba(255, 255, 255, 0.1);
+    }
+    .card-stacked{
+        opacity: 1;
+    }
+    .card-image{
+        opacity: 1;
+    }
+    .card-title{
+        color: white;
+    }
+
+    .card-content{
+        color: white;
     }
 </style>

@@ -36,7 +36,7 @@
     .bg-home {
         background-image: url('../../assets/back.jpg');
         background-size: cover;
-        background-repeat: repeat;
+        background-repeat: no-repeat;
         background-attachment:local;
         background-position: center;
         height: 50%;
@@ -45,16 +45,25 @@
     .text {
         position: absolute;
         top: 48%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        left: 48%;
+        transform: translate(-90%, -30%);
         text-align: center;
     }
 
+    body {
+    overflow-x: hidden;
+}
+    .heading-primary{
+            display: flex;
+
+    }
     .heading-primary-main {
-        display: block;
-        font-size: 150px;
-        font-weight: 100;
-        padding-bottom: 65%;
+        font-size: 12vw;
+        font-weight: 50;
+        float: left;
+        text-align: left;
+        margin-top: 5vw;
+        padding-left: 250vw;
         animation-name: moveInLeft;
         animation-duration: 2s;
         color: Black;
@@ -62,28 +71,38 @@
     }
 
     .heading-primary-sub {
-        display: block;
-        font-size: 50px;
-        padding-top: 60%;
+        flex-direction: row;
+        float: right;
+        font-size: 8vw;
         font-family: Montserrat;
-        margin-top: 10px;
+        padding-top: 25vw;
         animation-name: moveInRight;
         animation-duration: 2s;
         color: black; 
     }
 
     #cards {
-        top: 85%;
         position: absolute;
+        width: 90vw;
+        padding-right: 4vw;
     }
     
     .bg-cards {
-        background-color: whitesmoke;
-        height: 50%;
+        background-image: url('../../assets/back1.jpg');
+        background-size: 100%;
+        height: 70%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
+
+    body {
+    border: 1px solid transparent;
+}
 
     .card {
         margin-top: 10em;
+        opacity: 1;
     }
 
     .card-left-on-scroll {
