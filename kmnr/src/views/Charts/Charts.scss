@@ -1,11 +1,18 @@
 .full-container {
-  padding-top: 3%;
+  vertical-align: top;
+  //padding-top: 3%;
+}
+
+div {
+  vertical-align: top;
+  margin: 0 0 0 0;
 }
 
 .bg-charts {
-  background-image: url('../../assets/new7.jpg');
+  background-image: url('../../assets/background.jpg');
   background-size: 100% auto;
   background-repeat: repeat;
+  height: 100%;
 }
 
 .table-container {
@@ -13,13 +20,21 @@
 }
 
 .heading-charts-main {
+  padding-top: 2%;
   display: block;
-  font-size: 100px;
+  font-size: 70px;
   text-align:center;
-  padding-bottom: 2%;
+  padding-bottom: 1%;
   color: rgb(70, 68, 68);
   font-family: 'Covered By Your Grace';
 }
+
+.chartsTable {
+  display: inline-block; //this messes up so much stuff
+  height: 437px;
+  overflow: auto;
+}
+
 
 .class-ranking {
   font-size: 40px;

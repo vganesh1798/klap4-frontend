@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col l11"></div>
             <div class="col l1">
-                <button class="closeBtn" @click="closeWindow" type="submit">X</button>
+                <button class="closeBtn" @click="closeLogin" type="submit">X</button>
             </div>
         </div>
         <form>
@@ -45,14 +45,14 @@
         //    this.$emit('close-log-in');
         //}
 
-        //@Emit('close-log-in') 
-        //    closeWindow() {
-        //        this.duh = true;
-        //}
-
-        close() {
-            this.$emit("input", !this.value);
+        @Emit('closeLogin') 
+            closeLogin() {
+                this.duh = true;
         }
+
+        //close() {
+        //    this.$emit("close-log-in", !this.value);
+        //}
         //open() {
         //    this.openLogin = true;
         //}
@@ -93,6 +93,7 @@ a {
     padding: 0% 5% 20% 5%;
     border-radius: 3%;
     font-family: 'Montserrat';
+    z-index: 9999;
 }
 
 .btn {
@@ -100,7 +101,7 @@ a {
     position: absolute;
     color: black;
     left: 25%;
-    bottom: 20%;
+    bottom: 15%;
     border: 0 0 0 0;
     margin: 0 0 0 0;
     width: 50%;

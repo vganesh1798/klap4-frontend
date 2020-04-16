@@ -13,13 +13,14 @@ export default class Table extends Vue {
 
 <style lang="scss">
 .defaultTable {
-  background-color: rgba(70, 68, 68, .07);
+  //background-color: rgba(70, 68, 68, .07);
   color:rgb(70, 68, 68);
-  width: 100%;
+  //width: 100%;
+  //width: 1350px;
   font-size: 14px;
   font-family: Montserrat;
   table-layout: fixed !important;
-  border-radius: 3%;
+  //border-radius: 3%;
 }
 
 .defaultTable tr {

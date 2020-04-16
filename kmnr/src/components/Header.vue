@@ -32,7 +32,6 @@
                 'closed' : !loginOpen
             }" @click="openLogin()">
                 Log In
-                <mylogin v-if="loginOpen"></mylogin>
             </div>
 
            <router-link :class="{
@@ -71,6 +70,7 @@
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">ARSE</a>
         </nav>
+        <mylogin v-if="loginOpen" @closeLogin="closeLogin"></mylogin>
     </div>
 </template>
 
@@ -142,22 +142,7 @@
             return this.loginOpen;
         }
 
-        openModal() {
-            this.modalOpen = !this.modalOpen;
-        }
-
-        //closeLogin() {
-        //    this.on = true;
-        //    this.loginOpen = false;
-        //    return this.loginOpen;
-        //}
-
-        toggleLogin() {
-            this.loginOpen = !this.loginOpen;
-            return this.loginOpen;
-        }
-
-        @Watch('close-log-in')
+        @Watch('closeLogin')
             closeLogin() {
                 this.on = true;
                 this.loginOpen = false;
@@ -196,7 +181,7 @@
     }
 
     #Header .nav-full {
-        background-color: $blue;
+        background-color: rgba(0,0,0,0);
         z-index: 1;
         animation-name: fadeIn;
         animation-duration: .5s

@@ -2,8 +2,8 @@
     <div class="full-page">
         <div class="container log-container">
             <button class="btn uploadButton" @click="allowUpload()">Upload A Playlist
-                <uploadBox v-if="uploadBox"></uploadBox>
             </button>
+            <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
             <button class="btn editButton">Switch Playlist</button>
             <h1>Playlists</h1>
             <!--div class="row">

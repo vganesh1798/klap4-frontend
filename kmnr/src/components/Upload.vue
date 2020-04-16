@@ -1,16 +1,16 @@
 <template>
     <div class="uploadBox">
-        <button class="borderless-btn corner-btn" style="font-size: 20px;" type="submit">X</button>
-
-        <div class="col l1">
-                <h1>Upload a Playlist</h1>
-                    <form enctype="multipart/form-data">
-                        <input type="file" name="file" v-on:change="fileChange($event.target.files)" />
-                        <button class="borderless-btn coloredBtn" type="submit" @click="uploadBrowse()">Upload</button>
-                    </form>
+        <div class="col s11"></div>
+        <div class="col s1">
+            <button class="borderless-btn corner-btn" style="font-size: 20px;" @click="closeUpload" type="submit">X</button>
         </div>
+        <h1>Upload a Playlist</h1>
+        <form enctype="multipart/form-data">
+            <input type="file" name="file" id="filebtn" v-on:change="fileChange($event.target.files)" />
+            <button class="borderless-btn coloredBtn uploadBtn" type="submit" @click="uploadBrowse()">Upload</button>
+        </form>
 
-        <div class="col l1">
+        <!--div class="col l1">
             <div class="filedrop" v-cloak @drop.prevent="addFile" @dragover.prevent>
                 <h1 class="faded-text" v-if="files2.length == 0">Drop File to Upload</h1>
                     <ul>
@@ -18,10 +18,9 @@
                             {{ file.name }} ({{ file.size | kb }} kb) <button @click="removeFile(file)" title="Remove">X</button>
                         </li>
                     </ul>
-                    <!--button :disabled="uploadDisabled" @click="uploadFiles">Upload</button--->
             </div>
         </div>
-        <button class="borderless-btn coloredBtn" v-on:click="uploadFile()">Upload</button>        
+        <button class="borderless-btn coloredBtn" v-on:click="uploadFile()">Upload</button--->        
     </div>
 </template>
 
@@ -34,10 +33,16 @@
         files = new FormData();
         files2: Object[] = [];
         savedPlaylists: Object[] = [];
+        close = false
         
         constructor() {
             super()
         }
+
+        @Emit('closeUpload') 
+            closeUpload() {
+                this.close = true;
+            }
 
         fileChange(fileList) {
             this.files.append("file", fileList[0], fileList[0].name);
@@ -118,6 +123,13 @@
     border-radius: 3%;
 }
 
+input {
+    height: 150px;
+    width: 450px;
+    background-color: lightgray;
+    border-radius: 3%;
+}
+
 h1 {
     color:black;
     text-align: center;
@@ -130,15 +142,25 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 550px;
+    height: 200px;
     width: 600px;
-    padding: 0% 5% 20% 5%;
+    padding: 0% 5% 17% 5%;
     border-radius: 3%;
 }
 
+.uploadBtn {
+    position: absolute;
+    padding: 2% 2%;
+    margin: 0 0 0 0;
+    width: 25%;
+    bottom: 5%;
+    left: 40%;
+}
+
 .corner-btn {
-    position: relative;
-    left: 60%;
+    position: absolute;
+    left: 94%;
+    top: 1%;
     //margin-right: 25px;
     //float: right;
 }

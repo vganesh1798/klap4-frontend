@@ -1,6 +1,6 @@
 <template>
-    <div class="full-container">
-      <div class="bg-charts table-container">
+    <div class="bg-charts full-container">
+      <div class=" table-container">
         <button class="borderless-btn coloredBtn exportBtn">Export for NACC</button>
         <div class="row">
           <span class="heading-charts-main">Explore Charts</span>
@@ -48,13 +48,13 @@
           </div>
         </div>
 
-        <table class="defaultTable">
+        <table class="defaultTable chartsTable" v-if="chartsPaginated.length > 0">
           <tbody>
             <tr v-for="item in chartsPaginated" v-bind:key="item.id">
               <td class="rank">
                 <p class="class-ranking">{{num}}</p>
               </td>
-              <td style="width: 50%;">
+              <td style="width: 60%;">
                 <ul>
                   <li>{{ item['im:name'].label}}</li>
                   <li> {{ item['im:artist'].label}}</li>
@@ -86,6 +86,7 @@
             </tr>
           </tbody>
         </table>
+        <h1 v-else>No Results Found</h1>
 
         <div class="row">
           <div class="col s5"></div>

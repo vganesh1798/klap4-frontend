@@ -1,4 +1,4 @@
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import axios from "axios";
 import uploadBox from "../../components/Upload.vue";
 
@@ -50,5 +50,11 @@ export default class LogPage extends Vue {
 
     allowUpload() {
       this.uploadBox = true;
+    }
+
+    @Watch('closeUpload')
+    closeUpload() {
+        this.uploadBox = false;
+        return this.uploadBox;
     }
 }
