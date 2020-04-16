@@ -23,7 +23,7 @@ export default class ChartsPage extends Vue {
     isToggle = true;
     num = 0;
     loggedIn = true;
-    sort_selection = "Pop"
+    sort_selection = "Popularity"
 
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);

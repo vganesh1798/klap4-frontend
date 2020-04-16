@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col l11"></div>
             <div class="col l1">
-                <button class="closeBtn" @click="closeLogin" type="submit">X</button>
+                <button class="closeBtn borderless-btn" @click="closeLogin" type="submit">X</button>
             </div>
         </div>
         <form>
@@ -80,6 +80,7 @@ a {
     position: absolute;
     top: 10px;
     right: 10px;
+    cursor: pointer;
 }
 
 .login {

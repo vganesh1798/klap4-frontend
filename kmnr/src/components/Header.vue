@@ -7,7 +7,7 @@
                 'nav': true
             }">
 
-            <router-link to="/"><img src="../../src/assets/radio.png" :class="{
+            <router-link to="/"><img :src="logoSource" :class="{
                 'logo-top': !scrolledTop,
                 'logo-full': scrolledTop,
                 'preload': preload
@@ -91,24 +91,34 @@
         loginOpen = false
         on = false
         modalOpen = false
+        logoSource = './radio.png'
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
             this.homepage = router.currentRoute.path === '/home' || router.currentRoute.path === '/' ? true : false
+            let images = require.context('../assets/', false, /\.png$/)
+
             if (!this.homepage) {
                 this.scrolledTop = true
+                this.logoSource = images('logo.png')
+            } else {
+                let images = require.context('../assets/', false, /\.png$/)
+                this.logoSource = images('./radio.png')
             }
         }
 
         mounted() {
             (document.getElementsByClassName('nav') as HTMLCollectionOf<HTMLElement>)[0].style.animation = "none";
+            let images = require.context('../assets/', false, /\.png$/)
             router.afterEach(to => {
                 if (to.path !== '/' && to.path !== '/home') {
                     this.homepage = false
                     this.scrolledTop = true
+                    this.logoSource = images('./logo.png')
                 } else {
                     this.homepage = true
                     this.scrolledTop = (scrollY > 0)
+                    this.logoSource = images('./radio.png')
                 }
             })
         }
@@ -135,6 +145,14 @@
 
         navScroll() {
             this.scrolledTop = (!this.homepage || (this.homepage && (scrollY > 0)))
+            
+            let images = require.context('../assets/', false, /\.png$/)
+
+            if (!this.scrolledTop) {
+                this.logoSource = images('./radio.png')
+            } else {
+                this.logoSource = images('./logo.png')
+            }
         }
 
         openLogin() {
@@ -152,7 +170,7 @@
 </script>
 
 <style lang="scss">
-    $blue:  rgb(17, 2, 65);
+    $blue:  rgba(17, 2, 65, .25);
 
     #Header .nav-top {
         color: white;
@@ -181,7 +199,7 @@
     }
 
     #Header .nav-full {
-        background-color: rgba(17, 2, 65,.25);
+        background-color: $blue;
         z-index: 1;
         animation-name: fadeIn;
         animation-duration: .5s

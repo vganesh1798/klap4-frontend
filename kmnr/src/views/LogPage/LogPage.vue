@@ -70,7 +70,7 @@
                             <button class="btn longbtn" style="margin-bottom: 10px;" type="button" v-on:click="addSong">Add to log!</button>
                             <br/>
 
-                            <button class="btn mybtn" type="submit" style="margin-right: 10px;">Post playlist!</button>
+                            <button class="btn mybtn" type="submit" style="margin-right: 15px;">Post playlist!</button>
                             <button class="btn mybtn" type="button" v-on:click="savePlaylist">Save playlist!</button>
                         </form>
                     </div>
@@ -136,7 +136,7 @@ h2 {
 }
 
 .full-page {
-    background-image: url('../../assets/background.jpg');
+    background-image: url('../../assets/back2.jpg');
     background-size: 100% auto;
     background-repeat: repeat;
     padding-top: 7%;
@@ -149,8 +149,11 @@ h2 {
     right: 2%;
     display: block;
     height: 550px;
-    width: 475px;
+    //width: 475px;
+    width: 27vw;
     overflow: auto;
+    background-color: rgba(114, 107, 107, 0.2); 
+    border-radius: 2%;
 }
 
 .savedPlaylists {
@@ -168,16 +171,18 @@ h2 {
     position: fixed;
     top: 10%;
     left: 1%;
-    width: 200px;
+    width: 13%;
+    font-size: .8vw;
 }
 
 .editButton {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
     position: fixed;
+    font-size: .8vw;
     top: 16%;
     left: 1%;
-    width: 200px;
+    width: 13%;
 }
 
 td.last {
@@ -191,6 +196,7 @@ td.last {
     //background-color: rgba(100,100,100,.2);
     border-radius: 3%;
     margin-top: 50px;
+    width: 35vw;
 }
 
 input {
@@ -216,7 +222,8 @@ label {
 .mybtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 270px;
+    width: 15vw;
+    font-size: .8vw;
 }
 .browsebtn {
     background-color: rgba(100, 100, 100, .2);
@@ -228,7 +235,7 @@ label {
 .longbtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 550px;
+    width: 31vw;
     
 }
 </style>

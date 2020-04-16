@@ -1,9 +1,7 @@
 <template>
-  <div id="Albums-page" class="full-container">
-    <h1>
+  <div id="Albums-page" class="albums_container">
       <span class="albums-heading-main">Explore Albums</span>
       <div class="container animated bounceIn ease-in-quad d-2 mt4">
-
         <div class="row justify-content-center" id="search_bar">
           <div class="col s6 offset-s3">
             <input v-model="albumSearch" type="text" class="form-control" placeholder="Search by album name">
@@ -17,19 +15,24 @@
               @click.prevent="CancelSearch()"> Cancel search </a>
           </div>
         </div>
-        <div class="container_pagination">
-          <div class="nav" aria-label="Page navigation example">
+          <!--div class="nav" aria-label="Page navigation example">
             <ul class="pagination">
-              <li class="page-item"><a class="page-link" @click="previousAlbums()"><img
+              <li class="prev"><a class="page-link" @click="previousAlbums()"><img
                     src="https://img.icons8.com/plasticine/64/000000/back.png" /></a></li>
-              <li class="page-item"><a class="page-link" @click="nextAlbums()"><img
+              <li class="next"><a class="page-link" @click="nextAlbums()"><img
                     src="https://img.icons8.com/plasticine/64/000000/forward.png" /></a></li>
             </ul>
-          </div>
-        </div>
+          </div--->
+            <button class="borderless-btn prev" @click="previousAlbums()">
+              <i class="material-icons" style="font-size: 60px;">navigate_before</i>
+            </button>
+            <button class="borderless-btn next" @click="nextAlbums()">
+              <i class="material-icons" style="font-size: 60px;">navigate_next</i>
+            </button>
 
-        <div class="row justify-content-center">
-          <div class="col-8">
+        <div class="row">
+          <div class="col s1"></div>
+          <div class="col s11">
             <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
               <display v-for="album in albumsPaginated" :key="album.id.attributes.id"
                 :id-album="album.id.attributes['im:id']" :album="album">
@@ -39,11 +42,7 @@
 
           </div>
         </div>
-
-
-
       </div>
-    </h1>
   </div>
 </template>
 
@@ -74,7 +73,7 @@
     nextBtnVisibility = "visible"
 
     get albumsPaginated() {
-      return this.albums.slice(this.range, this.range + 8);
+      return this.albums.slice(this.range, this.range + 5);
     }
 
     getAlbums() {
@@ -105,14 +104,14 @@
     }
 
     nextAlbums() {
-      if (this.albums.length - this.range > 8) {
-        this.range += 8;
+      if (this.albums.length - this.range > 5) {
+        this.range += 5;
       }
     }
 
     previousAlbums() {
       if (this.range > 0) {
-        this.range -= 8;
+        this.range -= 5;
       }
     }
 
@@ -136,7 +135,19 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .albums_container {
+    background-image: url('../../assets/back6.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat;
+    padding-top: 7%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .albums-heading-main {
     display: block;
     font-size: 100px;
@@ -192,5 +203,17 @@
 
   h1 {
     margin: 0;
+  }
+
+  .next {
+    position: absolute;
+    right: 18%;
+    top: 42%;
+  }
+
+  .prev {
+    position: absolute;
+    left: 18%;
+    top: 42%;
   }
 </style>

@@ -10,8 +10,10 @@ div {
 
 .bg-charts {
   background-image: url('../../assets/new.jpg');
-  background-size: 100% auto;
-  background-repeat: repeat;
+  background-size: cover;
+  //background-position: center;
+  //background-repeat: no-repeat;
+  background-size: cover;
   height: 100%;
 }
 
@@ -19,8 +21,9 @@ div {
   padding: 4% 10% 0% 10%;
 }
 
+
 .heading-charts-main {
-  padding-top: 5%;
+  padding-top: 2.5%;
   display: block;
   font-size: 3.75vw;
   text-align:center;
@@ -48,13 +51,8 @@ div {
 }
 
 .numfav {
-    position: relative;
-    bottom: 25px;
-    left: 57%;
-    width: 30px;
-    height: 30px;
-    color: white;
-    margin: 0 0 0 0;  //affects height of row
+  padding-bottom: 10px;
+  display: block;
 }
 
 i.material-icons {
@@ -63,10 +61,12 @@ i.material-icons {
 
 i.fav-icon {
   position: relative;
-  left: 50%;
+  left: 10%;
   top: 15px;
   font-size: 45px;
 }
+
+
 
 .search-bar {
   color:rgb(70, 68, 68);
@@ -98,6 +98,7 @@ input:focus {
   box-shadow: none;
   border-radius: 0px;
   outline: none;
+  cursor: pointer;
 }
 
 .borderless-btn:focus {
@@ -125,6 +126,10 @@ input:focus {
   right: 8px;
   width: 30px;
   height: 30px;
+}
+
+.bottom-button {
+  margin-bottom: 0;
 }
 
 .search-btn {
