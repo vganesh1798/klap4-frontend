@@ -81,15 +81,22 @@
     #cards {
         top: 90%;
         position: absolute;
+        width: 90vw;
+        padding-right: 4vw;
     }
     
     .bg-cards {
         background-image: url('../../assets/back1.jpg');
-        height: 50%;
+        background-size: 100%;
+        height: 70%;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
     }
+
+    body {
+    border: 1px solid transparent;
+}
 
     .card {
         margin-top: 10em;
