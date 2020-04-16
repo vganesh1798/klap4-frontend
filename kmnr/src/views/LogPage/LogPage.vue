@@ -136,7 +136,7 @@ h2 {
 }
 
 .full-page {
-    background-image: url('../../assets/new7.jpg');
+    background-image: url('../../assets/background.jpg');
     background-size: 100% auto;
     background-repeat: repeat;
     padding-top: 7%;

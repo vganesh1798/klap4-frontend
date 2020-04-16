@@ -181,7 +181,7 @@
     }
 
     #Header .nav-full {
-        background-color: rgba(0,0,0,0);
+        background-color: rgba(17, 2, 65,.25);
         z-index: 1;
         animation-name: fadeIn;
         animation-duration: .5s
