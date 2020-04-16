@@ -23,7 +23,7 @@
 
     @Component
     export default class HomeCard extends Vue {
-        @Prop({default: "radio.png", type: String}) private image_link!: string
+        @Prop({default: "logo.png", type: String}) private image_link!: string
         @Prop({default: "The developer forgot to pass in an actual text. Congratulations, you played yourself.", type: String}) private description!: string
         @Prop({default: "Title!", type: String}) private title!: string
         constructor() {
@@ -48,5 +48,12 @@
     }
     .card-image{
         opacity: 1;
+    }
+    .card-title{
+        color: white;
+    }
+
+    .card-content{
+        color: white;
     }
 </style>
