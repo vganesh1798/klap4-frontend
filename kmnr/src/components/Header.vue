@@ -7,7 +7,7 @@
                 'nav': true
             }">
 
-            <router-link to="/"><img src="../../src/assets/radio.png" :class="{
+            <router-link to="/"><img :src="logoSource" :class="{
                 'logo-top': !scrolledTop,
                 'logo-full': scrolledTop,
                 'preload': preload
@@ -92,6 +92,7 @@
         homepage = true
         scrolledTop = false
         preload = true
+        logoSource = './radio.png'
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
@@ -99,6 +100,9 @@
             if (!this.homepage) {
                 this.scrolledTop = true
             }
+
+            let images = require.context('../assets/', false, /\.png$/)
+            this.logoSource = images('./radio.png')
         }
 
         mounted() {
@@ -130,6 +134,14 @@
 
         navScroll() {
             this.scrolledTop = (!this.homepage || (this.homepage && (scrollY > 0)))
+            
+            let images = require.context('../assets/', false, /\.png$/)
+
+            if (!this.scrolledTop) {
+                this.logoSource = images('./radio.png')
+            } else {
+                this.logoSource = images('./logo.png')
+            }
         }
     }
 </script>
