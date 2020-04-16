@@ -96,10 +96,6 @@
         background-size: cover;
     }
 
-    body {
-    border: 1px solid transparent;
-}
-
     .card {
         margin-top: 10em;
         opacity: 1;
