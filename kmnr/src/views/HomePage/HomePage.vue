@@ -50,6 +50,9 @@
         text-align: center;
     }
 
+    body {
+    overflow-x: hidden;
+}
     .heading-primary{
             display: flex;
 
