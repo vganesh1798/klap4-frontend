@@ -10,7 +10,7 @@
                 {{this.description}}
             </div>
             <div class="card-action">
-                <router-link to="/" class="btn-floating right waves-effect waves-light">
+                <router-link to="/" class="btn right waves-effect waves-light">
                     <i class="material-icons">keyboard_arrow_right</i>
                 </router-link>
             </div>

@@ -82,7 +82,6 @@
     }
 
     #cards {
-        top: 90%;
         position: absolute;
         width: 90vw;
         padding-right: 4vw;
