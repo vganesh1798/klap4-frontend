@@ -46,7 +46,7 @@
                   <md-table-cell md-label="Number" md-sort-by="id" md-numeric>{{ item.id }}
                   </md-table-cell>
                   <md-table-cell md-label="Name" md-sort-by="name">{{item.name}}
-                     <md-tooltip md-direction="top">Top</md-tooltip> </md-table-cell>
+                     <md-tooltip md-direction="top">Info Text</md-tooltip> </md-table-cell>
                 </md-table-row>
               </md-table>
             </div>
