@@ -27,9 +27,7 @@
             <div id="login" :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
-                'preload': preload,
-                'open' : loginOpen,
-                'closed' : !loginOpen
+                'preload': preload
             }" @click="openLogin()">
                 Log In
             </div>
@@ -70,7 +68,7 @@
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">ARSE</a>
         </nav>
-        <mylogin v-if="loginOpen" @closeLogin="closeLogin"></mylogin>
+        <login v-if="loginOpen" @closeLogin="closeLogin"></login>
     </div>
 </template>
 
@@ -78,10 +76,10 @@
     import { Component, Vue, Watch } from 'vue-property-decorator';
     import router from '../router/index';
 
-    import mylogin from './login.vue';
+    import login from './Login.vue';
 
     @Component({
-    components: { mylogin }
+    components: { login }
 })
     export default class Header extends Vue {
         searching = false
@@ -90,7 +88,6 @@
         preload = true
         loginOpen = false
         on = false
-        modalOpen = false
         logoSource = './radio.png'
 
         beforeMount() {

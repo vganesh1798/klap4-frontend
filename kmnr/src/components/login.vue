@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col l11"></div>
             <div class="col l1">
-                <button class="closeBtn borderless-btn" @click="closeLogin" type="submit">X</button>
+                <defaultButton class="closeBtn" @click.native="closeLogin" type="submit">X</defaultButton>
             </div>
         </div>
         <form>
@@ -20,45 +20,31 @@
                     <input required type="password" id="password" />
                 </div>
             </div>
-
             <div class="row">
-            <button class="btn" type="submit">Login</button>
+                <defaultButton class="colored btn" type="submit">Login</defaultButton>
             </div>
         </form>
         <a href="http://www.account.kmnr.org">Forgot Password</a>
-</div>
+    </div>
 </template>
 
 <script lang='ts'>
     import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
+    import defaultButton from "../components/Button.vue";
 
-    @Component
+    @Component ({
+        components: { defaultButton }
+    })
     export default class login extends Vue {
-        duh = false;
-        value = false;
+        close = false;
         constructor() {
             super()
         }
 
-        //closeWindow() {
-        //    this.duh = true;
-        //    this.$emit('close-log-in');
-        //}
-
         @Emit('closeLogin') 
             closeLogin() {
-                this.duh = true;
-        }
-
-        //close() {
-        //    this.$emit("close-log-in", !this.value);
-        //}
-        //open() {
-        //    this.openLogin = true;
-        //}
-        //close() {
-        //    this.openLogin = false;
-        //}
+                this.close = true;
+            }
     }
 </script>
 

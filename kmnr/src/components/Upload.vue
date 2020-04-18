@@ -2,37 +2,26 @@
     <div class="uploadBox">
         <div class="col s11"></div>
         <div class="col s1">
-            <button class="borderless-btn corner-btn" style="font-size: 20px;" @click="closeUpload" type="submit">X</button>
+            <defaultButton class="corner-btn" style="font-size: 20px;" @click.native="closeUpload()" type="submit">X</defaultButton>
         </div>
         <h1>Upload a Playlist</h1>
         <form enctype="multipart/form-data">
             <input type="file" name="file" id="filebtn" v-on:change="fileChange($event.target.files)" />
-            <button class="borderless-btn coloredBtn uploadBtn" type="submit" @click="uploadBrowse()">Upload</button>
-        </form>
-
-        <!--div class="col l1">
-            <div class="filedrop" v-cloak @drop.prevent="addFile" @dragover.prevent>
-                <h1 class="faded-text" v-if="files2.length == 0">Drop File to Upload</h1>
-                    <ul>
-                        <li v-for="file in files2" v-bind:key="file.id">
-                            {{ file.name }} ({{ file.size | kb }} kb) <button @click="removeFile(file)" title="Remove">X</button>
-                        </li>
-                    </ul>
-            </div>
-        </div>
-        <button class="borderless-btn coloredBtn" v-on:click="uploadFile()">Upload</button--->        
+            <defaultButton class="colored uploadBtn" type="submit" @click.native="upload()">Upload</defaultButton>
+        </form>     
     </div>
 </template>
 
 <script lang='ts'>
     import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
     import axios from "axios";
+    import defaultButton from "../components/Button.vue";
     
-    @Component 
+    @Component ({ 
+        components: {defaultButton}
+    })
     export default class upload extends Vue {
         files = new FormData();
-        files2: Object[] = [];
-        savedPlaylists: Object[] = [];
         close = false
         
         constructor() {
@@ -48,61 +37,12 @@
             this.files.append("file", fileList[0], fileList[0].name);
         }
 
-        uploadBrowse() {
+        upload() {
             axios({ method: "POST", "url": "http://localhost:3000", "data": this.files }).then(result => {
                 console.dir(result.data);
             }, error => {
                 console.error(error);
             });
-        }
-
-        savePlaylist() {
-            let entry = {
-            name: "test playlist",
-            totalSongs: 2
-        };
-
-        this.savedPlaylists.push(entry);
-        }
-
-        addFile(e) {
-            let droppedFiles = e.dataTransfer.files;
-            if(!droppedFiles) return;
-            // this tip, convert FileList to array, credit: https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
-            ([...droppedFiles]).forEach(f => {
-                this.files2.push(f);
-            });
-            }
-
-        removeFile(file){
-        this.files2 = this.files2.filter(f => {
-            return f != file;
-        });      
-        }
-
-        uploadFile() {
-        
-        let formData = new FormData();
-        this.files2.forEach((f:any,x) => {
-            formData.append('file'+(x+1), f);
-        });
-        
-        fetch('https://httpbin.org/post', {
-            method:'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(res => {
-            console.log('done uploading', res);
-        })
-        .catch(e => {
-            console.error(JSON.stringify(e.message));
-        });
-        
-        }
-         
-        uploadDisabled() {
-            return this.files2.length === 0;
         }
     }
 </script>
@@ -112,15 +52,6 @@
 .faded-text {
     opacity: 20%;
     font-size: 40px;
-}
-
-.filedrop {
-    height: 250px;
-    //outline-color: black;
-    //outline-style: solid;
-    //outline-width: 2px;
-    background-color: lightgray;
-    border-radius: 3%;
 }
 
 input {
@@ -161,8 +92,6 @@ h1 {
     position: absolute;
     left: 94%;
     top: 1%;
-    //margin-right: 25px;
-    //float: right;
 }
 
 </style>

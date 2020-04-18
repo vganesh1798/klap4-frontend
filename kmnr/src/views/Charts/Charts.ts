@@ -12,17 +12,13 @@ export default class ChartsPage extends Vue {
   constructor() {
     super()
   }
-
-    columns = ['Recommended', 'Album', 'Artist', 'Runtime', 'Album Tag', 'Artist Tag', 'Release Date', 'Total Plays'];
     charts = [];
     range = 0;
     chartsSearch = "";
     cancelSearchVisibility = "hidden";
     previousBtnVisibility = "visible";
     nextBtnVisibility = "visible";
-    isToggle = true;
     num = 0;
-    loggedIn = true;
     sort_selection = "Popularity"
 
     get chartsPaginated() {

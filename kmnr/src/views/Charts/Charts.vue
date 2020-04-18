@@ -1,18 +1,14 @@
 <template>
     <div class="bg-charts full-container">
       <div class=" table-container">
-        <button class="borderless-btn coloredBtn exportBtn">Export for NACC</button>
+        <defaultButton class="colored exportBtn">Export for NACC</defaultButton>
         <div class="row">
           <span class="heading-charts-main">Explore Charts</span>
         </div>
         <div class="row">
           <div class="col s5"></div>
-          <!--div class="col s2"-->
-            <button class="borderless-btn coloredBtn" style="margin-right: 5%;" @click="getCharts()">Top Charts</button>
-          <!--/div>
-          <div class="col s2"-->
-            <button class="borderless-btn coloredBtn" @click="getNewCharts()">New Charts</button>
-          <!--/div-->
+          <defaultButton class="colored" style="margin-right: 5%;" @click.native="getCharts()">Top Charts</defaultButton>
+          <defaultButton class="colored" @click.native="getNewCharts()">New Charts</defaultButton>
         </div>
         
         <div class="row">
@@ -20,12 +16,12 @@
           <div class="col s6">
             <div class="inputSearch">
               <input v-model="chartsSearch" type="text" class="search-bar" placeholder="Search by genre"  @keyup.enter="SearchByChartName()">
-              <button class="clr-btn borderless-btn" :style="{visibility:cancelSearchVisibility}" v-on:click="CancelSearch()">
+              <defaultButton class="clr-btn" :style="{visibility:cancelSearchVisibility}" @click.native="CancelSearch()">
                 <i class="material-icons">clear</i>
-              </button>
-              <button class="search-btn borderless-btn" @click="SearchByChartName()">
+              </defaultButton>
+              <defaultButton class="search-btn" @click.native="SearchByChartName()">
                 <i class="material-icons">search</i>
-              </button>
+              </defaultButton>
             </div>
           </div>
         </div>
@@ -45,7 +41,7 @@
           </div>
           <div class="col s8"></div>
           <div class="col s1">
-            <button class="borderless-btn coloredBtn">Filter</button>
+            <defaultButton class="colored">Filter</defaultButton>
           </div>
         </div>
 
@@ -78,29 +74,22 @@
                   </svg>
                   </a>
               </td>
-              <!--td style="width: 5%;">
-                <router-link to="/albums">
-                  <button class="borderless-btn" title="Album Info">
-                    <i class="material-icons">info</i>
-                  </button>
-                </router-link>
-              </td-->
             </tr>
           </tbody>
         </table>
-        <h1 v-else>No Results Found</h1>
+        <h1 class="noresults" v-else>No Results Found</h1>
 
         <div class="row bottom-button">
           <div class="col s5"></div>
           <div class="col s1">
-            <button class="borderless-btn" @click="previousCharts()">
-              <i class="material-icons" style="font-size: 60px;">navigate_before</i>
-            </button>
+            <defaultButton @click.native="previousCharts()">
+              <i class="material-icons" style="font-size: 7vh;">navigate_before</i>
+            </defaultButton>
           </div>
           <div class="col s1">
-            <button class="borderless-btn" @click="nextCharts()">
-              <i class="material-icons" style="font-size: 60px;">navigate_next</i>
-            </button>
+            <defaultButton @click.native="nextCharts()">
+              <i class="material-icons" style="font-size: 7vh;">navigate_next</i>
+            </defaultButton>
           </div>
         </div>
       </div>

@@ -1,10 +1,9 @@
 <template>
     <div class="full-page">
         <div class="container log-container">
-            <button class="btn uploadButton" @click="allowUpload()">Upload A Playlist
-            </button>
+            <defaultButton class="colored uploadButton" @click.native="allowUpload()">Upload A Playlist</defaultButton>
             <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
-            <button class="btn editButton">Switch Playlist</button>
+            <defaultButton class="colored editButton">Switch Playlist</defaultButton>
             <h1>Playlists</h1>
             <!--div class="row">
                 <div class="col s4">
@@ -67,11 +66,11 @@
                                     <input v-model="album" required type="text" id="album" />
                                 </div>
                             </div>
-                            <button class="btn longbtn" style="margin-bottom: 10px;" type="button" v-on:click="addSong">Add to log!</button>
+                            <defaultButton class="colored longbtn" style="margin-bottom: 10px;" type="button" @click.native="addSong()">Add to log!</defaultButton>
                             <br/>
 
-                            <button class="btn mybtn" type="submit" style="margin-right: 15px;">Post playlist!</button>
-                            <button class="btn mybtn" type="button" v-on:click="savePlaylist">Save playlist!</button>
+                            <defaultButton class="colored mybtn" type="submit" style="margin-right: 15px;">Post playlist!</defaultButton>
+                            <defaultButton class="colored mybtn" type="button" @click.native="savePlaylist()">Save playlist!</defaultButton>
                         </form>
                     </div>
                 </div>
@@ -99,9 +98,9 @@
                                     <p>{{entry.album}}</p>
                                 </td>
                                 <td>
-                                    <button class="borderless-btn" v-on:click="removeSong(index)">
+                                    <defaultButton  @click.native="removeSong(index)">
                                         <i class="material-icons">clear</i>
-                                    </button>
+                                    </defaultButton>
                                 </td>
                             </tr>
                         </tbody>
@@ -149,7 +148,6 @@ h2 {
     right: 2%;
     display: block;
     height: 550px;
-    //width: 475px;
     width: 27vw;
     overflow: auto;
     background-color: rgba(114, 107, 107, 0.2); 
@@ -166,8 +164,6 @@ h2 {
 }
 
 .uploadButton {
-    background-color: rgba(100, 100, 100, .2);
-    color: rgb(70, 68, 68);
     position: fixed;
     top: 10%;
     left: 1%;
@@ -193,7 +189,6 @@ td.last {
 .form {
     padding: 5% 5%;
     background-color: rgba(114, 107, 107, 0.2);
-    //background-color: rgba(100,100,100,.2);
     border-radius: 3%;
     margin-top: 50px;
     width: 35vw;
@@ -211,8 +206,6 @@ label {
 
 .log-container { 
     width: 100% !important;
-    //padding-left: 2% !important;
-    //padding-right: 2% !important;
 }
 
 .delete {

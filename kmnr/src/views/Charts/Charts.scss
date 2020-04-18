@@ -1,6 +1,5 @@
 .full-container {
   vertical-align: top;
-  //padding-top: 3%;
 }
 
 div {
@@ -21,7 +20,6 @@ div {
   padding: 4% 10% 0% 10%;
 }
 
-
 .heading-charts-main {
   padding-top: 2.5%;
   display: block;
@@ -33,11 +31,10 @@ div {
 }
 
 .chartsTable {
-  display: inline-block; //this messes up so much stuff
-  height: 437px;
+  display: inline-block;
+  height: 53vh;
   overflow: auto;
 }
-
 
 .class-ranking {
   font-size: 40px;
@@ -50,23 +47,15 @@ div {
   padding-left: 4%;
 }
 
-.numfav {
-  padding-bottom: 10px;
-  display: block;
-}
-
 i.material-icons {
   color: rgb(70, 68, 68) !important;
 }
 
-i.fav-icon {
-  position: relative;
-  left: 10%;
-  top: 15px;
-  font-size: 45px;
+.noresults {
+  font-family: 'Montserrat';
+  font-size: 30px;
+  text-align: center;
 }
-
-
 
 .search-bar {
   color:rgb(70, 68, 68);
@@ -89,31 +78,6 @@ input:focus {
   box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
 }
 
-.borderless-btn {
-  font-family: Montserrat;
-  font-size: 14px;
-  text-align: center;
-  border: 0;
-  background: none;
-  box-shadow: none;
-  border-radius: 0px;
-  outline: none;
-  cursor: pointer;
-}
-
-.borderless-btn:focus {
-  background: none !important;
-  box-shadow: none;
-  border-radius: 0px;
-  outline: none;
-}
-
-.coloredBtn {
-  background-color: rgba(100, 100, 100, .2);
-  border-radius: 5%;
-  padding: .5%;
-}
-
 .exportBtn {
   position: absolute;
   top: 80px;
@@ -128,14 +92,14 @@ input:focus {
   height: 30px;
 }
 
-.bottom-button {
-  margin-bottom: 0;
-}
-
 .search-btn {
   position: absolute;
   bottom: 15px;
   right: -35px;
+}
+
+.bottom-button {
+  margin-bottom: 0;
 }
 
 #dropdown {

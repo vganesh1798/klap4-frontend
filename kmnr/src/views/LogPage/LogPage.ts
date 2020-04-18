@@ -1,9 +1,11 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import axios from "axios";
 import uploadBox from "../../components/Upload.vue";
+import defaultButton from "../../components/Button.vue"
 
     @Component ({
-        components: { uploadBox }
+        components: { uploadBox,
+                      defaultButton }
     })
 
 export default class LogPage extends Vue {
@@ -13,8 +15,6 @@ export default class LogPage extends Vue {
     album: string = "";
     entries: Object[] = [];
     num: number = 0;
-    files = new FormData();
-    files2: Object[] = [];
     savedPlaylists: Object[] = [];
     playlist_name: string = " ";
     uploadBox: Boolean = false;
