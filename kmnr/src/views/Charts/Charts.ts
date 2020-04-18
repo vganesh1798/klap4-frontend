@@ -26,13 +26,9 @@ export default class ChartsPage extends Vue {
     }
 
     getCharts() {
-        axios
-        .get("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
-        .then(response => {
-            this.charts = response.data.feed.entry;
-        })
-        .catch(error => {
-            alert(error);
+        this.$store.dispatch('getAllChartData').then(res => {
+            this.charts = res;
+            console.log(this.charts);
         });
     }
 
