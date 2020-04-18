@@ -17,13 +17,6 @@
           </md-card-header>
           <md-card-expand>
             <md-card-actions md-alignment="space-between">
-              <md-button class="md-icon-button">
-                <md-icon>favorite</md-icon>
-              </md-button>
-              <div>
-                <md-button>Rate</md-button>
-              </div>
-
               <md-card-expand-trigger>
                 <md-button>Details</md-button>
               </md-card-expand-trigger>
@@ -45,13 +38,15 @@
                 <md-table-toolbar>
                   <h1 class="md-title">Category</h1>
                 </md-table-toolbar>
-
+                <md-dialog-alert
+                    :md-active.sync="second"
+                    md-title="Post created!"
+                    md-content="Your post <strong>Material Design is awesome</strong> has been created." />
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
-                  <md-table-cell md-label="Track" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-                  <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-                  <md-table-cell md-label="Runtime" md-sort-by="title">{{ item.run }}</md-table-cell>
-                  <md-table-cell md-label="Plays" md-sort-by="title">{{ item.plays }}</md-table-cell>
-
+                  <md-table-cell md-label="Number" md-sort-by="id" md-numeric>{{ item.id }}
+                  </md-table-cell>
+                  <md-table-cell md-label="Name" md-sort-by="name">{{item.name}}
+                     <md-tooltip md-direction="top">Top</md-tooltip> </md-table-cell>
                 </md-table-row>
               </md-table>
             </div>
@@ -67,13 +62,13 @@
 </template>
 
 <script lang="ts">
+
   import {
     Component,
     Vue
   } from 'vue-property-decorator';
-
   @Component({})
-  export default class Albumdeeets extends Vue {
+  export default class Programming extends Vue {
     album = {}
     Tracks = [{
         id: 1,
@@ -119,7 +114,6 @@
         plays: '665'
       }
     ]
-
     created() {
       this.album = this.$route.params.albumParam
     }
@@ -134,9 +128,14 @@
 
     margin: 0 auto;
   }
-
+  .full-deets{
+    background-image: url('../../assets/back7.jpg');
+    background-size: cover;
+    height: 100%;
+  } 
   .table {
     position: absolute;
+    color: black;
     width: 30% !important;
     margin-left: 5% !important;
   }
@@ -175,13 +174,15 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-left: 10%;
+    margin-left: 20%;
     padding-top: 5%;
   }
 
   .flex-child {
     margin-left: 10%;
   }
+
+  
 
   .md-card {
     opacity: 90%
