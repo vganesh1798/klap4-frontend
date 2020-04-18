@@ -1,26 +1,26 @@
 export default class ChartData {
     // refer to spreadsheet for types, assume string if not specified
     // order is important
-    artistKey: string;
-    albumLetter: string;
-    labelId: string; // can be null(if indie)
-    name: string;
-    dateAdded: string; // Date is a type that could be used here
-    missing: boolean;
-    isNew: boolean;
-    promoterId: string;
-    formatCode: string; // hex/binary code
+    album_id: string;
+    album_name: string;
+    artist_name: string;
+    label_name: string;
+    promoter_name: string;
+    rank: number;
+    recommended: boolean;
+    song_name: string;
+    times_played: number;
 
     // Constructor that sets all default values
-    constructor( artistKey, albumLetter, labelId, name, dateAdded, missing, isNew, promoterId, formatCode ) {
-        this.artistKey = artistKey;
-        this.albumLetter = albumLetter;
-        this.labelId = labelId;
-        this.name = name;
-        this.dateAdded = dateAdded;
-        this.missing = missing;
-        this.isNew = isNew;
-        this.promoterId = promoterId;
-        this.formatCode = formatCode;
+    constructor(album_id, album_name, artist_name, label_name, promoter_name, rank, recommended, song_name, times_played) {
+        this.album_id = album_id;
+        this.album_name = album_name;
+        this.artist_name = artist_name;
+        this.label_name = label_name;
+        this.promoter_name = promoter_name;
+        this.rank = rank;
+        this.recommended = recommended;
+        this.song_name = song_name;
+        this.times_played = times_played;
     }
 }

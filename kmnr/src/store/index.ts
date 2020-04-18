@@ -21,9 +21,11 @@ export default new Vuex.Store({
   actions: {
     getAllChartData() {
       return axios
-      .get('http://localhost:8000/search/album')
-      .then(res =>
-        res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData)))
+      .get('http://localhost:5000/charts/all/2')
+      .then(res => {
+        res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
+        return res.data
+      })
       .catch(err => console.log(err))
     },
     getNewChartData() {

@@ -42,24 +42,24 @@
                 </favbutton>
               </p>
               <a v-else-if="col==='Album'" class="albumsLink" href="#">
-                {{ item['im:name'].label}}
+                {{ item.album_name}}
               </a>
               <a v-else-if="col==='Artist'" class="chartsLink" href="#">
-                {{ item['im:artist'].label}}
+                {{ item.artist_name}}
               </a>
               <p v-else-if="col==='Runtime'">
               </p>
               <p v-else-if="col==='Album Tag'">
-                {{ item['id'].attributes['im:id'] }}
+                {{ item.id }}
               </p>
               <p v-else-if="col==='Artist Tag'">
-                {{ item['category'].attributes['im:id']}}
+                {{ item.genre_abbr}}
               </p>
               <p v-else-if="col==='Release Date'">
-                {{item['im:releaseDate'].attributes.label}}
+                {{item.last_played}}
               </p>
               <p v-else-if="col==='Total Plays'">
-                {{ item['category'].attributes.label}}
+                {{ item.times_played}}
               </p>
             </td>
           </tr>
