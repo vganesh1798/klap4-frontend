@@ -55,9 +55,11 @@ export default new Vuex.Store({
     },
     getNewChartData() {
       return axios
-      .get('http://localhost:8000/search/album')
-      .then(res =>
-        res.data.map((albumData: ChartData) => {if(albumData.isNew) {this.commit('addToNewChart', albumData)}}) )
+      .get('http://localhost:5000/charts/new/2')
+      .then(res => {
+        res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
+        return res.data
+      })
       .catch(err => console.log(err))
     }
   },
