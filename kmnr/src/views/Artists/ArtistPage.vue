@@ -1,10 +1,40 @@
 <template>
-<div class="container">
-    <h1>
-          <span class="albums-heading-main">Artists Page</span>
-    </h1>
-    <div id="flex-container">
+ <div id="Artists-page" class="artists_container">
+    <span class="artists-heading-main">Explore Artists</span>
+    <div class="container animated bounceIn ease-in-quad d-2 mt4">
+        <div class="row">
+          <div class="col s6 offset-s4">
+            <div class="inputSearch">
+              <input v-model="artistSearch" type="text" class="search-bar" placeholder="Search artists"  @keyup.enter="SearchByArtistName()">
+              <defaultButton class="clr-btn" :style="{visibility:cancelSearchVisibility}" @click.native="CancelSearch()">
+                <i class="material-icons">clear</i>
+              </defaultButton>
+              <defaultButton class="search-btn" @click.native="SearchByArtistName()">
+                <i class="material-icons">search</i>
+              </defaultButton>
+            </div>
+          </div>
+        </div>
+          <defaultButton class="prev" @click.native="previousArtists()">
+            <i class="material-icons" style="font-size: 60px;">navigate_before</i>
+          </defaultButton>
+          <defaultButton class="next" @click.native="nextArtists()">
+            <i class="material-icons" style="font-size: 60px;">navigate_next</i>
+          </defaultButton>
+          <div class="row">
+            <div class="col s1"></div>
+            <div class="col s11">
+              <div class="d-flex justify-content-start flex-wrap artists" id="artists_container">
+                <display v-for="artist in artistsPaginated" :key="artist.id"
+                  :id-artist="artist.id" :artist="artist">
+                </display>
+              </div>
+            </div>
+          </div>
+      </div>
 
+
+    <!--div id="flex-container">
         <div class="flex-child card-expansion">
             <md-card>
       <md-card-media>
@@ -107,72 +137,82 @@
       </md-card-expand>
     </md-card> 
         </div>
-    </div>
-</div>
+    </div--->
+  </div>
 </template>
 
-<script lang='ts'>
-    import Vue from 'vue';
-
-    export default Vue.extend({
-        name: "ArtistPage",
-        props: ["artists"],
-
-    data() {
-        return {
-            artistList: [
-                {
-                    id: 1,
-                    name: "artist 1",
-                    tag: "nutty",
-                    albums: [
-                        "album1",
-                        "album2"
-                    ]
-                },
-                {
-                    id: 2,
-                    name: "artist 2",
-                    tag: "semi-nutty",
-                    albums: [
-                        "album1",
-                        "album2"
-                    ]
-                },
-                {
-                    id: 3,
-                    name: "artist 3",
-                    tag: "nutty",
-                    albums: [
-                        "album1",
-                        "album2"
-                    ]
-                },
-                {
-                    id: 4,
-                    name: "artist 4",
-                    tag: "nutty",
-                    albums: [
-                        "album1",
-                        "album2"
-                    ]
-                },
-                {
-                    id: 5,
-                    name: "artist 5",
-                    tag: "bunk",
-                    albums: [
-                        "album1",
-                        "album2"
-                    ]
-                }
-                ]
-            }
-        }
-    }); 
+<script lang='ts' src="./ArtistPage.ts">
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .artists_container {
+    background-image: url('../../assets/back6.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat;
+    padding-top: 7%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .artists-heading-main {
+    display: block;
+    font-size: 100px;
+    font-weight: 100;
+    padding-left: 35%;
+    padding-bottom: 1%;
+    color:black;
+    font-family: 'Covered By Your Grace';
+  }
+
+  .container_pagination {
+    padding-top: 10px;
+    text-align: center;
+  }
+
+  .container_pagination .nav ul li a {
+    border: none;
+    background: transparent;
+  }
+
+  .nav {
+    position: relative !important;
+  }
+
+  .page-link {
+    color: black;
+  }
+
+  #submit {
+    padding-top: 1%;
+  }
+
+  .btn {
+    float: right;
+  }
+
+  .form-control {
+    margin: 0;
+  }
+
+  h1 {
+    margin: 0;
+  }
+
+  .next {
+    position: absolute;
+    right: 18%;
+    top: 39%;
+  }
+
+  .prev {
+    position: absolute;
+    left: 18%;
+    top: 39%;
+  }
+
 .ArtistPage{
     margin: 40px 0 0;
     color: #42b983
@@ -195,16 +235,6 @@ a{
     width: 100%;
     margin-left: 10%;
 }
-.albums-heading-main {
-    display: block;
-    font-size: 60px;
-    font-weight: 60;
-    padding-top: 10%;
-    padding-left: 45%;
-    padding-bottom: 1%;
-    color: Black;
-    font-family: 'Montserrat';
-}
 .card-expansion {
   height: 480px;
 }
@@ -222,10 +252,6 @@ a{
 h1 {
   height: 15rem !important;
   margin-top: 0px;
-}
-
-.container {
-  margin-left: 10% !important;
 }
 
 #flex-container {

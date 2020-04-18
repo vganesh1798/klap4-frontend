@@ -1,5 +1,4 @@
 import { Component, Vue } from 'vue-property-decorator';
-import axios from "axios";
 
 import defaultTable from "../../components/Table.vue";
 import defaultButton from "../../components/Button.vue";
@@ -69,7 +68,7 @@ export default class ChartsPage extends Vue {
 
     SearchByChartName() {
         this.charts = this.charts.filter((alb: any) => {
-        return alb['category'].attributes.label.toLowerCase().includes(this.chartsSearch.toLowerCase());
+        return alb.name.toLowerCase().includes(this.chartsSearch.toLowerCase());
         });
 
         this.cancelSearchVisibility = "visible";
