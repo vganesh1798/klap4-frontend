@@ -6,6 +6,7 @@ import LogPage from '../views/LogPage/LogPage.vue';
 import Albums from '../views/Albums/Albums.vue';
 import AlbumDetail from '../views/Albums/AlbumDetail/Albumdeets.vue';
 import ArtistPage from '../views/Artists/ArtistPage.vue';
+import ArtistDetail from '../views/Artists/ArtistDetail/Artistdeets.vue';
 import Charts from '../views/Charts/Charts.vue';
 
 
@@ -42,6 +43,12 @@ const routes = [
     path: "/artists",
     name: 'Artist',
     component: ArtistPage
+  },
+  {
+    path: "/artist-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
+    name: 'ArtistDetail',
+    component: ArtistDetail,
+    props: true,
   },
   {
     path: '/charts',

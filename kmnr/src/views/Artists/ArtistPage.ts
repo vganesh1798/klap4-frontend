@@ -1,12 +1,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 
 import axios from 'axios';
-import Display from './display.vue';
 import defaultButton from "../../components/Button.vue";
+import artistCard from "../../components/Card.vue";
 
   @Component({
-    components: { Display,
-                  defaultButton }
+    components: { defaultButton,
+                  artistCard }
   })
   export default class Artist extends Vue {
     constructor() {

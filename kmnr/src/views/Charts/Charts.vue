@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row table-header">
           <div class="col s3">
             <div id="dropdown" v-bind="sort_selection">Sort By: {{ sort_selection }}
               <i class="material-icons">arrow_drop_down</i>
@@ -39,9 +39,10 @@
               </div>
             </div>
           </div>
-          <div class="col s8"></div>
-          <div class="col s1">
-            <defaultButton class="colored">Filter</defaultButton>
+          <div class="col s6"></div>
+          <div class="col s2">
+            <a v-if="new_charts">Charts for the last weeks:  </a>
+            <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts">
           </div>
         </div>
 

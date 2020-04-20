@@ -1,29 +1,35 @@
-<template>  
-   <div class="artist_container">
-          <img src="../../assets/new.jpg">
+<template>
+    <div class="my_container">
+        <img :src="this.imgPath">
            
-          <p class="artist_header">{{ artist.id }}</p>
-          <p class="category_header">{{ artist.name }}</p>
-          <router-link :to="{name:'ArtistsDetail',params:{artistParam:artist} }"><p class="details">Details</p></router-link>    
-</div>
+        <p>{{ this.newRoute }}</p>
+        <h6 class="title_header">{{ this.id }}</h6>
+        <p class="artist_header">{{ this.val1 }}</p>
+        <p class="category_header">{{ this.val2 }}</p>
+        
+        <router-link :to="{name:this.newRoute, params:{albumParam:item} }"><p class="details">Details</p></router-link> 
+    </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({})
-export default class Display extends Vue {
+export default class my_card extends Vue {
   constructor() {
     super()
   }
-
-  @Prop(String) idArtists!: string
-  @Prop(Object) artist!: object
+  @Prop({default: "http://cdn.onlinewebfonts.com/svg/img_264570.png", type: String}) imgPath!: string
+  @Prop(String) id!: string
+  @Prop(String) val1!: string
+  @Prop(String) val2!: string
+  @Prop(Object) item!: object
+  @Prop(String) newRoute!: string
 }
 </script>
 
-<style scoped>
-.artist_container {
+<style lang="scss" scoped>
+.my_container {
   max-width: 155px;
   max-height: inherit;
   padding: 0;

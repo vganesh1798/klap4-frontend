@@ -217,6 +217,7 @@ label {
     color: rgb(70, 68, 68);
     width: 15vw;
     font-size: .8vw;
+    padding: 1.5% !important;
 }
 .browsebtn {
     background-color: rgba(100, 100, 100, .2);
@@ -229,6 +230,6 @@ label {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
     width: 31vw;
-    
+    padding: 1.5% !important;
 }
 </style>

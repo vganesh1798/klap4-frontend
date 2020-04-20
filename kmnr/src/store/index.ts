@@ -56,7 +56,7 @@ export default new Vuex.Store({
     },
     getAllChartData() {
       return axios
-      .get('http://localhost:5000/charts/all')
+      .get('http://localhost:5000/charts/all/2')
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
         return res.data
@@ -65,7 +65,7 @@ export default new Vuex.Store({
     },
     getNewChartData() {
       return axios
-      .get('http://localhost:5000/charts/new')
+      .get('http://localhost:5000/charts/new/2')
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
         return res.data
