@@ -142,7 +142,7 @@
 
   .prog-heading-main {
     display: block;
-    font-size: 60px;
+    font-size: 5vw;
     font-weight: 60;
     padding-top: 5%;
     padding-left: 35%;
@@ -153,7 +153,6 @@
 
   .album-image {
     border: 7px solid black;
-    /* border-radius: 50%; */
     padding: 2px;
     width: 100%;
     background-color: black;
@@ -170,26 +169,32 @@
     font-family: 'Montserrat';
   }
 
+
   #flex-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-left: 20%;
     padding-top: 5%;
   }
-
-  .flex-child {
-    margin-left: 10%;
+@media screen and (max-width: 800px) {
+  #flex-container{
+    flex-direction: column;
   }
-
-  
+  .md-table{
+    margin-left: 30%;
+  }
+}
+  .flex-child {
+    margin-left: 30%;
+  }
 
   .md-card {
     opacity: 90%
   }
 
   .md-table {
-    width: 100%;
+    width: 75vw;
+    height: 50vh;
     opacity: 90%;
   }
 
