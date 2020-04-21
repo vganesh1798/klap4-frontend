@@ -4,6 +4,8 @@ import axios from "axios";
 import defaultButton from "../../components/Button.vue";
 import albumCard from "../../components/Card.vue";
 
+import {AlbumSearch} from "../../models/Album";
+
   @Component({
     components: { defaultButton,
                   albumCard }
@@ -25,14 +27,8 @@ import albumCard from "../../components/Card.vue";
     }
 
     getAlbums() {
-      axios
-        .get("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
-        .then(response => {
-          this.albums = response.data.feed.entry;
-        })
-        .catch(error => {
-          alert(error);
-        });
+      this.$store.dispatch('getAllAlbums')
+        .then(res => this.albums = this.$store.state.albums)
     }
 
     hidePreviousBtn() {
@@ -64,9 +60,19 @@ import albumCard from "../../components/Card.vue";
     }
 
     SearchByAlbumName() {
-      this.albums = this.albums.filter((alb: any) => {
-        return alb["im:name"].label.toLowerCase().includes(this.albumSearch.toLowerCase());
-      });
+      const searchParam: AlbumSearch = {
+        genre_abbr: '',
+        artist: '',
+        album: this.albumSearch.toLowerCase(),
+        label: '',
+        format: 0,
+        promoter: '',
+        new_tag: false
+      }
+      this.$store.dispatch('getQueriedAlbums', searchParam)
+        .then(res => {
+          this.albums = this.$store.state.albums
+        })
 
       this.cancelSearchVisibility = "visible";
     }

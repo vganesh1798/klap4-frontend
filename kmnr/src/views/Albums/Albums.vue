@@ -25,9 +25,9 @@
               <div class="col s1"></div>
               <div class="col s11">
                 <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
-                  <albumCard v-for="album in albumsPaginated" :key="album.id.attributes.id"
-                  :id="album['im:name'].label" :imgPath="album['im:image'][2].label" :item="album" 
-                  :val1="album['im:artist'].label" :val2="album.category.attributes.label" newRoute="AlbumDetail">
+                  <albumCard v-for="album in albumsPaginated" :key="album.id"
+                  :id="album.id" :item="album" 
+                  :val1="album.name" :val2="album.genre_abbr" newRoute="AlbumDetail">
                   </albumCard>
                 </div>
               </div>

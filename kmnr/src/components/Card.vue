@@ -1,13 +1,12 @@
 <template>
     <div class="my_container">
         <img :src="this.imgPath">
-           
-        <p>{{ this.newRoute }}</p>
+        
         <h6 class="title_header">{{ this.id }}</h6>
         <p class="artist_header">{{ this.val1 }}</p>
         <p class="category_header">{{ this.val2 }}</p>
         
-        <router-link :to="{name:this.newRoute, params:{albumParam:item} }"><p class="details">Details</p></router-link> 
+        <router-link :to="{name:this.newRoute, params:{albumParam:this.id} }"><p class="details">Details</p></router-link> 
     </div>
 </template>
 

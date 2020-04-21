@@ -1,19 +1,33 @@
 <template>
-  <div class="full-deets">
+  <div class="full-deets" v-if="loaded">
     <h1>
       <span class="albums-heading-main">Album Information</span>
     </h1>
+    <div class="header-container">
+      <div class="row">
+        <div class="col s1 offset-s10">
+          <defaultButton class="colored headerbtn" @click.native="openReview()">Write a review</defaultButton>
+        </div>
+      </div>
+      <div class="row buttons">
+        <div class="col s1 offset-s10">
+          <defaultButton class="colored headerbtn" @click.native="openIssue()">Report an issue</defaultButton>
+        </div>
+      </div>
+    </div>
+    <review v-if="reviewOpen" @closeReview="closeReview"></review>
+    <issue v-if="issueOpen" @closeIssue="closeIssue"></issue>
+    
     <div id="flex-container">
       <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child">
         <md-card>
           <md-card-media>
-            <img class="album-image" :src="album['im:image'][2].label">
+            <img class="album-image" :src="null">
           </md-card-media>
 
           <md-card-header>
-            <div class="md-title">{{album['im:name'].label}}</div>
-            <div class="md-subhead">{{album['im:artist'].label}}</div>
-
+            <div class="md-title">{{album['album'].name}}</div>
+            <div class="md-subhead">{{album.artist.name}}</div>
           </md-card-header>
           <md-card-expand>
             <md-card-actions md-alignment="space-between">
@@ -31,119 +45,91 @@
 
             <md-card-expand-content>
               <md-card-content>
-                Release Date: {{album['im:releaseDate'].attributes.label}} <br />
-                Categoory: {{ album.category.attributes.label }} <br />
-                Tracks: {{ album['im:itemCount'].label }}
+                Release Date: {{album.album.date_added}} <br />
+                Category: {{ album.album.genre_abbr }} <br />
+                Tracks: {{ album.songs.length }}
               </md-card-content>
             </md-card-expand-content>
           </md-card-expand>
         </md-card>
       </div>
 
-      <div class="container">
-          <div class="row">
-            <div class="input-field col s4">
-              <label for="first">First Name</label>
-              <input type="text" id="first" />
-            </div>
+      <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child"> 
+        <md-table class="table" v-model="tracks" md-card>
+          <md-table-toolbar>
+            <h1 class="md-title">Tracks</h1>
+              </md-table-toolbar>
 
-            <div class="col s6">
-              <md-table class="table" v-model="Tracks" md-card>
-                <md-table-toolbar>
-                  <h1 class="md-title">Tracks</h1>
-                </md-table-toolbar>
-
-                <md-table-row slot="md-table-row" slot-scope="{ item }">
-                  <md-table-cell md-label="Track" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-                  <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-                  <md-table-cell md-label="Runtime" md-sort-by="title">{{ item.run }}</md-table-cell>
-                  <md-table-cell md-label="Plays" md-sort-by="title">{{ item.plays }}</md-table-cell>
-
-                </md-table-row>
-              </md-table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s4">
-              <label for="last">Last Name</label>
-              <input type="text" id="last" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="input-field col s4">
-              <label for="review">Write a review</label>
-              <textarea type="text" class="materialize-textarea" id="review"></textarea>
-              <button class="btn">Submit</button>
-            </div>
-          </div>
+              <md-table-row slot="md-table-row" slot-scope="{ item }">
+                <md-table-cell md-label="Track" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+                <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
+                <md-table-cell md-label="Runtime" md-sort-by="title">{{ item.run }}</md-table-cell>
+                <md-table-cell md-label="Plays" md-sort-by="title">{{ item.plays }}</md-table-cell>
+              </md-table-row>
+        </md-table>
       </div>
     </div>
-
-
-
-
   </div>
-
 </template>
 
 <script lang="ts">
   import {
     Component,
-    Vue
+    Vue,
+    Watch,
+    Prop
   } from 'vue-property-decorator';
 
-  @Component({})
+  import defaultButton from "../../../components/Button.vue";
+  import review from "../../../components/Review.vue";
+  import issue from "../../../components/Issue.vue";
+
+  @Component({
+    components: { defaultButton,
+                  review,
+                  issue }
+  })
   export default class Albumdeeets extends Vue {
     album = {}
-    Tracks = [{
-        id: 1,
-        name: 'Shawna Dubbin',
-        run: '3:56',
-        plays: '245'
-      },
-      {
-        id: 2,
-        name: 'Odette Demageard',
-        run: '4:12',
-        plays: '2422'
+    tracks = []
+    issueOpen = false;
+    reviewOpen = false;
 
-      },
-      {
-        id: 3,
-        name: 'Lonnie Izkovitz',
-        run: '3:02',
-        plays: '445'
-      },
-      {
-        id: 4,
-        name: 'Thatcher Stave',
-        run: '3:42',
-        plays: '3545'
-      },
-      {
-        id: 5,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '335'
-      },
-      {
-        id: 6,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '345'
-      },
-      {
-        id: 7,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '665'
-      }
-    ]
+    loaded = false;
 
-    created() {
-      this.album = this.$route.params.albumParam
+    beforeCreate() {
+      this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
+        console.log(this.$route.params.albumParam)
+        this.tracks = this.$store.state.singleAlbum.songs
+        this.album = this.$store.state.singleAlbum
+        console.log(this.$store.state.singleAlbum)
+      })
+      .finally(_ => {
+        this.loaded = true
+      })
     }
+
+    openReview() {
+      this.reviewOpen = true;
+      return this.reviewOpen;
+    }
+
+    @Watch('closeReview')
+      closeReview() {
+        this.reviewOpen = false;
+        return this.reviewOpen;
+      }
+
+    openIssue() {
+      this.issueOpen = true;
+      return this.issueOpen;
+    }
+
+    @Watch('closeIssue')
+      closeIssue() {
+        this.issueOpen = false;
+        return this.issueOpen;
+      }
   }
 </script>
 
@@ -151,9 +137,22 @@
 <style scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
-  .main {
 
+  .full-deets {
+    background-image: url('../../../assets/back6.jpg');
+    background-size: 100% auto;
+    background-repeat: repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+
+  .main {
     margin: 0 auto;
+  }
+
+  .header-container {
+    padding: 0%;
   }
 
   .table {
@@ -179,6 +178,16 @@
     padding: 2px;
     width: 100%;
     background-color: black;
+  }
+
+  .headerbtn {
+    padding: 5% !important;
+    width: 8vw;
+  }
+
+  .buttons {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
   }
 
   .md-card {

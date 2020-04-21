@@ -11,19 +11,12 @@
           </md-card-media>
 
           <md-card-header>
-            <div class="md-title">name</div>
-            <div class="md-subhead">label</div>
-
+            <div class="md-title">{{artist.name}}</div>
+            <div class="md-subhead">{{artist.name}}</div>
           </md-card-header>
+         
           <md-card-expand>
             <md-card-actions md-alignment="space-between">
-              <md-button class="md-icon-button">
-                <md-icon>favorite</md-icon>
-              </md-button>
-              <div>
-                <md-button>Rate</md-button>
-              </div>
-
               <md-card-expand-trigger>
                 <md-button>Details</md-button>
               </md-card-expand-trigger>
@@ -31,8 +24,8 @@
 
             <md-card-expand-content>
               <md-card-content>
-                Release Date: somedate <br />
-                Category: some category <br />
+                ID: {{artist.id}} <br />
+                Genre: {{artist.genre_abbr}} <br />
                 Tracks: this will become list of albums i think
               </md-card-content>
             </md-card-expand-content>
@@ -42,39 +35,19 @@
 
       <div class="container">
           <div class="row">
-            <div class="input-field col s4">
-              <label for="first">First Name</label>
-              <input type="text" id="first" />
-            </div>
-
             <div class="col s6">
-              <md-table class="table" v-model="Tracks" md-card>
+              <md-table class="table" v-model="albums" md-card>
                 <md-table-toolbar>
-                  <h1 class="md-title">Tracks</h1>
-                </md-table-toolbar>
+                  <h1 class="md-title">Albums</h1>
+              </md-table-toolbar>
 
-                <md-table-row slot="md-table-row" slot-scope="{ item }">
-                  <md-table-cell md-label="Track" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
+                <md-table-row slot="md-table-row" slot-scope="{item}">
+                  <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
                   <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-                  <md-table-cell md-label="Runtime" md-sort-by="title">{{ item.run }}</md-table-cell>
-                  <md-table-cell md-label="Plays" md-sort-by="title">{{ item.plays }}</md-table-cell>
-
+                  <md-table-cell md-label="Format" md-sort-by="run">{{ item.format_bitfield }}</md-table-cell>
+                  <md-table-cell md-label="Notes" md-sort-by="missing">{{ item.missing }}</md-table-cell>
                 </md-table-row>
               </md-table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s4">
-              <label for="last">Last Name</label>
-              <input type="text" id="last" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="input-field col s4">
-              <label for="review">Write a review</label>
-              <textarea type="text" class="materialize-textarea" id="review"></textarea>
-              <button class="btn">Submit</button>
             </div>
           </div>
       </div>
@@ -87,65 +60,7 @@
 
 </template>
 
-<script lang="ts">
-  import {
-    Component,
-    Vue
-  } from 'vue-property-decorator';
-
-  @Component({})
-  export default class Albumdeeets extends Vue {
-    album = {}
-    Tracks = [{
-        id: 1,
-        name: 'Shawna Dubbin',
-        run: '3:56',
-        plays: '245'
-      },
-      {
-        id: 2,
-        name: 'Odette Demageard',
-        run: '4:12',
-        plays: '2422'
-
-      },
-      {
-        id: 3,
-        name: 'Lonnie Izkovitz',
-        run: '3:02',
-        plays: '445'
-      },
-      {
-        id: 4,
-        name: 'Thatcher Stave',
-        run: '3:42',
-        plays: '3545'
-      },
-      {
-        id: 5,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '335'
-      },
-      {
-        id: 6,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '345'
-      },
-      {
-        id: 7,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '665'
-      }
-    ]
-
-    created() {
-      this.album = this.$route.params.albumParam
-    }
-  }
-</script>
+<script lang="ts" src='./Artistdeets.ts' />
 
 
 <style scoped>
@@ -196,7 +111,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-left: 10%;
+    margin-left: 20%;
     padding-top: 5%;
   }
 
@@ -235,6 +150,9 @@
   }
 
   .full-deets {
+    /* background-image: url('../../assets/back8.jpg');
+    background-size: cover;
+    height: 100%; */
     padding-top: 4%;
   }
 </style>

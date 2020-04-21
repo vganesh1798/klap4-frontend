@@ -1,5 +1,4 @@
 import { Component, Vue } from 'vue-property-decorator';
-import axios from "axios";
 
 import defaultTable from "../../components/Table.vue";
 import defaultButton from "../../components/Button.vue";

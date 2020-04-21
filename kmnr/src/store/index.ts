@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import Log from '@/models/Playlist'
-import ChartData from '@/models/ChartData'
+import Log from '@/Models/Playlist'
+import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
+
+import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -16,7 +18,9 @@ export default new Vuex.Store({
     allChart: Array<ChartData>(),
     newChart: Array<ChartData>(),
     artists: Array<Artist>(),
-    singleArtist: {}
+    singleArtist: {},
+    albums: Array<Album>(),
+    singleAlbum: {}
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -34,8 +38,14 @@ export default new Vuex.Store({
     addToArtists(state, newArtist: Artist) {
       state.artists.push(newArtist);
     },
-  singleArtistMut(state, sArtist: Artist){
+    singleArtistMut(state, sArtist: Artist){
       state.singleArtist = sArtist
+    },
+    addToAlbums(state, newAlbum: Array<Album>) {
+      state.albums = newAlbum
+    },
+    addSingleAlbum(state, sAlbum: DisplayAlbum) {
+      state.singleAlbum = sAlbum
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -56,7 +66,7 @@ export default new Vuex.Store({
     },
     getAllChartData() {
       return axios
-      .get('http://localhost:5000/charts/all/2')
+      .get('http://localhost:5000/charts/all')
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
         return res.data
@@ -65,7 +75,7 @@ export default new Vuex.Store({
     },
     getNewChartData() {
       return axios
-      .get('http://localhost:5000/charts/new/2')
+      .get('http://localhost:5000/charts/new')
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
         return res.data
@@ -93,13 +103,45 @@ export default new Vuex.Store({
       })
       .catch(err => console.log(err))
     },
-    displayArtists({commit, state}, id) {
+    displayArtists({commit, state}, id: string) {
       return axios.get(`http://localhost:5000/display/artist/${id}`)
       .then(res =>{ 
           this.commit('singleArtistMut', (res.data as SingleArtist))
+          return res.data
           // OR
           //res.data.map(artist => {this.commit('addToArtists', artist))
       })
+    },
+    getAllAlbums() {
+      return axios.get('http://localhost:5000/search/album')
+        .then(res => {
+          this.commit('addToAlbums', (res.data as Array<Album>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    getQueriedAlbums({commit, state}, albumParams: AlbumSearch) {
+      const searchQuery = {
+        'genre': albumParams.genre_abbr,
+        'name': albumParams.album,
+        'artistName': albumParams.artist,
+      }
+
+      return axios.post('http://localhost:5000/search/album', searchQuery)
+        .then(res => {
+          this.commit('addToAlbums', (res.data as Array<Album>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    displayAlbum({commit, state}, id: string) {
+      return axios.get(`http://localhost:5000/display/album/${id}`)
+        .then(res => {
+          this.commit('addSingleAlbum', (res.data as DisplayAlbum))
+          console.log(res.data)
+          return res.data
+        })
+        .catch(err => console.log(err))
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import
