@@ -1,9 +1,9 @@
 <template>
-  <div class="full-view">
+  <div class="full-view" >
     <HeaderMobile />
-    <div class="content" :class="{'open':showNav}">
+    <div class="content" :class="{'open':opened}" >
         <div id="navigation-icon" v-if="mobileView"
-          @click="showNav = !showNav">
+          v-on:click="toggle()">
           <i class="fas fa-bars"></i>
         </div>
             <Header v-if="!mobileView"/>
@@ -26,12 +26,26 @@ import HeaderMobile from './components/HeaderMobile.vue';
   }
 })
 export default class App extends Vue {
-      mobileView = true
+      mobileView = false
       showNav = false
+      opened = false
     handleView() {
       this.mobileView = window.innerWidth <= 1420;
     }
-
+    toggle () {
+            if (this.opened) {
+                return this.hide()
+            }
+            return this.show()
+        }
+    show () {
+            this.opened = true;
+            setTimeout(() => document.addEventListener('click',this.hide), 0);
+        }
+    hide () {
+            this.opened = false;
+            document.removeEventListener('click',this.hide);
+      }
    created() {
     this.handleView();
     window.addEventListener('resize', this.handleView);
