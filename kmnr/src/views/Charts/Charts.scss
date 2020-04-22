@@ -78,6 +78,11 @@ input:focus {
   box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
 }
 
+.chooseweeks {
+  width: 40px !important;
+  height: 40px !important;
+}
+
 .exportBtn {
   position: absolute;
   top: 80px;
@@ -102,8 +107,13 @@ input:focus {
   margin-bottom: 0;
 }
 
+.table-header {
+  height: 40px !important;
+}
+
 #dropdown {
   overflow: hidden;
+  height: 40px !important;
 
   .material-icons {
       vertical-align: middle;

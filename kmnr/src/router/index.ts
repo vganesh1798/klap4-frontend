@@ -6,16 +6,20 @@ import LogPage from '../views/LogPage/LogPage.vue';
 import Albums from '../views/Albums/Albums.vue';
 import AlbumDetail from '../views/Albums/AlbumDetail/Albumdeets.vue';
 import ArtistPage from '../views/Artists/ArtistPage.vue';
+import ArtistDetail from '../views/Artists/ArtistDetail/Artistdeets.vue';
 import Charts from '../views/Charts/Charts.vue';
+
 import SearchPage from '../views/Search/Search.vue';
 
 
 Vue.use(VueRouter)
 
+const DEFAULT_TITLE = 'KMNR'
+
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'KMNR',
     component: HomePage
   },
   {
@@ -25,13 +29,8 @@ const routes = [
   },
   {
     path: '/log',
-    name: 'Log',
+    name: 'Playlists',
     component: LogPage
-  },
-  {
-    path: '/albums',
-    name: 'Album',
-    component: Albums
   },
   {
     path: "/album-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
@@ -40,9 +39,15 @@ const routes = [
     props: true,
   },
   {
-    path: "/artists",
-    name: 'Artist',
-    component: ArtistPage
+    path: '/search',
+    name: 'Search',
+    component: SearchPage
+  },
+  {
+    path: "/artist-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
+    name: 'ArtistDetail',
+    component: ArtistDetail,
+    props: true,
   },
   {
     path: '/charts',
@@ -53,11 +58,6 @@ const routes = [
     path: '/artists',
     name: 'Artists',
     component: ArtistPage
-  },
-  {
-    path: '/search',
-    name: 'Search',
-    component: SearchPage
   },
   {
     path: '*',
@@ -71,5 +71,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.afterEach((to, from) => {
+  document.title = to.name || DEFAULT_TITLE
+})
+
 
 export default router

@@ -3,7 +3,7 @@
     <span class="artists-heading-main">Explore Artists</span>
     <div class="container animated bounceIn ease-in-quad d-2 mt4">
         <div class="row">
-          <div class="col s6 offset-s4">
+          <div class="col s6 offset-s3">
             <div class="inputSearch">
               <input v-model="artistSearch" type="text" class="search-bar" placeholder="Search artists"  @keyup.enter="SearchByArtistName()">
               <defaultButton class="clr-btn" :style="{visibility:cancelSearchVisibility}" @click.native="CancelSearch()">
@@ -15,153 +15,54 @@
             </div>
           </div>
         </div>
-          <defaultButton class="prev" @click.native="previousArtists()">
+          <!--defaultButton class="prev" @click.native="previousArtists()">
             <i class="material-icons" style="font-size: 60px;">navigate_before</i>
-          </defaultButton>
-          <defaultButton class="next" @click.native="nextArtists()">
+          </defaultButton-->
+          <!--defaultButton class="next" @click.native="nextArtists()">
             <i class="material-icons" style="font-size: 60px;">navigate_next</i>
-          </defaultButton>
+          </defaultButton--->
           <div class="row">
-            <div class="col s1"></div>
-            <div class="col s11">
+            <div class="col s1">
+              <defaultButton class="prev" @click.native="previousArtists()">
+                <i class="material-icons" style="font-size: 5vw;">navigate_before</i>
+              </defaultButton>
+            </div>
+            <div class="col s10">
               <div class="d-flex justify-content-start flex-wrap artists" id="artists_container">
-                <display v-for="artist in artistsPaginated" :key="artist.id"
-                  :id-artist="artist.id" :artist="artist">
-                </display>
+                <artistCard v-for="artist in artistsPaginated" :key="artist.id"
+                  :id="artist.id" :item="artist" :val1="artist.name" :val2="artist.genre_abbr" newRoute="ArtistDetail">
+                </artistCard>
               </div>
+            </div>
+            <div class="col s1">
+              <defaultButton class="next" @click.native="nextArtists()">
+                <i class="material-icons" style="font-size: 5vw;">navigate_next</i>
+              </defaultButton>
             </div>
           </div>
       </div>
-
-
-    <!--div id="flex-container">
-        <div class="flex-child card-expansion">
-            <md-card>
-      <md-card-media>
-        <img src="../../assets/artist1.jpeg" alt="People">
-      </md-card-media>
-
-      <md-card-header v-model="artistList">
-        <div class="md-title">{{artistList[0].name}}</div>
-        <div class="md-subhead">{{artistList[0].tag}}</div>
-      </md-card-header>
-
-      <md-card-expand>
-        <md-card-actions md-alignment="space-between">
-          <div>
-            <md-button>Rate</md-button>
-          </div>
-
-          <md-card-expand-trigger>
-            <md-button>Learn more</md-button>
-          </md-card-expand-trigger>
-        </md-card-actions>
-
-        <md-card-expand-content>
-          <md-card-content>
-              Albums:<br/>
-              {{artistList[0].albums[0]}}<br/>
-              {{artistList[0].albums[1]}}
-
-
-          </md-card-content>
-        </md-card-expand-content>
-      </md-card-expand>
-    </md-card> 
-        </div>
-         <div class="flex-child card-expansion">
-            <md-card>
-      <md-card-media>
-        <img src="../../assets/artist3.jpg" alt="People">
-      </md-card-media>
-
-      <md-card-header v-model="artistList">
-        <div class="md-title">{{artistList[1].name}}</div>
-        <div class="md-subhead">{{artistList[1].tag}}</div>
-      </md-card-header>
-
-      <md-card-expand>
-        <md-card-actions md-alignment="space-between">
-          <div>
-            <md-button>Rate</md-button>
-          </div>
-
-          <md-card-expand-trigger>
-            <md-button>Learn more</md-button>
-          </md-card-expand-trigger>
-        </md-card-actions>
-
-        <md-card-expand-content>
-          <md-card-content>
-              Albums:<br/>
-              {{artistList[1].albums[0]}}<br/>
-              {{artistList[1].albums[1]}}
-
-
-          </md-card-content>
-        </md-card-expand-content>
-      </md-card-expand>
-    </md-card> 
-        </div>
-         <div class="flex-child card-expansion">
-            <md-card>
-      <md-card-media>
-        <img src="../../assets/artist3.jpg" alt="People">
-      </md-card-media>
-
-      <md-card-header v-model="artistList">
-        <div class="md-title">{{artistList[2].name}}</div>
-        <div class="md-subhead">{{artistList[2].tag}}</div>
-      </md-card-header>
-
-      <md-card-expand>
-        <md-card-actions md-alignment="space-between">
-          <div>
-            <md-button>Rate</md-button>
-          </div>
-
-          <md-card-expand-trigger>
-            <md-button>Learn more</md-button>
-          </md-card-expand-trigger>
-        </md-card-actions>
-
-        <md-card-expand-content>
-          <md-card-content>
-              Albums:<br/>
-              {{artistList[2].albums[0]}}<br/>
-              {{artistList[2].albums[1]}}
-
-
-          </md-card-content>
-        </md-card-expand-content>
-      </md-card-expand>
-    </md-card> 
-        </div>
-    </div--->
-  </div>
+    </div>
 </template>
 
-<script lang='ts' src="./ArtistPage.ts">
+<script lang='ts' src='./ArtistPage.ts'>
+
 </script>
 
 <style lang="scss" scoped>
   .artists_container {
     background-image: url('../../assets/back6.jpg');
-    background-size: 100% auto;
-    background-repeat: repeat;
-    padding-top: 7%;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    margin-left: 0;
-    margin-right: 0;
+      background-size: cover;
+      background-size: cover;
+      height: 100%;
+      padding-top: 7%;
   }
 
   .artists-heading-main {
     display: block;
-    font-size: 100px;
+    font-size: 70px;
     font-weight: 100;
-    padding-left: 35%;
+    //padding-left: 35%;
+    text-align: center;
     padding-bottom: 1%;
     color:black;
     font-family: 'Covered By Your Grace';
@@ -202,15 +103,13 @@
   }
 
   .next {
-    position: absolute;
-    right: 18%;
-    top: 39%;
+    position: relative;
+    padding-top: 50%;
   }
 
   .prev {
-    position: absolute;
-    left: 18%;
-    top: 39%;
+    position: relative;
+    padding-top: 50%;
   }
 
 .ArtistPage{

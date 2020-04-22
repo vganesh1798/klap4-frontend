@@ -103,9 +103,8 @@
 
             if (!this.homepage) {
                 this.scrolledTop = true
-                this.logoSource = images('logo.png')
+                this.logoSource = images('./logo.png')
             } else {
-                let images = require.context('../assets/', false, /\.png$/)
                 this.logoSource = images('./radio.png')
             }
         }

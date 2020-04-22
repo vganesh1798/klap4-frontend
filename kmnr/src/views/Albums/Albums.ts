@@ -1,12 +1,14 @@
 import { Component, Vue } from 'vue-property-decorator';
 import axios from "axios";
 
-import Display from './display.vue';
 import defaultButton from "../../components/Button.vue";
+import albumCard from "../../components/Card.vue";
+
+import {AlbumSearch} from "../../Models/Album";
 
   @Component({
-    components: { Display,
-                  defaultButton }
+    components: { defaultButton,
+                  albumCard }
   })
   export default class Albums extends Vue {
     constructor() {
@@ -20,19 +22,16 @@ import defaultButton from "../../components/Button.vue";
     previousBtnVisibility = "visible"
     nextBtnVisibility = "visible"
 
+    route = "AlbumDetail"
+    artistid = "AL1B"
+
     get albumsPaginated() {
       return this.albums.slice(this.range, this.range + 5);
     }
 
     getAlbums() {
-      axios
-        .get("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
-        .then(response => {
-          this.albums = response.data.feed.entry;
-        })
-        .catch(error => {
-          alert(error);
-        });
+      this.$store.dispatch('getAllAlbums')
+        .then(res => this.albums = this.$store.state.albums)
     }
 
     hidePreviousBtn() {
@@ -64,9 +63,19 @@ import defaultButton from "../../components/Button.vue";
     }
 
     SearchByAlbumName() {
-      this.albums = this.albums.filter((alb: any) => {
-        return alb["im:name"].label.toLowerCase().includes(this.albumSearch.toLowerCase());
-      });
+      const searchParam: AlbumSearch = {
+        genre_abbr: '',
+        artist: '',
+        album: this.albumSearch.toLowerCase(),
+        label: '',
+        format: '',
+        promoter: '',
+        new_tag: false
+      }
+      this.$store.dispatch('getQueriedAlbums', searchParam)
+        .then(res => {
+          this.albums = this.$store.state.albums
+        })
 
       this.cancelSearchVisibility = "visible";
     }

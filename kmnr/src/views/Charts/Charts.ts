@@ -18,13 +18,17 @@ export default class ChartsPage extends Vue {
     previousBtnVisibility = "visible";
     nextBtnVisibility = "visible";
     num = 0;
-    sort_selection = "Popularity"
+    sort_selection = "Popularity";
+    new_charts = false;
+    weeks = 1;
 
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
     }
 
     getCharts() {
+        this.new_charts = false;
+        this.range = 0;
         this.$store.dispatch('getAllChartData').then(res => {
             this.charts = res;
             console.log(this.charts);
@@ -32,6 +36,8 @@ export default class ChartsPage extends Vue {
     }
 
     getNewCharts() {
+        this.new_charts = true;
+        this.range = 0;
         this.$store.dispatch('getNewChartData').then(res => {
             this.charts = res;
             console.log(this.charts);
@@ -68,7 +74,7 @@ export default class ChartsPage extends Vue {
 
     SearchByChartName() {
         this.charts = this.charts.filter((alb: any) => {
-        return alb.name.toLowerCase().includes(this.chartsSearch.toLowerCase());
+        return alb.artist_name.toLowerCase().includes(this.chartsSearch.toLowerCase());
         });
 
         this.cancelSearchVisibility = "visible";
