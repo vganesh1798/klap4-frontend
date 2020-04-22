@@ -1,0 +1,148 @@
+.full-container {
+  vertical-align: top;
+}
+
+div {
+  vertical-align: top;
+  margin: 0 0 0 0;
+}
+
+.bg-charts {
+  background-image: url('../../assets/new.jpg');
+  background-size: cover;
+  //background-position: center;
+  //background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+.table-container {
+  padding: 4% 10% 0% 10%;
+}
+
+.heading-charts-main {
+  padding-top: 2.5%;
+  display: block;
+  font-size: 3.75vw;
+  text-align:center;
+  padding-bottom: 1%;
+  color: rgb(70, 68, 68);
+  font-family: 'Covered By Your Grace';
+}
+
+.chartsTable {
+  display: inline-block;
+  height: 53vh;
+  overflow: auto;
+}
+
+.class-ranking {
+  font-size: 40px;
+  margin: 0 0 0 0;  //this makes the row narrower
+}
+
+.rank {
+  width: 10%;
+  text-align: center;
+  padding-left: 4%;
+}
+
+i.material-icons {
+  color: rgb(70, 68, 68) !important;
+}
+
+.noresults {
+  font-family: 'Montserrat';
+  font-size: 30px;
+  text-align: center;
+}
+
+.search-bar {
+  color:rgb(70, 68, 68);
+  height: 20px;
+  margin: 0;
+  padding-right: 30px;
+  width: 100%;
+}
+
+.search-bar::placeholder {
+  color:rgb(70, 68, 68);
+}
+
+.inputSearch {
+  position: relative;
+}
+
+input:focus {
+  border-bottom: 1px rgb(70, 68, 68) !important;
+  box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
+}
+
+.chooseweeks {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.exportBtn {
+  position: absolute;
+  top: 80px;
+  left: 25px;
+}
+
+.clr-btn {
+  position: absolute;
+  bottom: 15px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+}
+
+.search-btn {
+  position: absolute;
+  bottom: 15px;
+  right: -35px;
+}
+
+.bottom-button {
+  margin-bottom: 0;
+}
+
+.table-header {
+  height: 40px !important;
+}
+
+#dropdown {
+  overflow: hidden;
+  height: 40px !important;
+
+  .material-icons {
+      vertical-align: middle;
+  }
+
+  #dropdown-list {
+      display: none;
+      overflow: hidden;
+      position: absolute;
+      background-color: rgba(100, 100, 100, 1);
+      min-width: 1em;
+      z-index: 1;
+      border-radius: 3%;
+
+      .dropdown-item {
+          float: none;
+          color: black;
+          padding: .25em .35em;
+          display: block;
+          text-align: left;
+          font-family: inherit;
+          margin: 0;
+          font-size: 20px;
+          animation: fade .3s !important;
+      }
+  }
+
+  &:hover #dropdown-list {
+      display: block;
+      animation: fade .3s !important;
+  }
+}
