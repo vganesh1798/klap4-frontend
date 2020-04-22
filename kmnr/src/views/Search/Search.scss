@@ -39,43 +39,35 @@ border-bottom: 1px solid #000;
 box-shadow: 0 1px 0 0 #000;
 }
 
-.collapsible {
-    margin-top: 0%;
-
-    border: none;
-    border-bottom: none;
-    box-shadow: none;
-
-    li {
-        &.active {
-            .collapsible-header {
-                .material-icons {
-                    transform: rotate(-180deg); // SPIN ANIMATION
-                }
-            }
-        }
+.search-icon {
+    padding-top: 1%;
+    margin-left: 7%;
     
-        .material-icons {
-            font-size: 1.2rem;
-            margin-right: 0; // REMOVE EXTRA MARGIN
-			transition: transform 0.2s ease; // OPTIONAL ANIMATION SPEED
-        }
-
-        height: 1% !important;
-
-        div {
-            font-size: .8rem;
-            border: none;
-            height: 1% !important;
-        }
-        
-        .collapsible-body {
-            height: 0;
-            padding-top: 5rem;
-
-            div {
-                transform: translate(0, -6rem)
-            }
-        }
+    .prefix {
+        font-size: 50px;
     }
+    
+    a:hover {
+        text-decoration: none;
+    }
+}
+
+$secondaryTitleSize: 2.5vw;
+
+#album-id {
+    display: block;
+    font-size: $secondaryTitleSize;
+    padding-bottom: 1.5%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+}
+
+#artist-id {
+    display: block;
+    font-size: $secondaryTitleSize;
+    padding-bottom: 1.5%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
 }

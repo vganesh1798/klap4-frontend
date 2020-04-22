@@ -1,8 +1,15 @@
 import { Vue, Component } from 'vue-property-decorator'
+import Albums from '@/components/Album.vue'
+import ArtistPage from '@/components/Artist.vue'
 
 import M from 'materialize-css'
 
-@Component
+@Component({
+    components: {
+        Albums,
+        ArtistPage
+    }
+})
 export default class SearchPage extends Vue {
     searchInput: string = ''
     artistInput: string = ''
