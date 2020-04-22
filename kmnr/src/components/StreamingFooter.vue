@@ -19,53 +19,49 @@
 </template>
 
 <script lang="ts">
-    import {Howl} from 'howler'
+  import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+  import { Howl } from 'howler'
 
-    export default {
-        name: "StreamingFooter",
-        props: {
-            playlist: Array,
-            newIndex: Number
-        },
-        data() {
-            return {
-                playing: false,
-                curIndex: 0
-            }
-        },
-        methods: {
-            play(index) {
-                this.curIndex = index
-                if (this.playlist[this.curIndex].song) {
-                    this.playlist[this.curIndex].song.play()
-                }
-                else {
-                    this.playlist[this.curIndex].song = new Howl({
-                        src: [this.playlist[this.curIndex].file],
-                        onend: function() {
-                            console.log("here")
-                            // BUG: next line is not called when song stops playing
-                            this.playing = false
-                        }
-                    })
-                    this.playlist[this.curIndex].song.play()
-                }
-                this.playing = true
-            },
-            pause() {
-                this.playlist[this.curIndex].song.stop()
-                this.playing = false
-            }
-        },
-        watch: {
-            newIndex: function(newVal) {
-                if (this.playlist[this.curIndex].song && this.playlist[this.curIndex].song.playing) {
-                    this.playlist[this.curIndex].song.stop()
-                }
-                this.play(newVal)
-            }
-        }
-    };
+  @Component
+  export default class StreamingFooter extends Vue {
+      @Prop({type: Array}) playlist?
+      @Prop({type: Number, default: 0}) newIndex
+
+      playing: boolean = false
+      curIndex: number = 0
+
+      play(index) {
+          this.curIndex = index
+          if (this.playlist[this.curIndex].song) {
+              this.playlist[this.curIndex].song.play()
+          }
+          else {
+              this.playlist[this.curIndex].song = new Howl({
+                  src: [this.playlist[this.curIndex].file],
+                  onend: function() {
+                      console.log("here")
+                      // BUG: next line is not called when song stops playing
+                      this.playing = false
+                  }
+              })
+              this.playlist[this.curIndex].song.play()
+          }
+          this.playing = true
+      }
+
+      pause() {
+          this.playlist[this.curIndex].song.stop()
+          this.playing = false
+      }
+      
+      @Watch('newIndex')
+      newIndexFun(newVal) {
+          if (this.playlist[this.curIndex].song && this.playlist[this.curIndex].song.playing) {
+              this.playlist[this.curIndex].song.stop()
+          }
+          this.play(newVal)
+      }
+  }
 </script>
 
 <style lang="scss" scoped>

@@ -9,6 +9,7 @@ import ArtistPage from '../views/Artists/ArtistPage.vue';
 import ArtistDetail from '../views/Artists/ArtistDetail/Artistdeets.vue';
 import Charts from '../views/Charts/Charts.vue';
 import Programming from '../views/Programming/Programming.vue';
+import StreamPage from '../views/Stream/StreamPage.vue';
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/albums',
     name: 'Album',
     component: Albums
+  },
+  {
+    path: '/stream',
+    name: "Streaming",
+    component: StreamPage
   },
   {
     path: "/album-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER

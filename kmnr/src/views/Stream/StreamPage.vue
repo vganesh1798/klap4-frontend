@@ -11,36 +11,34 @@
 </template>
 
 <script lang="ts">
+    import { Vue, Component } from 'vue-property-decorator'
     import StreamingFooter from '../../components/StreamingFooter.vue'
    
-    export default {
-        name: "stream-page",
+    @Component({
         components: {
-            StreamingFooter,
-        },
-        data() {
-            return {
-                queue: [
-                    {
-                        title: "Bitches Ain't Shit",
-                        file: "./bitches_aint_shit.mp3",
-                        song: null
-                    },
-                    {
-                        title: "On and On",
-                        file: "./on_on.mp3",
-                        song: null
-                    }
-                ],
-                index: -1
+            StreamingFooter
+        }
+    })
+    export default class StreamPage extends Vue {
+        queue = [
+            {
+                title: "Bitches Ain't Shit",
+                file: "./bitches_aint_shit.mp3",
+                song: null
+            },
+            {
+                title: "On and On",
+                file: "./on_on.mp3",
+                song: null
             }
-        },
-        methods: {
-            updateSong(index) {
-                this.index = index
-            }
-        },
-    };
+        ]
+
+        index: number = -1
+
+        updateSong(index) {
+            this.index = index
+        }
+    }
 </script>
 
 <style type="scss" scoped> 
