@@ -32,13 +32,11 @@
                 </div>
               </div>
             </div>
-        </div>
+        </div> 
     </div>
   </template>
 
-  <script lang="ts" src="./Albums.ts">
-
-  </script>
+  <script lang="ts" src="./Albums.ts"></script>
 
   <style lang="scss" scoped>
     .albums_container {

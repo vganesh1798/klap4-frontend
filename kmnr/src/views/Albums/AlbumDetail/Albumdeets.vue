@@ -99,12 +99,10 @@
 
     beforeCreate() {
       this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
-        console.log(this.$route.params.albumParam)
         this.tracks = this.$store.state.singleAlbum.songs
         this.album = this.$store.state.singleAlbum
-        console.log(this.$store.state.singleAlbum)
       })
-      .finally(_ => {
+      .finally(() => {
         this.loaded = true
       })
     }

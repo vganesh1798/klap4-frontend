@@ -8,17 +8,17 @@ export class AlbumSearch {
     new_tag: boolean = false
 }
 
-export interface Album {
-    artist_num: number | null
-    date_added: string | null
-    format_bitfield: number | null
-    genre_abbr: string | null
-    id: string | null
-    label_id: string | null
-    letter: string | null
-    missing: boolean | null
-    name: string | null
-    promoter_id: string | null
+export class Album {
+    artist_num?: number | null
+    date_added?: string | null
+    format_bitfield?: number | null
+    genre_abbr?: string | null
+    id?: string | null
+    label_id?: string | null
+    letter?: string | null
+    missing?: boolean | null
+    name?: string | null
+    promoter_id?: string | null
 }
 
 export class AlbumArtist {

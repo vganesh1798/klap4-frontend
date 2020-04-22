@@ -4,7 +4,7 @@ import axios from "axios";
 import defaultButton from "../../components/Button.vue";
 import albumCard from "../../components/Card.vue";
 
-import {AlbumSearch} from "../../models/Album";
+import {AlbumSearch} from "../../Models/Album";
 
   @Component({
     components: { defaultButton,
@@ -21,6 +21,9 @@ import {AlbumSearch} from "../../models/Album";
     cancelSearchVisibility = "hidden"
     previousBtnVisibility = "visible"
     nextBtnVisibility = "visible"
+
+    route = "AlbumDetail"
+    artistid = "AL1B"
 
     get albumsPaginated() {
       return this.albums.slice(this.range, this.range + 5);
@@ -65,7 +68,7 @@ import {AlbumSearch} from "../../models/Album";
         artist: '',
         album: this.albumSearch.toLowerCase(),
         label: '',
-        format: 0,
+        format: '',
         promoter: '',
         new_tag: false
       }
