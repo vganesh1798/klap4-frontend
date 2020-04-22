@@ -67,6 +67,11 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/stream">Stream</router-link>
+            <router-link :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }" to="/programming">Programming</router-link>
 
             <a :class="{
                 'items-top': !scrolledTop,
