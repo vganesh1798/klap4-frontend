@@ -2,13 +2,18 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import axios from "axios";
 import uploadBox from "../../components/Upload.vue";
 import defaultButton from "../../components/Button.vue"
+import playlist from "../../components/NewPlaylist.vue";
+import defaultTable from "../../components/Table.vue";
 
     @Component ({
         components: { uploadBox,
-                      defaultButton }
+                      defaultButton,
+                      playlist,
+                      defaultTable }
     })
 
 export default class LogPage extends Vue {
+    playlistSelected: Boolean = false;
     currentShow: string = "EXAMPLE_SHOW";
     song: string = "";
     artist: string = "";
@@ -18,6 +23,8 @@ export default class LogPage extends Vue {
     savedPlaylists: Object[] = [];
     playlist_name: string = " ";
     uploadBox: Boolean = false;
+    playlistBox: Boolean = false;
+    showPlaylists: Boolean = false;
 
     addSong() {
       this.playlist_name = "default";
@@ -56,5 +63,19 @@ export default class LogPage extends Vue {
     closeUpload() {
         this.uploadBox = false;
         return this.uploadBox;
+    }
+
+    allowPlaylist() {
+        this.playlistBox = true;
+    }
+
+    @Watch('closePlaylist')
+    closePlaylist() {
+        this.playlistBox = false;
+        return this.playlistBox;
+    }
+
+    displayPlaylists() {
+        this.showPlaylists = !this.showPlaylists;
     }
 }

@@ -1,32 +1,35 @@
 <template>
-    <div class="issue">
+    <div class="playlist">
         <div class="row">
             <div class="col l11"></div>
             <div class="col l1">
-                <defaultButton class="closeBtn" @click.native="closeIssue" type="submit">X</defaultButton>
+                <defaultButton class="closeBtn" @click.native="closePlaylist" type="submit">X</defaultButton>
             </div>
         </div>
         <div class="row">
-            <h1>Issue</h1>
+            <h1>Create New Playlist</h1>
         </div>
-        <div class="row">
-            <div class="input-field">
-              <label for="first">First Name</label>
-              <input type="text" id="first" />
-            </div>
-            <div class="input-field">
-              <label for="last">Last Name</label>
-              <input type="text" id="last" />
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field">
-              <label for="issue">Describe the issue</label>
-              <textarea type="text" class="materialize-textarea" id="review"></textarea>
-            </div>
-              <button class="btn">Submit</button>
-            </div>
-          </div>
+        <form class="col offset-s3 s6">
+                <div class="row">
+                    <div class="input-field">
+                        <label required for="name">Name</label>
+                        <input type="text" id="name" />
+                    </div>
+                    <div class="input-field">
+                        <label required for="show">Show</label>
+                        <input type="text" id="show" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field">
+                        <label for="comment">Comment</label>
+                        <input required class="col lg6" type="text" id="label" />
+                    </div>
+                </div>
+                <div class="row"/>
+                <button class="btn" type="submit">Create new Playlist</button>
+            </form>
+    </div>
 </template>
 
 <script lang='ts'>
@@ -36,14 +39,14 @@
     @Component ({
         components: { defaultButton }
     })
-    export default class issue extends Vue {
+    export default class playlist extends Vue {
         close = false;
         constructor() {
             super()
         }
 
-        @Emit('closeIssue') 
-            closeIssue() {
+        @Emit('closePlaylist') 
+            closePlaylist() {
                 this.close = true;
             }
     }
@@ -70,13 +73,13 @@ a {
     cursor: pointer;
 }
 
-.issue {
+.playlist {
     background-color:white;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 500px;
+    height: 550px;
     width: 500px;
     padding: 0% 5% 20% 5%;
     border-radius: 3%;

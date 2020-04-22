@@ -15,20 +15,29 @@
             </div>
           </div>
         </div>
-          <defaultButton class="prev" @click.native="previousArtists()">
+          <!--defaultButton class="prev" @click.native="previousArtists()">
             <i class="material-icons" style="font-size: 60px;">navigate_before</i>
-          </defaultButton>
-          <defaultButton class="next" @click.native="nextArtists()">
+          </defaultButton-->
+          <!--defaultButton class="next" @click.native="nextArtists()">
             <i class="material-icons" style="font-size: 60px;">navigate_next</i>
-          </defaultButton>
+          </defaultButton--->
           <div class="row">
-            <div class="col s1"></div>
-            <div class="col s11">
+            <div class="col s1">
+              <defaultButton class="prev" @click.native="previousArtists()">
+                <i class="material-icons" style="font-size: 5vw;">navigate_before</i>
+              </defaultButton>
+            </div>
+            <div class="col s10">
               <div class="d-flex justify-content-start flex-wrap artists" id="artists_container">
                 <artistCard v-for="artist in artistsPaginated" :key="artist.id"
                   :id="artist.id" :item="artist" :val1="artist.name" :val2="artist.genre_abbr" newRoute="ArtistDetail">
                 </artistCard>
               </div>
+            </div>
+            <div class="col s1">
+              <defaultButton class="next" @click.native="nextArtists()">
+                <i class="material-icons" style="font-size: 5vw;">navigate_next</i>
+              </defaultButton>
             </div>
           </div>
       </div>
@@ -42,21 +51,18 @@
 <style lang="scss" scoped>
   .artists_container {
     background-image: url('../../assets/back6.jpg');
-    background-size: 100% auto;
-    background-repeat: repeat;
-    padding-top: 7%;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    margin-left: 0;
-    margin-right: 0;
+      background-size: cover;
+      background-size: cover;
+      height: 100%;
+      padding-top: 7%;
   }
 
   .artists-heading-main {
     display: block;
-    font-size: 100px;
+    font-size: 70px;
     font-weight: 100;
-    padding-left: 35%;
+    //padding-left: 35%;
+    text-align: center;
     padding-bottom: 1%;
     color:black;
     font-family: 'Covered By Your Grace';
@@ -97,15 +103,13 @@
   }
 
   .next {
-    position: absolute;
-    right: 18%;
-    top: 39%;
+    position: relative;
+    padding-top: 50%;
   }
 
   .prev {
-    position: absolute;
-    left: 18%;
-    top: 39%;
+    position: relative;
+    padding-top: 50%;
   }
 
 .ArtistPage{

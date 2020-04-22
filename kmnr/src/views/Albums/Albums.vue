@@ -15,21 +15,24 @@
               </div>
             </div>
           </div>
-            <defaultButton class="prev" @click.native="previousAlbums()">
-              <i class="material-icons" style="font-size: 60px;">navigate_before</i>
-            </defaultButton>
-            <defaultButton class="next" @click.native="nextAlbums()">
-              <i class="material-icons" style="font-size: 60px;">navigate_next</i>
-            </defaultButton>
             <div class="row">
-              <div class="col s1"></div>
-              <div class="col s11">
+              <div class="col s1">
+                <defaultButton class="prev" @click.native="previousAlbums()">
+              <i class="material-icons" style="font-size: 5vw;">navigate_before</i>
+            </defaultButton>
+              </div>
+              <div class="col s10">
                 <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
                   <albumCard v-for="album in albumsPaginated" :key="album.id"
                   :id="album.id" :item="album" 
                   :val1="album.name" :val2="album.genre_abbr" newRoute="AlbumDetail">
                   </albumCard>
                 </div>
+              </div>
+              <div class="col s1">
+                <defaultButton class="next" @click.native="nextAlbums()">
+              <i class="material-icons" style="font-size: 5vw;">navigate_next</i>
+            </defaultButton>
               </div>
             </div>
         </div> 
@@ -41,21 +44,25 @@
   <style lang="scss" scoped>
     .albums_container {
       background-image: url('../../assets/back6.jpg');
-      background-size: 100% auto;
-      background-repeat: repeat;
-      padding-top: 7%;
-      width: 100%;
+      background-size: cover;
+      background-size: cover;
       height: 100%;
-      position: absolute;
-      margin-left: 0;
-      margin-right: 0;
+      //background-size: 100% auto;
+      //background-repeat: repeat;
+      padding-top: 7%;
+      //width: 100%;
+      //height: 100%;
+      //position: absolute;
+      //margin-left: 0;
+      //margin-right: 0;
     }
 
     .albums-heading-main {
       display: block;
       font-size: 100px;
       font-weight: 100;
-      padding-left: 35%;
+      text-align: center;
+      //padding-left: 35%;
       padding-bottom: 1%;
       color:black;
       font-family: 'Covered By Your Grace';
@@ -104,14 +111,13 @@
     }
 
     .next {
-      position: absolute;
-      right: 18%;
-      top: 39%;
-    }
+    position: relative;
+    padding-top: 50%;
+  }
 
-    .prev {
-      position: absolute;
-      left: 18%;
-      top: 39%;
-    }
+  .prev {
+    position: relative;
+    padding-top: 50%;
+  }
+
   </style>

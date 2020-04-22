@@ -1,6 +1,7 @@
 <template>
     <div class="full-page">
         <div class="container log-container">
+            <div v-if="playlistSelected">
             <defaultButton class="colored uploadButton" @click.native="allowUpload()">Upload A Playlist</defaultButton>
             <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
             <defaultButton class="colored editButton">Switch Playlist</defaultButton>
@@ -107,6 +108,37 @@
                     </table>
                 </div>
             </div>
+            </div>
+            <div v-else>
+                <h1>Playlists</h1>
+                <div class="row topbutton">
+                    <div class="col s2 offset-s4">
+                        <defaultButton class="colored largebtn" @click.native="allowPlaylist()">Create Playlist</defaultButton>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s2 offset-s4">
+                        <defaultButton class="colored largebtn" @click.native="allowUpload()">Upload Playlist</defaultButton>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s2 offset-s4">
+                        <defaultButton class="colored largebtn">Edit Playlist</defaultButton>
+                    </div>
+                </div>
+                <playlist v-if="playlistBox" @closePlaylist="closePlaylist"></playlist>
+                <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
+                <table v-if="showPlaylists">
+                     <tbody>
+                        <tr v-for="playlist in myPlaylists" v-bind:key="playlist.id">
+                        <td class="Playlist">
+                            <p>{{ playlist }}</p>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
         </div>
     </div>
 </template>
@@ -127,11 +159,22 @@ h1 {
     font-family: 'Covered By Your Grace';
 }
 
+.topbutton {
+    padding-top: 10%;
+}
 h2 {
     font-size: 30px;
     font-family: 'Montserrat';
     padding: 0% 0%;
     margin: 0 0 0 0;
+}
+
+.largebtn {
+    margin-left: 30%;
+    padding: 10% !important;
+    font-size: 24px !important;
+    border-radius: 5% !important;
+    width: 15vw;
 }
 
 .full-page {

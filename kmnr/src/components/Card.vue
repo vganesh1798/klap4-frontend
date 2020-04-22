@@ -29,7 +29,8 @@ export default class my_card extends Vue {
 
 <style lang="scss" scoped>
 .my_container {
-  max-width: 155px;
+  //max-width: 155px;
+  max-width: 8.7vw;
   max-height: inherit;
   padding: 0;
   margin: 5px 20px;

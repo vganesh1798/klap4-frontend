@@ -6,7 +6,7 @@
         </div>
         <h1>Upload a Playlist</h1>
         <form enctype="multipart/form-data">
-            <input type="file" name="file" id="filebtn" v-on:change="fileChange($event.target.files)" />
+            <input type="file" name="file" id="filebtn" accept=".txt, .csv" v-on:change="fileChange($event.target.files)" />
             <defaultButton class="colored uploadBtn" type="submit" @click.native="upload()">Upload</defaultButton>
         </form>     
     </div>
