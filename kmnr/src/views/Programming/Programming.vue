@@ -179,9 +179,14 @@
 @media screen and (max-width: 800px) {
   #flex-container{
     flex-direction: column;
+    margin-left: 10%;
   }
-  .md-table{
-    margin-left: 30%;
+  .flex-child {
+    margin-left: 20%;
+    padding-bottom: 50px;
+  }
+  .row{
+    margin-left: 20%;
   }
 }
   .flex-child {
@@ -193,7 +198,7 @@
   }
 
   .md-table {
-    width: 75vw;
+    width: 100vw;
     height: 50vh;
     opacity: 90%;
   }
@@ -212,7 +217,6 @@
 
   .row {
     margin-right: 0px;
-    margin-left: 10%;
   }
 
   h1 {
