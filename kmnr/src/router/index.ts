@@ -12,10 +12,12 @@ import Charts from '../views/Charts/Charts.vue';
 
 Vue.use(VueRouter)
 
+const DEFAULT_TITLE = 'KMNR'
+
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'KMNR',
     component: HomePage
   },
   {
@@ -25,7 +27,7 @@ const routes = [
   },
   {
     path: '/log',
-    name: 'Log',
+    name: 'Playlists',
     component: LogPage
   },
   {
@@ -72,5 +74,10 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.afterEach((to, from) => {
+  document.title = to.name || DEFAULT_TITLE
+})
+
 
 export default router
