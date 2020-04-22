@@ -10,7 +10,7 @@
                 {{this.description}}
             </div>
             <div class="card-action">
-                <router-link to="/" class="btn right waves-effect waves-light">
+                <router-link :to="search_route" class="btn green right waves-effect waves-light">
                     <i class="material-icons">keyboard_arrow_right</i>
                 </router-link>
             </div>
@@ -26,12 +26,15 @@
         @Prop({default: "logo.png", type: String}) private image_link!: string
         @Prop({default: "The developer forgot to pass in an actual text. Congratulations, you played yourself.", type: String}) private description!: string
         @Prop({default: "Title!", type: String}) private title!: string
+        @Prop({default: "/home", type: String}) private search_route!: string
+
         constructor() {
             super()
         }
 
         loadImage() {
-            return require('../assets/' + this.image_link)
+            if (this.image_link == 'logo.png') return require('../assets/' + this.image_link)
+            else return this.image_link
         }
     }
 </script>
@@ -41,7 +44,7 @@
         align-content: left !important;
     }
     .card{
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.2);
     }
     .card-stacked{
         opacity: 1;

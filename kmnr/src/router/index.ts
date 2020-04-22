@@ -7,6 +7,7 @@ import Albums from '../views/Albums/Albums.vue';
 import AlbumDetail from '../views/Albums/AlbumDetail/Albumdeets.vue';
 import ArtistPage from '../views/Artists/ArtistPage.vue';
 import Charts from '../views/Charts/Charts.vue';
+import SearchPage from '../views/Search/Search.vue';
 
 
 Vue.use(VueRouter)
@@ -52,6 +53,11 @@ const routes = [
     path: '/artists',
     name: 'Artists',
     component: ArtistPage
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: SearchPage
   },
   {
     path: '*',

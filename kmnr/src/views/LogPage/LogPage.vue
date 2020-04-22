@@ -125,6 +125,7 @@ h1 {
     padding-bottom: 0% !important;
     color: rgb(70, 68, 68);
     font-family: 'Covered By Your Grace';
+    transform: translate(0,-55%)
 }
 
 h2 {
