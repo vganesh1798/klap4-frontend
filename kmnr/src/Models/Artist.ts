@@ -57,3 +57,8 @@ export class albums {
     }
 
 }
+
+export class ArtistSearch {
+    name: string = ''
+    genre: string = ''
+}

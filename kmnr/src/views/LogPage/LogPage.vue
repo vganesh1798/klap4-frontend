@@ -183,7 +183,8 @@ h2 {
     background-repeat: repeat;
     padding-top: 7%;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
 }
 
 .newPlaylist {

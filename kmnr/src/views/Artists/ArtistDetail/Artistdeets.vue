@@ -150,9 +150,10 @@
   }
 
   .full-deets {
-    /* background-image: url('../../assets/back8.jpg');
+    background-image: url('../../../assets/back8.jpg');
     background-size: cover;
-    height: 100%; */
+    min-height: 100%;
+    height: auto;
     padding-top: 4%;
   }
 </style>

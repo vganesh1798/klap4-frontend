@@ -1,30 +1,28 @@
 <template>
-    <div class="row">
-        <div class="col s1">
-            <defaultButton class="prev" @click.native="previousArtists()">
-                <i class="material-icons" style="font-size: 5vw;">navigate_before</i>
-            </defaultButton>
-        </div>
-        <div class="col s10">
-            <div class="d-flex justify-content-start flex-wrap artists" id="artists_container">
-                <artistCard v-for="artist in artistsPaginated" :key="artist.id" :id="artist.id" :item="artist"
-                    :val1="artist.name" :val2="artist.genre_abbr" newRoute="ArtistDetail">
-                </artistCard>
-            </div>
-        </div>
-        <div class="col s1">
-            <defaultButton class="next" @click.native="nextArtists()">
-                <i class="material-icons" style="font-size: 5vw;">navigate_next</i>
-            </defaultButton>
-        </div>
+    <div class="artist-search">
+      <defaultButton class="prev" @click.native="previousArtists()">
+          <i class="material-icons" style="font-size: 5vw;">navigate_before</i>
+      </defaultButton>
+      <div class="d-flex justify-content-start flex-wrap artists" id="artists_container">
+          <artistCard v-for="artist in artistsPaginated" :key="artist.id" :id="artist.id" :item="artist"
+              :val1="artist.name" :val2="artist.genre_abbr" newRoute="ArtistDetail">
+          </artistCard>
+          <div class="no-results" v-if="artistsPaginated.length === 0">
+            Sorry, but no Artists were found for your search.
+          </div>
+      </div>
+      <defaultButton class="next" @click.native="nextArtists()">
+          <i class="material-icons" style="font-size: 5vw;">navigate_next</i>
+      </defaultButton>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import defaultButton from "./Button.vue";
 import artistCard from "./Card.vue";
+import { ArtistSearch } from '../Models/Artist';
 
   @Component({
     components: {
@@ -36,6 +34,8 @@ import artistCard from "./Card.vue";
     constructor() {
       super()
     }
+
+    @Prop({type: Object}) searchQuery?
 
     artists = []
     range = 0
@@ -50,10 +50,13 @@ import artistCard from "./Card.vue";
     }
 
     getArtists() {
+      if (this.searchQuery) {
+        this.SearchByArtist()
+      } else {
         this.$store.dispatch('getAllArtists').then(res => {
             this.artists = res;
-            console.log(this.artists);
         });
+      }
     }
 
     hidePreviousBtn() {
@@ -84,13 +87,8 @@ import artistCard from "./Card.vue";
       }
     }
 
-    SearchByArtistName() {
-        let searchSlug = {
-            'genre': this.genreSearch,
-            'name': this.artistSearch
-        };
-        
-        this.$store.dispatch('getQueryArtists', searchSlug ).then(res => {
+    SearchByArtist() {    
+        this.$store.dispatch('getQueryArtists', this.searchQuery).then(res => {
             this.artists = res;
             console.log(this.artists);
         });
@@ -112,93 +110,61 @@ import artistCard from "./Card.vue";
 </script>
 
 <style lang="scss" scoped>
-    .artists {
-        width: 200%;
-    }
+  .artists {
+    padding-bottom: 3%;
+  }
 
-    .container_pagination {
+  #artists_container {
+    width: 80%;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .container_pagination {
     padding-top: 10px;
     text-align: center;
-    }
+  }
 
-    .container_pagination .nav ul li a {
+  .container_pagination .nav ul li a {
     border: none;
     background: transparent;
-    }
+  }
 
-    .nav {
+  .nav {
     position: relative !important;
-    }
+  }
 
-    .page-link {
+  .page-link {
     color: black;
-    }
+  }
 
-    #submit {
+  #submit {
     padding-top: 1%;
-    }
+  }
 
-    .btn {
+  .btn {
     float: right;
-    }
+  }
 
-    .form-control {
+  .form-control {
     margin: 0;
-    }
+  }
 
-    h1 {
+  h1 {
     margin: 0;
-    }
+  }
 
-    .next {
-        position: relative;
-        padding-top: 50%;
-        padding-left: 2vw;
-    }
-
-    .prev {
+  .next {
     position: relative;
-    padding-top: 50%;
-    }
-
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    li {
-        display: inline-block;
-        margin: 0 10px;
-    }
-    a{
-        color: #42b983
-    }
-    #flex-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        width: 100%;
-        margin-left: 10%;
-    }
-    .card-expansion {
-    height: 480px;
-    }
-
-    .md-card {
-    width: 320px;
-    margin: 4px;
     display: inline-block;
-    vertical-align: top;
-    }
-    .flex-child{
-    margin-left: 10%;
-    }
+  }
 
-    h1 {
-    height: 15rem !important;
-    margin-top: 0px;
-    }
+  .prev {
+    position: relative;
+    display: inline-block;
+  }
 
-    #flex-container {
-    margin-left: 0px;
-    }
+  .no-results {
+    padding-top: 4%;
+  }
 </style>

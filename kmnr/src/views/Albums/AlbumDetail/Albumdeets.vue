@@ -141,7 +141,8 @@
     background-size: 100% auto;
     background-repeat: repeat;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     position: absolute;
   }
 

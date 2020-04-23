@@ -1,33 +1,32 @@
 <template>
     <div class="album-search">
-        <div class="col s1">
             <defaultButton class="prev" @click.native="previousAlbums()">
                 <i class="material-icons" style="font-size: 5vw;">navigate_before</i>
             </defaultButton>
-        </div>
-        <div class="col s10">
+
             <div class="d-flex justify-content-start flex-wrap albums" id="albums_container">
-                <albumCard v-for="album in albumsPaginated" :key="album.id" :id="album.id" :item="album" :val1="album.name"
+                <albumCard v-for="album in albumsPaginated" :key="album.name" :id="album.id" :item="album" :val1="album.name"
                     :val2="album.genre_abbr" newRoute="AlbumDetail">
                 </albumCard>
+                <div class="no-results" v-if="albumsPaginated.length === 0">
+                  Sorry, but no Albums were found for your search.
+                </div>
             </div>
-        </div>
-        <div class="col s1">
             <defaultButton class="next" @click.native="nextAlbums()">
                 <i class="material-icons" style="font-size: 5vw;">navigate_next</i>
             </defaultButton>
-        </div>
     </div>
 </template>
 
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import defaultButton from "./Button.vue";
 import albumCard from "./Card.vue";
 
-import {AlbumSearch} from "../Models/Album";
+import { AlbumSearch } from "../Models/Album";
+import { ArtistSearch } from '../Models/Artist';
 
   @Component({
     components: { defaultButton, albumCard }
@@ -36,6 +35,8 @@ import {AlbumSearch} from "../Models/Album";
     constructor() {
       super()
     }
+
+    @Prop({type: Object}) searchQuery?
 
     albums = []
     range = 0
@@ -48,13 +49,16 @@ import {AlbumSearch} from "../Models/Album";
     artistid = "AL1B"
 
     get albumsPaginated() {
-        console.log(this.albums.slice(this.range, this.range + 7))
       return this.albums.slice(this.range, this.range + 7);
     }
 
     getAlbums() {
-      this.$store.dispatch('getAllAlbums')
-        .then(res => this.albums = this.$store.state.albums)
+      if (this.searchQuery) {
+        this.SearchByAlbum()
+      } else {
+        this.$store.dispatch('getAllAlbums')
+          .then(res => this.albums = this.$store.state.albums)
+      }
     }
 
     hidePreviousBtn() {
@@ -80,23 +84,13 @@ import {AlbumSearch} from "../Models/Album";
     }
 
     previousAlbums() {
-      if (this.range > 7) {
+      if (this.range > 0) {
         this.range -= 7;
       }
     }
 
-    SearchByAlbumName() {
-      const searchParam: AlbumSearch = {
-        genre_abbr: '',
-        artist: '',
-        album: this.albumSearch.toLowerCase(),
-        label: '',
-        format: '',
-        promoter: '',
-        new_tag: false
-      }
-
-      this.$store.dispatch('getQueriedAlbums', searchParam)
+    SearchByAlbum() {
+      this.$store.dispatch('getQueriedAlbums', this.searchQuery)
         .then(res => {
           this.albums = this.$store.state.albums
         })
@@ -117,52 +111,61 @@ import {AlbumSearch} from "../Models/Album";
 </script>
 
 <style lang="scss" scoped>
-    #albums_container {
-        width: 200%;
-    }
+  .album-search {
+    padding-bottom: 3%;
+  }
 
-    .container_pagination {
-        padding-top: 10px;
-        text-align: center;
-    }
+  #albums_container {
+    width: 80%;
+    display: inline-block;
+    text-align: center;
+  }
 
-    .container_pagination .nav ul li a {
-        border: none;
-        background: transparent;
-    }
+  .container_pagination {
+    padding-top: 10px;
+    text-align: center;
+  }
 
-    .nav {
-        position: relative !important;
-    }
+  .container_pagination .nav ul li a {
+    border: none;
+    background: transparent;
+  }
 
-    .page-link {
-        color: black;
-    }
+  .nav {
+    position: relative !important;
+  }
 
-    #submit {
-        padding-top: 1%;
-    }
+  .page-link {
+    color: black;
+  }
 
-    .btn {
-        float: right;
-    }
+  #submit {
+    padding-top: 1%;
+  }
 
-    .form-control {
-        margin: 0;
-    }
+  .btn {
+    float: right;
+  }
 
-    h1 {
-        margin: 0;
-    }
+  .form-control {
+    margin: 0;
+  }
 
-    .next {
-        position: relative;
-        padding-left: 2vw;
-        padding-top: 50%;
-    }
+  h1 {
+    margin: 0;
+  }
 
-    .prev {
-        position: relative;
-        padding-top: 50%;
-    }
+  .next {
+    position: relative;
+    display: inline-block;
+  }
+
+  .prev {
+    position: relative;
+    display: inline-block;
+  }
+
+  .no-results {
+    padding-top: 4%;
+  }
 </style>
