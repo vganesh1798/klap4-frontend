@@ -5,15 +5,13 @@
         <!-- <div id="timer">0:00</div>
         <div id="duration">0:00</div> -->
 
-        <div class="controlsOuter">
-            <div class="controlsInner">
-                <div class="btn" id="playBtn" v-show="!playing" @click="play(curIndex)"></div>
-                <div class="btn" id="pauseBtn" v-show="playing" @click="pause()"></div>
-                <div class="btn" id="prevBtn"></div>
-                <div class="btn" id="nextBtn"></div>
-            </div>
-            <div class="btn" id="playlistBtn"></div>
-            <div class="btn" id="volumeBtn"></div>
+        <div class="controlsOuter center">
+            <div id="playlistBtn"><a @click="next()"><i class="material-icons-round">queue_music</i></a></div>
+            <div id="prevBtn"><a @click="next()"><i class="material-icons-round">skip_previous</i></a></div>
+            <div id="playBtn" class="" v-show="!playing"><a @click="play(curIndex)"><i class="material-icons-round">play_circle_filled</i></a></div>
+            <div id="pauseBtn" class="" v-show="playing" @click="pause()"><a @click="pause()"><i class="material-icons-round">pause_circle_filled</i></a></div>
+            <div id="nextBtn"><a @click="next()"><i class="material-icons-round">skip_next</i></a></div>
+            <div id="volumeBtn"><a @click="next()"><i class="material-icons-round">volume_up</i></a></div>
         </div>
     </div>
 </template>
@@ -38,11 +36,13 @@
           else {
               this.playlist[this.curIndex].song = new Howl({
                   src: [this.playlist[this.curIndex].file],
-                  onend: function() {
+                  onend: () => {
                       console.log("here")
                       // BUG: next line is not called when song stops playing
                       this.playing = false
-                  }
+                  },
+                  html5: true,
+                  buffer: true
               })
               this.playlist[this.curIndex].song.play()
           }
@@ -97,61 +97,67 @@
   height: 70px;
   bottom: 3%;
 }
-.controlsInner {
-  position: absolute;
-  width: 340px;
-  height: 70px;
-  left: 50%;
-  margin: 0 -170px;
-}
-.btn {
-  position: absolute;
+
+
+#playBtn, #pauseBtn, #nextBtn, #prevBtn {
+  display: inline-block;
   cursor: pointer;
   opacity: 0.9;
   -webkit-filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.33));
   filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.33));
-  -webkit-user-select: none;
-  user-select: none;
+
+  width: 5em;
+  
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  a { text-decoration: none; }
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .material-icons-round {
+    font-size: 5rem;
+    color: grey !important;
+  }
 }
-.btn:hover {
-  opacity: 1;
+
+#playlistBtn, #volumeBtn {
+  display: inline-block;
+  cursor: pointer;
+  opacity: 0.9;
+  -webkit-filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.33));
+  filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.33));
+
+  width: 5em;
+  margin-top: 1em;
+
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+
+  a { text-decoration: none; }
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .material-icons-round {
+    font-size: 3rem;
+    color: grey !important
+  }
 }
-#playBtn {
-  background-image: url("../assets/play.png");
-  width: 69px;
-  height: 70px;
-  left: 50%;
-  margin: auto -34.5px;
-}
-#pauseBtn {
-  background-image: url("../assets/pause.png");
-  width: 69px;
-  height: 70px;
-  left: 50%;
-  margin: auto -34.5px;
-}
-#prevBtn {
-  background-image: url("../assets/prev.png");
-  width: 35px;
-  height: 35px;
-  left: 0;
-  top: 50%;
-  margin: -17.5px auto;
-}
-#nextBtn {
-  background-image: url("../assets/next.png");
-  width: 35px;
-  height: 35px;
-  right: 0;
-  top: 50%;
-  margin: -17.5px auto;
-}
+
 #volumeBtn {
-  background-image: url("../assets/volume.png");
-  width: 35px;
-  height: 35px;
-  top: 50%;
-  right: 3%;
-  margin: -17.5px auto;
+  float: right;
 }
+
+#playlistBtn {
+  float: left;
+}
+
 </style>

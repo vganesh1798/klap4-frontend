@@ -8,6 +8,7 @@
         </div>
             <Header v-if="!mobileView"/>
     <router-view />
+    <StreamingFooter class="streamer" :queue="queue" index="0"/>
     </div>
   </div>
 </template>
@@ -18,16 +19,32 @@ import { Component } from 'vue-property-decorator';
 
 import Header from './components/Header.vue';
 import HeaderMobile from './components/HeaderMobile.vue';
+import StreamingFooter from './components/StreamingFooter.vue';
 
 @Component({
   components: {
     Header,
-    HeaderMobile
+    HeaderMobile,
+    StreamingFooter
   }
 })
 export default class App extends Vue {
-      mobileView = true
-      showNav = false
+    mobileView = true
+    showNav = false
+
+    queue = [
+        {
+            title: "Bitches Ain't Shit",
+            file: "./bitches_aint_shit.mp3",
+            song: null
+        },
+        {
+            title: "On and On",
+            file: "./on_on.mp3",
+            song: null
+        }
+    ]
+
     handleView() {
       this.mobileView = window.innerWidth <= 1420;
     }
@@ -40,6 +57,11 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+  .streamer {
+    position: fixed;
+    z-index: 999999999;
+  }
+
   .full-view {
     height: 100%;
   }
