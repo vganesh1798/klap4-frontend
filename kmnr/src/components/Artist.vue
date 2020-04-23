@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <div class="no-results" v-if="!laoding && artistsPaginated.length === 0">
+          <div class="no-results" v-if="!loading && artistsPaginated.length === 0">
             Sorry, but no Artists were found for your search.
           </div>
       </div>
