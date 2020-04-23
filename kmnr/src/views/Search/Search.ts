@@ -39,22 +39,18 @@ export default class SearchPage extends Vue {
     albumKey: string = 'none'
 
     albumKeyGen() {
-        if (this.albumSearchParam) {
-            this.albumKey = this.albumSearchParam?.album + this.albumSearchParam?.artist + this.albumSearchParam?.genre_abbr
+        this.albumKey = this.albumSearchParam.album + this.albumSearchParam.artist + this.albumSearchParam.genre_abbr
 
-            if (this.albumKey !== '') {
-                this.albumLoaded = true
-            }
+        if (this.albumKey !== '') {
+            this.albumLoaded = true
         }
-    }
+}
 
     artistKeyGen() {
-        if (this.artistSearchParam) {
-            this.artistKey = this.artistSearchParam?.genre + this.artistSearchParam?.name
+        this.artistKey = this.artistSearchParam.genre + this.artistSearchParam.name
 
-            if (this.artistKey !== '') {
-                this.artistLoaded = true
-            }
+        if (this.artistKey !== '') {
+            this.artistLoaded = true
         }
     }
 
@@ -65,6 +61,9 @@ export default class SearchPage extends Vue {
 
     search(e, clicked: boolean = false) {
         if (clicked) {
+            this.artistLoaded = false
+            this.albumLoaded = false
+
             const alSearch: AlbumSearch = {
                 album: this.searchInput,
                 genre_abbr: this.genreInput,
@@ -86,6 +85,9 @@ export default class SearchPage extends Vue {
             this.albumKeyGen()
         } else if (e) {
             if (e.keyCode === 13) {
+                this.artistLoaded = false
+                this.albumLoaded = false
+                
                 const alSearch: AlbumSearch = {
                     album: this.searchInput,
                     genre_abbr: this.genreInput,

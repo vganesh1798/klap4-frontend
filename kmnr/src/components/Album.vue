@@ -8,7 +8,20 @@
                 <albumCard v-for="album in albumsPaginated" :key="album.name" :id="album.id" :item="album" :val1="album.name"
                     :val2="album.genre_abbr" newRoute="AlbumDetail">
                 </albumCard>
-                <div class="no-results" v-if="albumsPaginated.length === 0">
+                
+                <div v-if="loading" class="preloader-wrapper active center">
+                  <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div><div class="gap-patch">
+                      <div class="circle"></div>
+                    </div><div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="no-results" v-if="!loading && albumsPaginated.length === 0">
                   Sorry, but no Albums were found for your search.
                 </div>
             </div>
@@ -46,18 +59,22 @@ import { ArtistSearch } from '../Models/Artist';
     nextBtnVisibility = "visible"
 
     route = "AlbumDetail"
-    artistid = "AL1B"
+
+    loading = false
 
     get albumsPaginated() {
       return this.albums.slice(this.range, this.range + 7);
     }
 
     getAlbums() {
+      this.loading = true
+      
       if (this.searchQuery) {
         this.SearchByAlbum()
       } else {
         this.$store.dispatch('getAllAlbums')
           .then(res => this.albums = this.$store.state.albums)
+          .finally(() => this.loading = false)
       }
     }
 
@@ -94,6 +111,7 @@ import { ArtistSearch } from '../Models/Artist';
         .then(res => {
           this.albums = this.$store.state.albums
         })
+        .finally(() => this.loading = false)
 
       this.cancelSearchVisibility = "visible";
     }

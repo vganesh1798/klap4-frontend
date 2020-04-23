@@ -7,7 +7,20 @@
           <artistCard v-for="artist in artistsPaginated" :key="artist.id" :id="artist.id" :item="artist"
               :val1="artist.name" :val2="artist.genre_abbr" newRoute="ArtistDetail">
           </artistCard>
-          <div class="no-results" v-if="artistsPaginated.length === 0">
+
+          <div v-if="loading" class="preloader-wrapper active center">
+            <div class="spinner-layer spinner-green-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="no-results" v-if="!laoding && artistsPaginated.length === 0">
             Sorry, but no Artists were found for your search.
           </div>
       </div>
@@ -45,17 +58,22 @@ import { ArtistSearch } from '../Models/Artist';
     previousBtnVisibility = "visible"
     nextBtnVisibility = "visible"
 
+    loading = false
+
     get artistsPaginated() {
       return this.artists.slice(this.range, this.range + 7);
     }
 
     getArtists() {
+      this.loading = true
+
       if (this.searchQuery) {
         this.SearchByArtist()
       } else {
         this.$store.dispatch('getAllArtists').then(res => {
             this.artists = res;
-        });
+        })
+        .finally(() => this.loading = false)
       }
     }
 
@@ -91,7 +109,8 @@ import { ArtistSearch } from '../Models/Artist';
         this.$store.dispatch('getQueryArtists', this.searchQuery).then(res => {
             this.artists = res;
             console.log(this.artists);
-        });
+        })
+        .finally(() => this.loading = false)
 
       this.cancelSearchVisibility = "visible";
     }
