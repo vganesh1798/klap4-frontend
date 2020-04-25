@@ -4,16 +4,22 @@ import uploadBox from "../../components/Upload.vue";
 import defaultButton from "../../components/Button.vue"
 import playlist from "../../components/NewPlaylist.vue";
 import defaultTable from "../../components/Table.vue";
+import edit from "../../components/CurrentPlaylists.vue";
+import switchPlaylist from "../../components/PlaylistSwitch.vue";
+import draggable from "vuedraggable";
 
     @Component ({
         components: { uploadBox,
                       defaultButton,
                       playlist,
-                      defaultTable }
+                      defaultTable,
+                      edit,
+                      switchPlaylist,
+                      draggable }
     })
 
 export default class LogPage extends Vue {
-    playlistSelected: Boolean = false;
+    playlistSelected: Boolean = true;
     currentShow: string = "EXAMPLE_SHOW";
     song: string = "";
     artist: string = "";
@@ -24,6 +30,8 @@ export default class LogPage extends Vue {
     playlist_name: string = " ";
     uploadBox: Boolean = false;
     playlistBox: Boolean = false;
+    editBox: Boolean = false;
+    switchBox: Boolean = false;
     showPlaylists: Boolean = false;
 
     addSong() {
@@ -41,7 +49,6 @@ export default class LogPage extends Vue {
 
     removeSong(val: number) {
         this.currentShow = val.toString();
-        //this.entries.splice(val, 1);
         this.$delete(this.entries, val)
         num: this.num--;
     }
@@ -75,7 +82,30 @@ export default class LogPage extends Vue {
         return this.playlistBox;
     }
 
-    displayPlaylists() {
-        this.showPlaylists = !this.showPlaylists;
+    choosePlaylist() {
+        this.editBox = true; 
+    }
+
+    @Watch('closeEdit')
+    closeEdit() {
+        this.editBox = false;
+        return this.editBox;
+    }
+
+    switchPlaylist() {
+        this.switchBox = true;
+    }
+
+    @Watch('closeSwitch')
+    closeSwitch() {
+        this.switchBox = false;
+        return this.switchBox;
+    }
+    onMove({ relatedContext, draggedContext }) {
+        const relatedElement = relatedContext.element;
+        const draggedElement = draggedContext.element;
+        return (
+          (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
+        );
     }
 }

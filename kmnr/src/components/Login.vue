@@ -1,30 +1,33 @@
 <template>
-    <div class="login">
-        <div class="row">
-            <div class="col l11"></div>
-            <div class="col l1">
-                <defaultButton class="closeBtn" @click.native="closeLogin" type="submit">X</defaultButton>
+    <div class="loginpage">
+        <div class="blur-background" @click="closeLogin"></div>
+        <div class="login">
+            <div class="row">
+                <div class="col l11"></div>
+                <div class="col l1">
+                    <defaultButton class="closeBtn" @click.native="closeLogin" type="submit">X</defaultButton>
+                </div>
             </div>
+            <form>
+                <h1>Login</h1>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="username">Username</label>
+                        <input required type="text" id="username" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <label for="password">Password</label>
+                        <input required type="password" id="password" />
+                    </div>
+                </div>
+                <div class="row">
+                    <defaultButton class="colored btn" type="submit">Login</defaultButton>
+                </div>
+            </form>
+            <a href="http://www.account.kmnr.org">Forgot Password</a>
         </div>
-        <form>
-            <h1>Login</h1>
-            <div class="row">
-                <div class="input-field col s12">
-                    <label for="username">Username</label>
-                    <input required type="text" id="username" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <label for="password">Password</label>
-                    <input required type="password" id="password" />
-                </div>
-            </div>
-            <div class="row">
-                <defaultButton class="colored btn" type="submit">Login</defaultButton>
-            </div>
-        </form>
-        <a href="http://www.account.kmnr.org">Forgot Password</a>
     </div>
 </template>
 
@@ -49,6 +52,18 @@
 </script>
 
 <style lang="scss" scoped>
+.blur-background {
+    backdrop-filter: blur(2px);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    padding: 0% 5% 20% 5%;
+    z-index: 99;
+}
+
 h1 {
     color: black;
     text-align: center;
@@ -67,6 +82,7 @@ a {
     top: 10px;
     right: 10px;
     cursor: pointer;
+    color: black;
 }
 
 .login {
@@ -86,7 +102,7 @@ a {
 .btn {
     background-color: rgba(100,100,100, .4);
     position: absolute;
-    color: black;
+    color: white;
     left: 25%;
     bottom: 15%;
     border: 0 0 0 0;

@@ -2,22 +2,21 @@
   vertical-align: top;
 }
 
-div {
-  vertical-align: top;
-  margin: 0 0 0 0;
-}
-
 .bg-charts {
   background-image: url('../../assets/new.jpg');
   background-size: cover;
-  //background-position: center;
-  //background-repeat: no-repeat;
   background-size: cover;
   height: 100%;
 }
 
 .table-container {
   padding: 4% 10% 0% 10%;
+}
+
+.range-field {
+  width: 120px;
+  padding-top: 7%;
+  margin: 0 0 0 0;
 }
 
 .heading-charts-main {
@@ -101,6 +100,10 @@ input:focus {
   position: absolute;
   bottom: 15px;
   right: -35px;
+}
+
+.links {
+  color: black !important;
 }
 
 .bottom-button {
