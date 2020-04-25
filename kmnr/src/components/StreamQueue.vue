@@ -1,24 +1,24 @@
 <template>
-    <div>
-        <div class="playlist">
-            <h1 id="playlist-header">Playlist</h1>
-            <div id="song-list">
-                <div id="song-box" v-for="(song, index) in queue" :key="index" @click="updateSong(index)">{{ song.title }}</div>
+    <div class="queue">
+        <div class="row">
+            <div class="col l11"></div>
+            <div class="col l1">
+            <div class="playlist">
+                <h1 id="playlist-header">Playlist</h1>
+                <div id="song-list">
+                    <div id="song-box" v-for="(song, index) in queue" :key="index" @click="updateSong(index)">{{ song.title }}</div>
+                </div>
             </div>
         </div>
+    </div>
     </div>
 </template>
 
 <script lang="ts">
     import { Vue, Component } from 'vue-property-decorator'
-    import StreamingFooter from '../../components/StreamingFooter.vue'
    
-    @Component({
-        components: {
-            StreamingFooter
-        }
-    })
-    export default class StreamPage extends Vue {
+    @Component
+    export default class StreamQueue extends Vue {
         queue = [
             {
                 title: "Bitches Ain't Shit",

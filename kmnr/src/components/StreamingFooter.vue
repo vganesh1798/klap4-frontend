@@ -7,7 +7,7 @@
           <div id="duration">{{ totalDuration }}</div>
 
           <div class="controlsOuter center">
-              <div id="playlistBtn"><a @click="next()"><i class="material-icons-round">queue_music</i></a></div>
+              <div id="playlistBtn" ref="btn"><a @click="openQueue()"><i class="material-icons-round">queue_music</i></a></div>
               <div id="prevBtn"><a @click="prev()"><i class="material-icons-round">skip_previous</i></a></div>
               <div id="playPauseBtn">
                 <a @click="playPause(curIndex)">
@@ -23,25 +23,62 @@
         </div>
       </transition>
       <div class="progress-outer"><div id="prog-inner"></div></div>
+      <StreamQueue class="queue" v-show="queueOpen" v-closable="{exclude: ['btn'], handler: 'closeQueue'}"/>
     </div>
 </template>
 
 <script lang="ts">
   import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+  import * as V from 'vue'
+  import StreamQueue from './StreamQueue.vue'
   import { Howl } from 'howler'
 
-  @Component
+  let handleOutsideClick
+
+  @Component({
+    components: {
+      StreamQueue
+    },
+    directives: {
+      closable: {
+        bind (el, binding, vnode) {
+          handleOutsideClick = (e) => {
+            e.stopPropagation()
+            const { handler, exclude } = binding.value
+            let clickedOnExcludedEl = false
+            exclude.forEach(refName => {
+              if (!clickedOnExcludedEl) {
+                const excludedEl = vnode.context.$refs[refName]
+                clickedOnExcludedEl = excludedEl.contains(e.target)
+              }
+            })
+            if (!el.contains(e.target) && !clickedOnExcludedEl) {
+              vnode.context[handler]()
+            }
+          }
+          document.addEventListener('click', handleOutsideClick)
+          document.addEventListener('touchstart', handleOutsideClick)
+        },
+        unbind () {
+          document.removeEventListener('click', handleOutsideClick)
+          document.removeEventListener('touchstart', handleOutsideClick)
+        }
+      }
+    }
+  })
   export default class StreamingFooter extends Vue {
       @Prop({type: Array}) playlist?
       @Prop({type: Number, default: 0}) newIndex
       @Prop({type: Boolean, default: false}) open
+
+      queueOpen = false
 
       playing: boolean = false
       curIndex: number = 0
 
       cDur: string = '0:00'
 
-      curVol = .5
+      curVol = 1
       muted = false
 
       stillWatching = false
@@ -274,10 +311,22 @@
           this.muted = true
         }
       }
+
+      openQueue() {
+        this.queueOpen = true
+      }
+
+      closeQueue() {
+        this.queueOpen = false
+      }
   }
 </script>
 
 <style lang="scss" scoped>
+.queue {
+  position:fixed;
+}
+
 .volume-outer {
   cursor: pointer;
   margin-top: 1em;
@@ -298,7 +347,7 @@
     background-size: 100% 5px;
     background-repeat: no-repeat;
     background-position: center;
-    width: 50%;
+    width: 100%;
   }
 }
 
