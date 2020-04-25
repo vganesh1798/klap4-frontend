@@ -39,11 +39,18 @@
               </div>
             </div>
           </div>
-          <div class="col s6"></div>
-          <div class="col s2">
-            <a v-if="new_charts">Charts for the last weeks:  </a>
-            <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts">
+          <div class="col s5"></div>
+          <div class="col s2" v-if="new_charts">
+              <p>Top Charts from the last {{val}} weeks</p>
+            <!--a v-if="new_charts">Charts for the last weeks:  </a>
+            <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts"-->
           </div>
+          <div class="col s1" v-if="new_charts">
+            <p class="range-field">
+            <input v-model='val' type="range" id="test5" min="1" max="52" />
+            </p>
+            </div>
+
         </div>
 
         <table class="defaultTable chartsTable" v-if="chartsPaginated.length > 0">
@@ -54,8 +61,9 @@
               </td>
               <td style="width: 60%;">
                 <ul>
-                  <li>{{ item.album_name }}</li>
-                  <li> {{ item.artist_name }}</li>
+                  <router-link :to="{name:'AlbumDetail', params:{albumParam:item.album_id} }" class="links">{{item.album_name}}</router-link> 
+                  <!--router-link :to="{name:'ArtistDetail', params:{albumParam:item.artist_id} }">{{item.artist_name}}</router-link--> 
+                  <li>{{ item.artist_name }}</li>
                 </ul>
               </td>
               <td style="width: 28%;">

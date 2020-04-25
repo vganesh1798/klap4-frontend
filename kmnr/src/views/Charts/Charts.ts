@@ -21,6 +21,7 @@ export default class ChartsPage extends Vue {
     sort_selection = "Popularity";
     new_charts = false;
     weeks = 1;
+    val = 0;
 
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
