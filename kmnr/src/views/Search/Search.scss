@@ -1,0 +1,106 @@
+.heading-charts-main {
+    padding-top: 5.5%;
+    display: block;
+    font-size: 3.75vw;
+    text-align:center;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+  }
+
+.search-page {
+    background-image: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%);
+    background-position: center;
+    background-size: cover;
+    resize: both;
+    min-height: 100%;
+    height: auto;
+    width: 100%;
+    
+    .search-area {
+        padding-top: 2%;
+    }
+}
+
+.row {
+    margin-bottom: 0;
+}
+
+ /* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #000;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
+
+.search-close {
+    cursor: pointer;
+    margin-left: 4%;
+    width: 10rem;
+}
+.search-icon {
+    display: inline-block;
+    padding-top: 1%;
+    
+    .prefix {
+        font-size: 50px;
+    }
+    
+    a:hover {
+        text-decoration: none;
+    }
+
+    transition: transform .3s linear;
+}
+
+.centered {
+    transform: translate(75%, 0%);
+    transition: transform .3s linear;
+}
+
+.close-icon {
+    display: inline-block;
+    padding-top: 1%;
+    margin-left: 20%;
+    cursor: pointer;
+
+    .prefix {
+        font-size: 50px;
+    }
+    
+    a:hover {
+        text-decoration: none;
+    }
+}
+
+$secondaryTitleSize: 2.5vw;
+
+#album-id {
+    display: block;
+    font-size: $secondaryTitleSize;
+    padding-bottom: 1.5%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+}
+
+#artist-id {
+    display: block;
+    font-size: $secondaryTitleSize;
+    padding-bottom: 1.5%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+}
+
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
+  }
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+    opacity: 0
+}

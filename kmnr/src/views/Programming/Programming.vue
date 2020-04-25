@@ -125,13 +125,13 @@
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
   .main {
-
     margin: 0 auto;
   }
   .full-deets{
     background-image: url('../../assets/back7.jpg');
     background-size: cover;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
   } 
   .table {
     position: absolute;

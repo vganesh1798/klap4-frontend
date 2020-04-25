@@ -9,6 +9,7 @@ import ArtistPage from '../views/Artists/ArtistPage.vue';
 import ArtistDetail from '../views/Artists/ArtistDetail/Artistdeets.vue';
 import Charts from '../views/Charts/Charts.vue';
 import Programming from '../views/Programming/Programming.vue';
+import SearchPage from '../views/Search/Search.vue';
 
 Vue.use(VueRouter)
 
@@ -31,20 +32,15 @@ const routes = [
     component: LogPage
   },
   {
-    path: '/albums',
-    name: 'Album',
-    component: Albums
+    path: '/search',
+    name: 'Search',
+    component: SearchPage
   },
   {
     path: "/album-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
     name: 'AlbumDetail',
     component: AlbumDetail,
     props: true,
-  },
-  {
-    path: "/artists",
-    name: 'Artist',
-    component: ArtistPage
   },
   {
     path: "/artist-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
