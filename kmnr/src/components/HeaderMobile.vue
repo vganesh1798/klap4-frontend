@@ -5,8 +5,8 @@
     </div>
     <ul>
       <li><router-link to="/">Home</router-link></li>
-    <li><router-link to="/stream">Stream</router-link></li>
-    <l1><router-link to='/programming'>Programming</router-link></l1>
+      <li><router-link to="/stream">Stream</router-link></li>
+      <li><router-link to='/programming'>Programming</router-link></li>
       <li><router-link to="/playlists">Playlists</router-link></li>
       <li><router-link to="/albums">Albums</router-link></li>
       <li><router-link to="/artists">Artists</router-link></li>

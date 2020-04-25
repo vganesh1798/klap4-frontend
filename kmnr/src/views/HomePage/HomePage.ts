@@ -10,11 +10,22 @@ export default class HomePage extends Vue {
     scrolledR = false
     scrolledROnce = false
 
+    search_des = "Search away at your hearts content! We have a plethroa of songs in the KMNR library."
+
+    lxst_image = ''
+
     beforeMount() {
         window.addEventListener('scroll', () => {
             this.revealOnScroll('card-left-on-scroll', true)
             this.revealOnScroll('card-right-on-scroll')
         });
+        let images = require.context('../../assets/', false, /\.jpeg$/)
+        this.lxst_image = images('./LXST_Image.jpeg')
+        console.log(this.lxst_image)
+    }
+
+    created() {
+
     }
 
     beforeDestroy() {

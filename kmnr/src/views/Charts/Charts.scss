@@ -9,11 +9,11 @@ div {
 
 .bg-charts {
   background-image: url('../../assets/new.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
-  //background-position: center;
-  //background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%;
+  min-height: 100%;
+  height: auto;
 }
 
 .table-container {
