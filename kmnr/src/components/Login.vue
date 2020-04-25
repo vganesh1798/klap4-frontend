@@ -8,22 +8,27 @@
                     <defaultButton class="closeBtn" @click.native="closeLogin" type="submit">X</defaultButton>
                 </div>
             </div>
-            <form>
+            <form @submit.prevent="authenticate">
                 <h1>Login</h1>
+                <div class="row">
+                    <div class="col s9 offset-s2">
+                        <span v-show="error" class="error">Login failed, please try again.</span>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label for="username">Username</label>
-                        <input required type="text" id="username" />
+                        <input required type="text" id="username" v-model="username"/>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label for="password">Password</label>
-                        <input required type="password" id="password" />
+                        <input required type="password" id="password" v-model="pswd"/>
                     </div>
                 </div>
                 <div class="row">
-                    <defaultButton class="colored btn" type="submit">Login</defaultButton>
+                    <defaultButton class="green btn" type="submit">Login</defaultButton>
                 </div>
             </form>
             <a href="http://www.account.kmnr.org">Forgot Password</a>
@@ -39,19 +44,48 @@
         components: { defaultButton }
     })
     export default class login extends Vue {
-        close = false;
+        close = false
+
+        username = ''
+        pswd = ''
+
+        error = false
+
         constructor() {
             super()
         }
 
+        authenticate() {
+            const encoding = 'Basic ' + btoa(this.username + ':' + this.pswd)
+            console.log(encoding)
+            this.$store.dispatch('login', encoding).then(isUserAuth => {
+                console.log(isUserAuth)
+                if (isUserAuth)
+                    this.loggedIn()
+                else
+                    this.error = true
+            })
+        }
+
         @Emit('closeLogin') 
-            closeLogin() {
-                this.close = true;
-            }
+        closeLogin() {
+            this.close = true
+        }
+
+        @Emit('loggedIn')
+        loggedIn() {
+            this.close = true
+        }
     }
 </script>
 
 <style lang="scss" scoped>
+.error {
+    background-color: red;
+    color: black;
+    border-radius: 7px;
+}
+
 .blur-background {
     backdrop-filter: blur(2px);
     position: fixed;

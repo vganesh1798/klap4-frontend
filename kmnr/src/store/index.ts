@@ -46,7 +46,7 @@ export default new Vuex.Store({
     },
     addSingleAlbum(state, sAlbum: DisplayAlbum) {
       state.singleAlbum = sAlbum
-    }
+    },
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
   actions: {
@@ -142,6 +142,35 @@ export default new Vuex.Store({
           return res.data
         })
         .catch(err => console.log(err))
+    },
+    login({commit, state}, encoding: string) {
+      return axios.post(`http://localhost:5000/token/auth`, {}, {headers: {'Authorization': encoding}, withCredentials: true})
+        .then(res => {
+          if (res.status !== 200)
+            return false
+
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    logout() {
+      return axios.post(`http://localhost:5000/token/remove`, {}, {withCredentials: true})
+        .then(res => {
+          if (res.status !== 200)
+            return false
+
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    getCurrUser() {
+      let secure = {}
+      return axios.get('http://localhost:5000/', {withCredentials: true})
+        .then(res => {
+          console.log(res.data['logged-in-as'])
+        })
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import
