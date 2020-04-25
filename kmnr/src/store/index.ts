@@ -53,7 +53,7 @@ export default new Vuex.Store({
     getAllLogs() {
       return axios
         // Call the api at localhost:8000
-        .get('http://localhost:8000')
+        .get('http://localhost:5000')
         // Retrieve the response when available
         .then(res =>  {
           // Loop through all logs within the response
@@ -138,7 +138,6 @@ export default new Vuex.Store({
       return axios.get(`http://localhost:5000/display/album/${id}`)
         .then(res => {
           this.commit('addSingleAlbum', (res.data as DisplayAlbum))
-          console.log(res.data)
           return res.data
         })
         .catch(err => console.log(err))

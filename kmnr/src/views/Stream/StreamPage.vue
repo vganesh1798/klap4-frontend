@@ -6,7 +6,6 @@
                 <div id="song-box" v-for="(song, index) in queue" :key="index" @click="updateSong(index)">{{ song.title }}</div>
             </div>
         </div>
-        <StreamingFooter :playlist="queue" :newIndex="index" />
     </div>
 </template>
 
