@@ -3,78 +3,60 @@
     <h1>
       <span class="artists-heading-main">Artist Information</span>
     </h1>
-    <div id="flex-container">
-      <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child">
-        <md-card>
-          <md-card-media>
-            <img class="artist-image" src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
-          </md-card-media>
-
-          <md-card-header>
-            <div class="md-title">{{artist.name}}</div>
-            <div class="md-subhead">{{artist.name}}</div>
-          </md-card-header>
-         
-          <md-card-expand>
-            <md-card-actions md-alignment="space-between">
-              <md-card-expand-trigger>
-                <md-button>Details</md-button>
-              </md-card-expand-trigger>
-            </md-card-actions>
-
-            <md-card-expand-content>
-              <md-card-content>
-                ID: {{artist.id}} <br />
-                Genre: {{artist.genre_abbr}} <br />
-                Tracks: this will become list of albums i think
-              </md-card-content>
-            </md-card-expand-content>
-          </md-card-expand>
-        </md-card>
-      </div>
-
-      <div class="container">
-          <div class="row">
-            <div class="col s6">
-              <md-table class="table" v-model="albums" md-card>
-                <md-table-toolbar>
-                  <h1 class="md-title">Albums</h1>
-              </md-table-toolbar>
-
-                <md-table-row slot="md-table-row" slot-scope="{item}">
-                  <md-table-cell md-label="ID" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-                  <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-                  <md-table-cell md-label="Format" md-sort-by="run">{{ item.format_bitfield }}</md-table-cell>
-                  <md-table-cell md-label="Notes" md-sort-by="missing">{{ item.missing }}</md-table-cell>
-                </md-table-row>
-              </md-table>
-            </div>
+    <div id="container">
+      <div class="row">
+        <div class="col s2 offset-s2">
+        <div class="card">
+          <div class="card-image">
+            <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
+          <div class="card-content">
+            <span class="card-title">{{artist.name}}</span>
+            <p>{{artist.genre_abbr}}</p>
+          </div>
+        </div>
+        </div>
+
+        <div class="albums col s4 offset-s1">
+          <table class="albumsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Format</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="item in albums" :key="item.id">
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.format_bitfield }}</td>
+                <td>{{ item.missing }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-
-
-
-
   </div>
-
 </template>
 
 <script lang="ts" src='./Artistdeets.ts' />
 
 
-<style scoped>
+<style lang="scss" scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
-  .main {
-
-    margin: 0 auto;
+  #container {
+    padding-top: 3%;
   }
 
-  .table {
-    position: absolute;
-    width: 30% !important;
-    margin-left: 5% !important;
+  .albums {
+    max-height: 53vh;
+    min-width: 250px;
+    overflow: auto;
   }
 
   .artists-heading-main {
@@ -88,56 +70,13 @@
     font-family: 'Montserrat';
   }
 
-  .artist-image {
-    border: 7px solid black;
-    /* border-radius: 50%; */
-    padding: 2px;
-    width: 100%;
-    background-color: black;
-  }
-
-  .md-card {
-    width: 220px;
+  .card {
+    width: 250px;
     margin: 4px;
     display: inline-block;
     vertical-align: top;
-  }
-
-  .md-title {
-    font-family: 'Montserrat';
-  }
-
-  #flex-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-left: 20%;
-    padding-top: 5%;
-  }
-
-  .flex-child {
-    margin-left: 10%;
-  }
-
-  .md-card {
-    opacity: 90%
-  }
-
-  .md-table {
-    width: 100%;
-    opacity: 90%;
-  }
-
-  #first {
-    color: black;
-  }
-
-  #review {
-    color: black;
-  }
-
-  #last {
-    color: black;
+    background-color: rgba(100,100,100,.3);
+    padding: 4%;
   }
 
   .row {
