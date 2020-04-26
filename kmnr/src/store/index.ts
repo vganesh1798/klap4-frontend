@@ -5,7 +5,7 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
-import Program, {ProgramSearch} from '../Models/Program'
+import Program, {ProgramSearch, ProgramSlots} from '../Models/Program'
 
 import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
 
@@ -22,7 +22,9 @@ export default new Vuex.Store({
     singleArtist: {},
     albums: Array<Album>(),
     singleAlbum: {},
+    currentUser: '',
     programs: Array<Program>(),
+    schedule: Array<ProgramSlots>()
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -49,8 +51,14 @@ export default new Vuex.Store({
     addSingleAlbum(state, sAlbum: DisplayAlbum) {
       state.singleAlbum = sAlbum
     },
+    setUser(state, curUser: string) {
+      state.currentUser = curUser
+    },
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
+    },
+    addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
+      state.schedule = newProgramSlots
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -58,7 +66,7 @@ export default new Vuex.Store({
     getAllLogs() {
       return axios
         // Call the api at localhost:8000
-        .get('http://localhost:8000')
+        .get('http://localhost:5000')
         // Retrieve the response when available
         .then(res =>  {
           // Loop through all logs within the response
@@ -195,7 +203,15 @@ export default new Vuex.Store({
       let secure = {}
       return axios.get('http://localhost:5000/', {withCredentials: true})
         .then(res => {
-          console.log(res.data['logged-in-as'])
+          this.commit('setUser', res.data['logged-in-as'])
+          return res.data
+        })
+    },
+    getProgramSlots() {
+      return axios.get('http://localhost:5000/programming/log')
+        .then(res => {
+          this.commit('addToProgramSlots', (res.data as Array<ProgramSlots>))
+          return res.data
         })
     }
   },
