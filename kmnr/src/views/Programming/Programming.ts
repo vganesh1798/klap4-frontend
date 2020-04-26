@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 
-import {ProgramSearch} from '../../Models/Program';
+import {ProgramSearch, ProgramSlots} from '../../Models/Program';
 
 
 enum Days {
@@ -29,11 +29,14 @@ export default class Programming extends Vue {
 
     schedule: any = []
     curIndex: number = 0
+    today: number = 0
 
     identified = true
 
     programName = ''
     duration = ''
+
+    scheduleInputs: any = [['', ''], ['', ''], ['', '']]
 
     curDay(ind) {
         return Days[ind]
@@ -48,8 +51,8 @@ export default class Programming extends Vue {
 
     getAllLogs() {
         this.$store.dispatch('getProgramSlots').then(() => {
-            this.logList = this.$store.state.schedule.program_slots
-            this.pagnateHours(this.logList.length/2)
+            this.logList = this.$store.state.schedule.program_slots.yesterday.concat(this.$store.state.schedule.program_slots.today, this.$store.state.schedule.program_slots.tomorrow)
+            this.pagnateHours(this.logList.length/3)
         })
     }
 
@@ -63,7 +66,12 @@ export default class Programming extends Vue {
     }
 
     pagnateHours(fullHour) {
-        let curHour = new Date().getHours()
+        for (let idx = 0; idx < this.logList.length; idx++) {
+            if ((this.logList[idx] as ProgramSlots).program_type === 'station_id')
+                this.logList.splice(+idx,1)
+        }
+    
+        let curHour = new Date().getHours() + 24
         
         if (curHour === 0) curHour = 24
 
@@ -80,6 +88,8 @@ export default class Programming extends Vue {
             frontToMidLogs.push([this.setLogs(frontToMidRange[i] - 1), this.setLogs(frontToMidRange[i]), this.setLogs(frontToMidRange[i] + 1)])
         }
 
+        console.log(frontToMidLogs)
+
         for (let i in midToBackRange) {
             if (midToBackRange[i] !== curHour) {
                 midToBackLogs.push([this.setLogs(midToBackRange[i] - 1), this.setLogs(midToBackRange[i]), this.setLogs(midToBackRange[i] + 1)])
@@ -89,18 +99,27 @@ export default class Programming extends Vue {
         frontToMidLogs.reverse()
 
         this.schedule = [beginLogs, ...frontToMidLogs, ...midToBackLogs, endLogs]
-        console.log(this.schedule)
+
         this.curIndex = frontToMidLogs.length
+
+        this.today = this.curIndex
     }
 
     pageUp() {
-        if (this.curIndex + 1 > this.logList.length)
-            this.curIndex++
-    }
+        if (this.curIndex + 1 < this.schedule.length)
+            this.curIndex += 1
+
+    }   
 
     pageDown() {
-        if (this.curIndex - 1 < 0)
-            this.curIndex--
+        if (this.curIndex - 1 > 0)
+            this.curIndex -= 1
+
+        console.log(this.curIndex)
+    }
+
+    setToCurDay() {
+        this.curIndex = this.today
     }
 
     setLogs(index): Array<number> {
