@@ -5,10 +5,14 @@ import store from './store'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+import VueCookies from 'vue-cookies'
 
+Vue.use(VueCookies)
 Vue.use(VueMaterial)
 
 Vue.config.productionTip = false
+
+Vue.$cookies.config('7d')
 
 new Vue({
   router,

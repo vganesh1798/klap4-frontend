@@ -5,6 +5,7 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
+import Program, {ProgramSearch, ProgramSlots} from '../Models/Program'
 
 import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
 
@@ -20,7 +21,10 @@ export default new Vuex.Store({
     artists: Array<Artist>(),
     singleArtist: {},
     albums: Array<Album>(),
-    singleAlbum: {}
+    singleAlbum: {},
+    currentUser: '',
+    programs: Array<Program>(),
+    schedule: Array<ProgramSlots>()
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -46,6 +50,15 @@ export default new Vuex.Store({
     },
     addSingleAlbum(state, sAlbum: DisplayAlbum) {
       state.singleAlbum = sAlbum
+    },
+    setUser(state, curUser: string) {
+      state.currentUser = curUser
+    },
+    addToPrograms(state, newProgram: Array<Program>) {
+      state.programs = newProgram
+    },
+    addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
+      state.schedule = newProgramSlots
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -53,7 +66,7 @@ export default new Vuex.Store({
     getAllLogs() {
       return axios
         // Call the api at localhost:8000
-        .get('http://localhost:8000')
+        .get('http://localhost:5000')
         // Retrieve the response when available
         .then(res =>  {
           // Loop through all logs within the response
@@ -142,6 +155,64 @@ export default new Vuex.Store({
           return res.data
         })
         .catch(err => console.log(err))
+    },
+    getAllPrograms() {
+      return axios.get('http://localhost:5000/search/program')
+        .then(res => {
+          this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    getQueriedPrograms({commit, state}, programParams: ProgramSearch) {
+      const searchQuery = {
+        'programType': programParams.type,
+        'name': programParams.name,
+      }
+
+      return axios.post('http://localhost:5000/search/program', searchQuery)
+        .then(res => {
+          this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    login({commit, state}, encoding: string) {
+      return axios.post(`http://localhost:5000/token/auth`, {}, {headers: {'Authorization': encoding}, withCredentials: true})
+        .then(res => {
+          if (res.status !== 200)
+            return false
+
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    logout() {
+      return axios.post(`http://localhost:5000/token/remove`, {}, {withCredentials: true})
+        .then(res => {
+          if (res.status !== 200)
+            return false
+
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    getCurrUser() {
+      let secure = {}
+      return axios.get('http://localhost:5000/', {withCredentials: true})
+        .then(res => {
+          this.commit('setUser', res.data['logged-in-as'])
+          return res.data
+        })
+    },
+    getProgramSlots() {
+      return axios.get('http://localhost:5000/programming/log')
+        .then(res => {
+          this.commit('addToProgramSlots', (res.data as Array<ProgramSlots>))
+          return res.data
+        })
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import
