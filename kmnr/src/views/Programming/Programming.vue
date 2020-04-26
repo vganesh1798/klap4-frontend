@@ -12,19 +12,22 @@
         <div class="col s6">
           <div class="log-container">
             <div class="log-contents">
-              <div v-for="log in schedule[curIndex]" :key="log[0].id">
+              <div v-for="(log, index) in schedule[curIndex]" :key="log[0].id">
                 <div class="log-entry">
                   <div class="log-header">
                     <span class="time">{{toTime(log[0].time)}}</span>
                     <span class="day">{{curDay(log[0].day)}}</span>
                     <span class="station-id"><a @click="stationIdentified()">
-                      <i class="material-icons-round">{{identified ? 'check_circle' : 'radio_button_unchecked'}}</i></a>
+                      <i class="material-icons-round" :class="{
+                        'disabled': Math.abs(curIndex - today) > 1,
+                        'enabled': Math.abs(curIndex - today) <= 1
+                        }">{{identified ? 'check_circle' : 'radio_button_unchecked'}}</i></a>
                     </span>
                   </div>
-                  <div class="log-body" v-for="type in log" :key="type.id">
+                  <div class="log-body" v-for="(type, index2) in log" :key="type.id">
                     <span class="type">{{type.program_type}}</span><span class="delete"><a><i class="material-icons-round">delete</i></a></span>
                     <div class="program-name input-field">
-                      <input :id="type.id + 'a'" class="program-input" type="text" v-model="programName" />
+                      <input :id="type.id + 'a'" class="program-input" type="text" v-model="programName" :disabled="Math.abs(curIndex - today) > 1"/>
                       <label :for="type.id + 'a'" class="text-black">Program</label>
                     </div>
                   </div>
@@ -140,6 +143,12 @@
         position: relative;
         left: 3%;
         top: 25%;
+        width: 25%;
+        height: 1.2em;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -166,9 +175,17 @@
       margin-top: .5%;
 
       .material-icons-round {
+        font-size: 30px;
+      }
+
+      .enabled {
         cursor: pointer;
         color: #4daf7c;
-        font-size: 30px;
+      }
+
+      .disabled {
+        cursor: not-allowed;
+        color: #393939;
       }
 
       a:hover {
@@ -178,7 +195,7 @@
 
     .program-name {
       width: 10vw;
-      margin-right: 10em;
+      margin-right: 25%;
       bottom: 1.5em;
       height: 0px;
       position: relative;
@@ -330,12 +347,20 @@
 
 
   /* Inactive/Active Default input field color */
-    .input-field input[type]:not([readonly]),
-    .input-field input[type]:focus:not([readonly]),
+    .input-field input[type=text]:not([readonly]),
+    .input-field input[type=text]:focus:not([readonly]),
     .input-field textarea:not([readonly]),
     .input-field textarea:focus:not([readonly]) {
-        border-bottom: 0px solid black;
-        box-shadow: 0 1px 0 0 black;
+        border-bottom: 1px solid black;
+        box-shadow: 0 0px 0 0 black;
+    }
+
+    .input-field input[type]:not([readonly]):disabled,
+    .input-field input[type]:focus:not([readonly]):disabled,
+    .input-field textarea:not([readonly]):disabled,
+    .input-field textarea:focus:not([readonly]):disabled {
+        border-bottom: 1px dotted #393939;
+        box-shadow: 0 0px dotted 0 0 #393939 !important;
     }
 
     /* Inactive/Active Default input label color */

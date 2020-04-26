@@ -69,7 +69,8 @@ export default class Programming extends Vue {
     }
 
     stationIdentified() {
-        this.identified = !this.identified
+        if (Math.abs(this.curIndex - this.today) <= 1)
+            this.identified = !this.identified
     }
 
     pagnateHours(fullHour) {
