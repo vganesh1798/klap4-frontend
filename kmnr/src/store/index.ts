@@ -5,9 +5,9 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
-import Program, {ProgramSearch} from '../Models/Program'
+import Program, {ProgramSearch, ProgramLogEntry} from '../Models/Program'
 
-import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
+import DisplayAlbum, {Album, AlbumSearch, Reviews, Problem} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -23,6 +23,9 @@ export default new Vuex.Store({
     albums: Array<Album>(),
     singleAlbum: {},
     programs: Array<Program>(),
+    logEntry: Array<ProgramLogEntry>(),
+    reviews: Array<Reviews>(),
+    problems: Array<Problem>()
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -51,6 +54,15 @@ export default new Vuex.Store({
     },
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
+    },
+    addToLog(state, newLog: Array<ProgramLogEntry>) {
+      state.logEntry = newLog
+    },
+    addToReviews(state, newReview: Array<Reviews>) {
+      state.reviews = newReview
+    },
+    addToProblems(state, newProblem: Array<Problem>) {
+      state.problems = newProblem
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -168,6 +180,83 @@ export default new Vuex.Store({
           return res.data
         })
         .catch(err => console.log(err))
+    },
+    getProgrammingLogEntry({commit, state}) {
+      return axios.get('http://localhost:5000//programming/log')
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          console.log(res.data)
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    postProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+        const postObject = {
+          'programType': logParams.type,
+          'programName': logParams.name,
+          'slotId': logParams.slotId,
+          'Dj': logParams.dj
+        }
+
+        return axios.post('http://localhost:5000/programming/log', postObject)
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    updateProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+      const updateObject = {
+        'programType': logParams.type,
+        'programName': logParams.name,
+        'slotId': logParams.slotId,
+        'Dj': logParams.dj,
+        'newName': logParams.newName
+      }
+
+      return axios.put('http://localhost:5000/programming/log', updateObject)
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    removeProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+      const removeObject = {
+        'programType': logParams.type,
+        'timestamp': logParams.timestamp,
+        'Dj': logParams.dj
+      }
+
+      return axios.delete('http://localhost:5000/programming/log', {params: {"object": removeObject}})
+      .then((res) => console.log(res.data))
+      .catch(err => console.log(err))
+    },
+    postReview({commit, state}, reviewParams: Reviews) {
+      const postObject = {
+        'dj_id': reviewParams.dj_id,
+        'content': reviewParams.content
+      }
+
+      return axios.post('http://localhost:5000/album/review', postObject)
+      .then(res => {
+        this.commit('addToReviews', (res.data as Array<Reviews>))
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+    postProblem({commit, state}, problemParams: Problem) {
+      const postObject = {
+        'dj_id': problemParams.dj_id,
+        'content': problemParams.content
+      }
+
+      return axios.post('http://localhost:5000/album/problem', postObject)
+      .then(res => {
+        this.commit('addToProblems', (res.data as Array<Problem>))
+        return res.data
+      })
+      .catch(err => console.log(err))
     },
     login({commit, state}, encoding: string) {
       return axios.post(`http://localhost:5000/token/auth`, {}, {headers: {'Authorization': encoding}, withCredentials: true})
