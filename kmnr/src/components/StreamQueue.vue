@@ -41,6 +41,9 @@
 </script>
 
 <style type="scss" scoped> 
+#playlist-header{
+    margin-left: 50%;
+}
 .playlist {
     position: absolute;
     top: 15%;
@@ -58,6 +61,6 @@
 }
 #song-box:hover {
     cursor: pointer;
-    background-color:darkgray;
+    background-color:rgb(10, 10, 10);
 }
 </style>

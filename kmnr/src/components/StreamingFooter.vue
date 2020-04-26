@@ -48,12 +48,12 @@
             let clickedOnExcludedEl = false
             exclude.forEach(refName => {
               if (!clickedOnExcludedEl) {
-                const excludedEl = vnode.context.$refs[refName]
+                const excludedEl = (vnode.context as any).$refs[refName]
                 clickedOnExcludedEl = excludedEl.contains(e.target)
               }
             })
             if (!el.contains(e.target) && !clickedOnExcludedEl) {
-              vnode.context[handler]()
+              (vnode.context as any)[handler]()
             }
           }
           document.addEventListener('click', handleOutsideClick)
