@@ -1,6 +1,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 
-import {ProgramSearch, ProgramSlots} from '../../Models/Program';
+import {ProgramSearch, ProgramSlots, ProgramLogEntry} from '../../Models/Program';
 
 
 enum Days {
@@ -24,6 +24,13 @@ export default class Programming extends Vue {
     programs = [];
     typeSearch = "";
     nameSearch = "";
+    
+    logEntry = [];
+    slotIdSearch = "";
+    djSearch = "";
+    newNameSearch = "";
+    timestampSearch = "";
+
 
     logList = []
 
@@ -136,6 +143,56 @@ export default class Programming extends Vue {
             .then(res => {
                 this.programs = this.$store.state.programs;
             });
+    }
+
+    postLogEntry() {
+        const logParams: ProgramLogEntry = {
+            type: this.typeSearch.toLowerCase(),
+            name: this.nameSearch.toLowerCase(),
+            slotId: +this.slotIdSearch,
+            dj: this.djSearch,
+            newName: '',
+            timestamp: ''
+        };
+        this.$store.dispatch('postProgramLogEntry', logParams)
+            .then(res => {
+               this.logEntry = this.$store.state.logEntry;
+            }
+        );
+    }
+
+    updateLogEntry() {
+        const logParams: ProgramLogEntry = {
+            type: this.typeSearch.toLowerCase(),
+            name: this.nameSearch.toLowerCase(),
+            slotId: +this.slotIdSearch,
+            dj: this.djSearch,
+            newName: this.newNameSearch,
+            timestamp: ''
+        };
+
+        this.$store.dispatch('updateProgramLogEntry', logParams)
+            .then(res => {
+               this.logEntry = this.$store.state.logEntry;
+            }
+        );
+    }
+
+    removeLogEntry() {
+        const logParams: ProgramLogEntry = {
+            type: this.typeSearch.toLowerCase(),
+            timestamp: this.timestampSearch,
+            dj: this.djSearch,
+            slotId: 0,
+            name: '',
+            newName: ''
+        };
+
+        this.$store.dispatch('removeProgramLogEntry', logParams)
+            .then(res => {
+               this.logEntry = this.$store.state.logEntry;
+            }
+        );
     }
 
     toTime(time) {
