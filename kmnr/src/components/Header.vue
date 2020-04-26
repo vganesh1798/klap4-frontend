@@ -18,7 +18,7 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }">
-              <input id="search" placeholder="Search" type="search">
+              <input id="search" placeholder="Quickjump" type="search">
               <!--<label class="label-icon" for="search"><i class="material-icons">search</i></label>
               <i class="material-icons" v-if="searching">close</i>-->
             </div>

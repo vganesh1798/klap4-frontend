@@ -1,5 +1,5 @@
 <template>
-  <div class="full-deets">
+  <div class="container full-deets">
     <h1>
       <span class="prog-heading-main">Programming</span>
     </h1>
@@ -34,19 +34,23 @@
       <div class="container">
           <div class="row">
             <div class="col s6">
-              <md-table class="table" v-model="Tracks" md-card>
+              <md-table class="table" v-model="programs" md-card>
                 <md-table-toolbar>
-                  <h1 class="md-title">Category</h1>
+                  <div class="inputSearch">
+                    <input v-model=typeSearch type="text" class="search-bar" placeholder="Search programming by type" @keyup.enter="searchProgram()">
+                    <input v-model=nameSearch type="text" class="search-bar" placeholder="Search programming by name">
+                  </div>
                 </md-table-toolbar>
                 <md-dialog-alert
                     :md-active.sync="second"
                     md-title="Post created!"
                     md-content="Your post <strong>Material Design is awesome</strong> has been created." />
                 <md-table-row slot="md-table-row" slot-scope="{ item }">
-                  <md-table-cell md-label="Number" md-sort-by="id" md-numeric>{{ item.id }}
+                  <md-table-cell md-label="Type" md-sort-by="id" md-numeric>{{ item.type }}
+                    <md-tooltip md-direction="top">More information</md-tooltip>
                   </md-table-cell>
-                  <md-table-cell md-label="Name" md-sort-by="name">{{item.name}}
-                     <md-tooltip md-direction="top">Info Text</md-tooltip> </md-table-cell>
+                  <md-table-cell md-label="Name" md-sort-by="name">{{item.name}} </md-table-cell>
+                  <md-table-cell md-label="Months" md=
                 </md-table-row>
               </md-table>
             </div>
@@ -61,64 +65,7 @@
 
 </template>
 
-<script lang="ts">
-
-  import {
-    Component,
-    Vue
-  } from 'vue-property-decorator';
-  @Component({})
-  export default class Programming extends Vue {
-    album = {}
-    Tracks = [{
-        id: 1,
-        name: 'Shawna Dubbin',
-        run: '3:56',
-        plays: '245'
-      },
-      {
-        id: 2,
-        name: 'Odette Demageard',
-        run: '4:12',
-        plays: '2422'
-
-      },
-      {
-        id: 3,
-        name: 'Lonnie Izkovitz',
-        run: '3:02',
-        plays: '445'
-      },
-      {
-        id: 4,
-        name: 'Thatcher Stave',
-        run: '3:42',
-        plays: '3545'
-      },
-      {
-        id: 5,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '335'
-      },
-      {
-        id: 6,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '345'
-      },
-      {
-        id: 7,
-        name: 'Clarinda Marieton',
-        run: '5:00',
-        plays: '665'
-      }
-    ]
-    created() {
-      this.album = this.$route.params.albumParam
-    }
-  }
-</script>
+<script lang="ts" src="./Programming.ts" />
 
 
 <style scoped>

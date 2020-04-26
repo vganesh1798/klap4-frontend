@@ -5,6 +5,7 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
+import Program, {ProgramSearch} from '../Models/Program'
 
 import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
     artists: Array<Artist>(),
     singleArtist: {},
     albums: Array<Album>(),
-    singleAlbum: {}
+    singleAlbum: {},
+    programs: Array<Program>(),
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -47,6 +49,9 @@ export default new Vuex.Store({
     addSingleAlbum(state, sAlbum: DisplayAlbum) {
       state.singleAlbum = sAlbum
     },
+    addToPrograms(state, newProgram: Array<Program>) {
+      state.programs = newProgram
+    }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
   actions: {
@@ -139,6 +144,27 @@ export default new Vuex.Store({
         .then(res => {
           this.commit('addSingleAlbum', (res.data as DisplayAlbum))
           console.log(res.data)
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    getAllPrograms() {
+      return axios.get('http://localhost:5000/search/program')
+        .then(res => {
+          this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    getQueriedPrograms({commit, state}, programParams: ProgramSearch) {
+      const searchQuery = {
+        'programType': programParams.type,
+        'name': programParams.name,
+      }
+
+      return axios.post('http://localhost:5000/search/program', searchQuery)
+        .then(res => {
+          this.commit('addToPrograms', (res.data as Array<Program>))
           return res.data
         })
         .catch(err => console.log(err))
