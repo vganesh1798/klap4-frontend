@@ -14,7 +14,12 @@
                             class="playlist-element" 
                             v-for="playlist in playlists" 
                             :key="playlist['id']">
+                            <button type="button" @click="newPlaylist(playlist['name'])">
                             {{playlist['name']}}
+                            </button>
+                            <button type="button" @click="deletePlaylist(playlist['name'])" class="btn-floating btn waves-effect waves-light red">
+                            <i class="material-icons">delete</i>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -34,9 +39,42 @@ export default class PlaylistSwitch extends Vue {
 
     closed = false;
 
+    created() {
+        this.getPlaylists();
+      }
+
+    getPlaylists() {
+        const djParam = {
+                dj_id: "test"
+            }
+        this.$store.dispatch('displayPlaylists', djParam.dj_id).then(res => {
+            this.playlists = res;
+            console.log(this.playlists);
+        });
+    }
+
+    deletePlaylist(playlistName) {
+        const playlistParam = {
+                dj_id: "test",
+                p_name: playlistName
+            }
+        console.log(playlistParam);
+        this.$store.dispatch('deletePlaylist', playlistParam).then(res => {
+            //this.playlists = res;
+            //console.log(this.playlists);
+    });
+    this.getPlaylists();
+    }
+
     @Emit('closeSwitch')
     closeSwitch() {
         this.closed = true;
+    }
+
+    @Emit('newPlaylist')
+    newPlaylist(name) {
+        console.log("emit new playlist");
+        this.closeSwitch();
     }
 }
 </script>

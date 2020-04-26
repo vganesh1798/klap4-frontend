@@ -8,7 +8,19 @@
         <form enctype="multipart/form-data">
             <input type="file" name="file" id="filebtn" accept=".txt, .csv" v-on:change="fileChange($event.target.files)" />
             <defaultButton class="colored uploadBtn" type="submit" @click.native="upload()">Upload</defaultButton>
-        </form>     
+        </form>
+       <!--form enctype="multipart/form-data">
+       <div class="dropbox">
+            <input type="file" name="file" id="filebtn" accept=".txt, .csv" v-on:change="fileChange($event.target.files)" />
+            <p v-if="isInitial">
+              Drag your file(s) here to begin<br> or click to browse
+            </p>
+            <p v-if="isSaving">
+              Uploading {{ fileCount }} files...
+            </p>
+            <defaultButton class="colored uploadBtn" type="submit" @click.native="upload()">Upload</defaultButton>
+       </div>
+        </form-->
     </div>
 </template>
 
@@ -23,6 +35,8 @@
     export default class upload extends Vue {
         files = new FormData();
         close = false
+        isInitial = true;
+        isSaving = false;
         
         constructor() {
             super()
@@ -54,13 +68,16 @@
     font-size: 40px;
 }
 
-input {
-    height: 150px;
-    width: 450px;
-    background-color: lightgray;
-    border-radius: 3%;
-}
+//input {
+//    height: 150px;
+//    width: 450px;
+//    background-color: lightgray;
+//    border-radius: 3%;
+//}
 
+#filebtn{
+    opacity: 0;
+}
 h1 {
     color:black;
     text-align: center;
@@ -93,5 +110,35 @@ h1 {
     left: 94%;
     top: 1%;
 }
+
+
+.dropbox {
+    outline: 2px dashed grey; /* the dash box */
+    outline-offset: -10px;
+    background: lightcyan;
+    color: dimgray;
+    padding: 10px 10px;
+    min-height: 200px; /* minimum height */
+    position: relative;
+    cursor: pointer;
+  }
+
+  .input-file {
+    opacity: 0; /* invisible but it's there! */
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    cursor: pointer;
+  }
+
+  .dropbox:hover {
+    background: lightblue; /* when mouse over to the drop zone, change color */
+  }
+
+  .dropbox p {
+    font-size: 1.2em;
+    text-align: center;
+    padding: 50px 0;
+  }
 
 </style>

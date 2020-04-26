@@ -4,14 +4,14 @@
             <div v-if="playlistSelected">
                 <defaultButton class="colored uploadButton" @click.native="allowUpload()">Upload A Playlist</defaultButton>
                 <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
-                <defaultButton class="colored editButton" @click.native="choosePlaylist()">Switch Playlist</defaultButton>
-                <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch"></switchPlaylist>
+                <defaultButton class="colored editButton" @click.native="switchPlaylist()">Switch Playlist</defaultButton>
+                <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch" @newPlaylist="newPlaylist"></switchPlaylist>
                 <edit v-if="editBox" @closeEdit="closeEdit"></edit>
-                <h1>Playlists</h1>
+                <h1>{{currentShow}}</h1>
                 <div class="row">
                     <div class="col s6 offset-s3">
                         <div class="form">
-                            <form>
+                            <form @submit.prevent="addSong">
                                 <div class="row">
                                     <div class="col s12">
                                         <label for="song">Song</label>
@@ -34,7 +34,7 @@
                                 <br/>
 
                                 <defaultButton class="colored mybtn" type="submit" style="margin-right: 15px;">Post playlist!</defaultButton>
-                                <defaultButton class="colored mybtn" type="button" @click.native="savePlaylist()">Save playlist!</defaultButton>
+                                <defaultButton class="colored mybtn" type="submit" @click.native="savePlaylist()">Save playlist!</defaultButton>
                             </form>
                         </div>
                     </div>
@@ -46,14 +46,14 @@
                                     <th scope="col" class="header">Song</th>
                                     <th scope="col" class="header">Artist</th>
                                     <th scope="col" class="header">Album</th>
-                                    <th scope="col" class="delete" style="min-width: 20px;"></th>
+                                    <th scope="col" class="delete" style="min-width: 35px;"></th>
                                 </tr>
                             </thead>
                             <!--tbody-->
                                 <draggable v-model="entries" group="people" @start="drag=true" @end="drag=false">
                                     <tr v-for="(entry, index) in entries" :key="entry.id">
-                                        <td class="tablecols">
-                                            <p>{{ entry.song }}</p>
+                                        <td >
+                                            <p>{{ entry.reference }}</p>
                                         </td>
                                         <td class="tablecols">
                                             <p>{{entry.artist}}</p>
@@ -90,10 +90,10 @@
                         <defaultButton class="colored largebtn" @click.native="switchPlaylist()">Edit Playlist</defaultButton>
                     </div>
                 </div>
-                <playlist v-if="playlistBox" @closePlaylist="closePlaylist"></playlist>
+                <playlist v-if="playlistBox" @closePlaylist="closePlaylist" @newPlaylistCreated="newPlaylistCreated"></playlist>
                 <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
                 <!--edit v-if="editBox" @closeEdit="closeEdit"></edit-->
-                <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch"></switchPlaylist>
+                <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch" @newPlaylist="newPlaylist"></switchPlaylist>
                 <table v-if="showPlaylists">
                      <tbody>
                         <tr v-for="playlist in myPlaylists" v-bind:key="playlist.id">

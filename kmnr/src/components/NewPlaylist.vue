@@ -9,21 +9,21 @@
         <div class="row">
             <h1>Create New Playlist</h1>
         </div>
-        <form class="col offset-s3 s6">
+        <form class="col offset-s3 s6" @submit.prevent="createPlaylist">
                 <div class="row">
                     <div class="input-field">
                         <label required for="name">Name</label>
-                        <input type="text" id="name" />
+                        <input type="text" id="name" v-model="p_name" />
                     </div>
                     <div class="input-field">
                         <label required for="show">Show</label>
-                        <input type="text" id="show" />
+                        <input type="text" id="show" v-model="showName" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field">
                         <label for="comment">Comment</label>
-                        <input required class="col lg6" type="text" id="label" />
+                        <input required class="col lg6" type="text" id="label" v-model="comment" />
                     </div>
                 </div>
                 <div class="row"/>
@@ -40,7 +40,15 @@
         components: { defaultButton }
     })
     export default class playlist extends Vue {
+        
+        //@Prop() playlist = [{dj_id: 'test', p_name: 'dsaflkj', show: 'adfasd'}];
+        
         close = false;
+        user = 'test'
+        p_name = ''
+        showName = ''
+        comment = ''
+
         constructor() {
             super()
         }
@@ -49,7 +57,23 @@
             closePlaylist() {
                 this.close = true;
             }
+
+    createPlaylist() {
+        const playlistParams = {
+            dj_id: this.user,
+            p_name: this.p_name,
+            show: this.showName
+        }
+        this.$store.dispatch('createNewPlaylist', playlistParams).then(res => {
+            this.newPlaylistCreated(playlistParams.dj_id, playlistParams.p_name, playlistParams.show);
+        })
     }
+
+    @Emit('newPlaylistCreated')
+        newPlaylistCreated(id, name, show) {
+            console.log("created")
+        }
+}
 </script>
 
 <style lang="scss" scoped>

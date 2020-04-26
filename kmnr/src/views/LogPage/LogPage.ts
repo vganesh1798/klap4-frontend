@@ -19,8 +19,9 @@ import draggable from "vuedraggable";
     })
 
 export default class LogPage extends Vue {
-    playlistSelected: Boolean = true;
+    playlistSelected: Boolean = false;
     currentShow: string = "EXAMPLE_SHOW";
+    name="";
     song: string = "";
     artist: string = "";
     album: string = "";
@@ -35,22 +36,48 @@ export default class LogPage extends Vue {
     showPlaylists: Boolean = false;
 
     addSong() {
-      this.playlist_name = "default";
-        let entry = {
-            num: this.num++,
-            song: this.song,
-            artist: this.artist,
-            album: this.album
+      //this.playlist_name = "default";
+      //  let entry = {
+      //      num: this.num++,
+      //      song: this.song,
+      //      artist: this.artist,
+      //      album: this.album
+      //  };
+      //  this.entries.push(entry);
+     const PlaylistParam = {
+       dj_id: "test",
+       playlistName: this.currentShow,
+       show: this.name,
+       ///index: this.num,
+       index: 0,
+       ref: this.song + this.artist + this.album
+     }
 
-        };
-
-        this.entries.push(entry);
+     this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
+        //this.entries = res.playlist_entries;
+        console.log(res);
+        this.getSongs();
+     });
     }
 
     removeSong(val: number) {
-        this.currentShow = val.toString();
-        this.$delete(this.entries, val)
-        num: this.num--;
+        //this.currentShow = val.toString();
+        //this.$delete(this.entries, val)
+        //num: this.num--;
+
+        const PlaylistParam = {
+            dj_id: "test",
+            playlistName: this.currentShow,
+            index: 0,
+            ref: "111"
+          }
+     
+          this.$store.dispatch('deletePlaylistEntry', PlaylistParam).then(res => {
+             //this.entries = res.playlist_entries;
+             //console.log(res);
+            
+          });
+          this.getSongs();
     }
 
     savePlaylist() {
@@ -108,4 +135,36 @@ export default class LogPage extends Vue {
           (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
         );
     }
+
+    @Watch('newPlaylistCreated')
+        newPlaylistCreated(id) {
+            console.log(id[0], id[1], id[2]);
+            this.currentShow = id[1];
+            this.name = id[2];
+            this.playlistSelected = true;
+            this.getSongs();
+            return this.playlistSelected;
+        }
+    
+    getSongs() {
+        const PlaylistParam = {
+                dj_id: "test",
+                playlistName: this.currentShow
+            }
+        this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
+            this.entries = res.playlist_entries || [];
+            this.num = this.entries.length;
+            console.log(res);
+            console.log(this.entries);
+            console.log(this.entries.length);
+        });
+    }
+
+    @Watch('newPlaylist')
+        newPlaylist(name) {
+            console.log("newPlaylist caught")
+            this.playlistSelected = true;
+            this.currentShow = name;
+            this.getSongs();
+        }
 }

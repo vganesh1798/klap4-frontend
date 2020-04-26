@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import Log from '@/Models/Playlist'
+import Playlist from '@/Models/Playlist'
+import PlaylistEntry from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
@@ -14,7 +15,8 @@ export default new Vuex.Store({
   // The variable to be shared between components
   state: {
     // An empty list of logs to be stored when called
-    logs: Array<Log>(),
+    playlists: Array<Playlist>(),
+    playlist: {},
     allChart: Array<ChartData>(),
     newChart: Array<ChartData>(),
     artists: Array<Artist>(),
@@ -25,9 +27,12 @@ export default new Vuex.Store({
   // A function to be accessed with commit to modify any states
   mutations: {
     // Mutations are necessary to push any changes to states
-    addLog(state, newLog: Log) {
+    addPlaylist(state, newPlaylist: Playlist) {
       // Pushing new logs from the API call to the list of logs
-      state.logs.push(newLog);
+      state.playlists.push(newPlaylist);
+    },
+    displayPlaylist(state, newPlaylistEntry: PlaylistEntry) {
+      state.playlist = newPlaylistEntry;
     },
     addToAllChart(state, nextChartData: ChartData) {
       state.allChart.push(nextChartData);
@@ -50,23 +55,73 @@ export default new Vuex.Store({
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
   actions: {
-    getAllLogs() {
+    getPlaylist({commit, state}, playlistDisplay: any) {
       return axios
         // Call the api at localhost:8000
-        .get('http://localhost:8000')
+        .get(`http://localhost:5000/playlist/display/${playlistDisplay.dj_id}/${playlistDisplay.playlistName}`, {withCredentials: true})
         // Retrieve the response when available
         .then(res =>  {
           // Loop through all logs within the response
           //   and add each to the log state
-          res.data.map((log: Log) => this.commit('addLog', log)) // Commit is used with the data to push data to a mutation
+          this.commit('displayPlaylist', (res.data as PlaylistEntry)) // Commit is used with the data to push data to a mutation
           return res.data
         })
         // Simple catch to output if error occurs
         .catch(err => console.log(err))
     },
+    addPlaylistEntry({commit, state}, playlistDisplay: any) {
+      return axios
+        // Call the api at localhost:8000
+        .post(`http://localhost:5000/playlist/display/${playlistDisplay.dj_id}/${playlistDisplay.playlistName}`, playlistDisplay,{withCredentials: true})
+        // Retrieve the response when available
+        .then(res =>  {
+          // Loop through all logs within the response
+          //   and add each to the log state
+          //sthis.commit('displayPlaylist', (res.data as PlaylistEntry)) // Commit is used with the data to push data to a mutation
+          return res.data
+        })
+        // Simple catch to output if error occurs
+        .catch(err => console.log(err))
+    },
+    deletePlaylistEntry({commit, state}, playlistDelete: any) {
+      axios.delete(`http://localhost:5000/playlist/display/${playlistDelete.dj_id}/${playlistDelete.playlistName}`, {
+        data: {
+          'index': playlistDelete.index,
+          'ref': playlistDelete.ref
+        },
+        withCredentials: true
+      })
+      .catch(err => console.log(err))
+    },
+
+
+    createNewPlaylist({commit, state}, newPlaylist: any) {
+      const playlistData = {
+        'username': newPlaylist.dj_id,
+        'playlistName': newPlaylist.p_name,
+        'show': newPlaylist.show
+      }
+      
+      return axios.post(`http://localhost:5000/playlist/${newPlaylist.dj_id}`, playlistData, {withCredentials: true})
+        .then(res => {
+          return res.data
+        }).catch(err => console.error(err))
+    },
+    updatePlaylist({commit, state}, editedPlaylist: any) {
+      const playlistData = {
+        'username': editedPlaylist.dj_id,
+        'playlistName': editedPlaylist.p_name,
+        'show': editedPlaylist.show
+      }
+
+      return axios.put(`http://localhost:5000/playlist/${editedPlaylist.dj_id}`, playlistData, {withCredentials: true})
+        .then(res => {
+          return res.data
+        }).catch(err => console.error(err))
+    },
     getAllChartData() {
       return axios
-      .get('http://localhost:5000/charts/all')
+      .get('http://localhost:5000/charts/all', {withCredentials: true})
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
         return res.data
@@ -75,7 +130,7 @@ export default new Vuex.Store({
     },
     getNewChartData() {
       return axios
-      .get('http://localhost:5000/charts/new')
+      .get('http://localhost:5000/charts/new', {withCredentials: true})
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
         return res.data
@@ -83,7 +138,7 @@ export default new Vuex.Store({
       .catch(err => console.log(err))
     },
     getAllArtists() {
-      return axios.get('http://localhost:5000/search/artist')
+      return axios.get('http://localhost:5000/search/artist', {withCredentials: true})
       .then(res =>{
         res.data.map((artist: Artist) => this.commit('addToArtists', artist))
         return res.data
@@ -96,7 +151,7 @@ export default new Vuex.Store({
           'name': query.name
       };
 
-      return axios.post('http://localhost:5000/search/artist', searchQuery)
+      return axios.post('http://localhost:5000/search/artist', searchQuery, {withCredentials: true})
       .then(res =>{ 
           res.data.map((artist: Artist) => this.commit('addToArtists', artist))
           return res.data
@@ -104,16 +159,17 @@ export default new Vuex.Store({
       .catch(err => console.log(err))
     },
     displayArtists({commit, state}, id: string) {
-      return axios.get(`http://localhost:5000/display/artist/${id}`)
+      return axios.get(`http://localhost:5000/display/artist/${id}`, {withCredentials: true})
       .then(res =>{ 
           this.commit('singleArtistMut', (res.data as SingleArtist))
           return res.data
           // OR
           //res.data.map(artist => {this.commit('addToArtists', artist))
       })
+      .catch(err => console.log(err))
     },
     getAllAlbums() {
-      return axios.get('http://localhost:5000/search/album')
+      return axios.get('http://localhost:5000/search/album', {withCredentials: true})
         .then(res => {
           this.commit('addToAlbums', (res.data as Array<Album>))
           return res.data
@@ -127,7 +183,7 @@ export default new Vuex.Store({
         'artistName': albumParams.artist,
       }
 
-      return axios.post('http://localhost:5000/search/album', searchQuery)
+      return axios.post('http://localhost:5000/search/album', searchQuery, {withCredentials: true})
         .then(res => {
           this.commit('addToAlbums', (res.data as Array<Album>))
           return res.data
@@ -135,13 +191,31 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     displayAlbum({commit, state}, id: string) {
-      return axios.get(`http://localhost:5000/display/album/${id}`)
+      return axios.get(`http://localhost:5000/display/album/${id}`, {withCredentials: true})
         .then(res => {
           this.commit('addSingleAlbum', (res.data as DisplayAlbum))
-          console.log(res.data)
           return res.data
         })
         .catch(err => console.log(err))
+    },
+    displayPlaylists({commit, state}, dj_id: string) {
+      return axios.get(`http://localhost:5000/playlist/${dj_id}`, {withCredentials: true})
+      .then(res=> {
+        this.commit('addPlaylist', (res.data as Array<Playlist>))
+        
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+    deletePlaylist({commit, state}, playlistDelete: any) {
+      axios.delete(`http://localhost:5000/playlist/${playlistDelete.dj_id}`, {
+        data: {
+          'username': playlistDelete.dj_id,
+          'playlistName': playlistDelete.p_name
+        },
+        withCredentials: true
+      })
+      .catch(err => console.log(err))
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import
