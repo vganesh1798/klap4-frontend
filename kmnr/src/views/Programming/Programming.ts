@@ -2,13 +2,24 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import {ProgramSearch, ProgramLogEntry} from '../../Models/Program';
 
+
+enum Days {
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+}
+
 @Component
 export default class Programming extends Vue {
     constructor() {
         super()
     }
 
-    const range = (start, stop, step = 1) => Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step)
+    range: any = (start, stop, step = 1) => Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step)
 
     programs = [];
     typeSearch = "";
@@ -21,6 +32,20 @@ export default class Programming extends Vue {
     timestampSearch = "";
 
 
+    logList = []
+
+    schedule: any = []
+    curIndex: number = 0
+
+    identified = true
+
+    programName = ''
+    duration = ''
+
+    curDay(ind) {
+        return Days[ind]
+    }
+
     getAllPrograms() {
         this.$store.dispatch('getAllPrograms')
             .then(res => {
@@ -28,9 +53,20 @@ export default class Programming extends Vue {
             });
     }
 
+    getAllLogs() {
+        this.$store.dispatch('getProgramSlots').then(() => {
+            this.logList = this.$store.state.schedule.program_slots
+            this.pagnateHours(this.logList.length/2)
+        })
+    }
+
     created() {
-        this.pagnateHours(30);
         this.getAllPrograms();
+        this.getAllLogs();
+    }
+
+    stationIdentified() {
+        this.identified = !this.identified
     }
 
     pagnateHours(fullHour) {
@@ -38,28 +74,45 @@ export default class Programming extends Vue {
         
         if (curHour === 0) curHour = 24
 
-        const beginPeriod = [0, 1, 2]
-        const endPeriod = this.range(fullHour - 3, fullHour)
+        const beginLogs = [this.setLogs(0), this.setLogs(1), this.setLogs(2)]
+        const endLogs = [this.setLogs(fullHour - 3), this.setLogs(fullHour - 2), this.setLogs(fullHour - 1)]
 
         const midToBackRange = this.range(curHour, fullHour - 2, 3)
         const frontToMidRange = this.range(curHour, 1, -3)
 
-        let frontToMid = []
-        let midToBack = []
+        let frontToMidLogs: any  = []
+        let midToBackLogs: any = []
 
-        for (const i in frontToMidRange) {
-            frontToMid.push([frontToMidRange[i] - 1, frontToMidRange[i], frontToMidRange[i] + 1])
+        for (let i in frontToMidRange) {
+            frontToMidLogs.push([this.setLogs(frontToMidRange[i] - 1), this.setLogs(frontToMidRange[i]), this.setLogs(frontToMidRange[i] + 1)])
         }
 
-        for (const i in midToBackRange) {
-            if (midToBackRange[i] !== curHour)
-                midToBack.push([midToBackRange[i] - 1, midToBackRange[i], midToBackRange[i] + 1])
+        for (let i in midToBackRange) {
+            if (midToBackRange[i] !== curHour) {
+                midToBackLogs.push([this.setLogs(midToBackRange[i] - 1), this.setLogs(midToBackRange[i]), this.setLogs(midToBackRange[i] + 1)])
+            }
         }
 
-        frontToMid.reverse()
-        console.log(frontToMid)
+        frontToMidLogs.reverse()
 
-        console.log([beginPeriod, ...frontToMid, ...midToBack, endPeriod])
+        this.schedule = [beginLogs, ...frontToMidLogs, ...midToBackLogs, endLogs]
+        console.log(this.schedule)
+        this.curIndex = frontToMidLogs.length
+    }
+
+    pageUp() {
+        if (this.curIndex + 1 > this.logList.length)
+            this.curIndex++
+    }
+
+    pageDown() {
+        if (this.curIndex - 1 < 0)
+            this.curIndex--
+    }
+
+    setLogs(index): Array<number> {
+        const newIndex = index * 2
+        return [this.logList[newIndex], this.logList[newIndex + 1]]
     }
 
     searchProgram() {
@@ -123,4 +176,21 @@ export default class Programming extends Vue {
         );
     }
 
+    toTime(time) {
+        let hours = time.substr(0,time.indexOf(':'))
+        let finalTime = '12:00 PM'
+
+        if (hours > 12 || hours == 0) {
+            hours = Math.abs(hours - 12)
+            finalTime = hours + ':00 '
+            if (hours === 12) finalTime += 'AM'
+            else finalTime += 'PM'
+        } else {
+            finalTime = hours + ':00 '
+            if (hours === 12) finalTime += 'PM'
+            else finalTime += 'AM'
+        }
+
+        return finalTime
+    }
 }

@@ -16,3 +16,10 @@ export class ProgramLogEntry {
     dj: string = ''
     newName: string = ''
 }
+
+export class ProgramSlots {
+    id: number = 0
+    program_type: string = ''
+    day: number = 0
+    time: string = ''
+}
