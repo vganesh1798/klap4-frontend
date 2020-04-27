@@ -30,20 +30,25 @@
                   </div>
                   <div class="log-body" v-for="(type, index2) in log" :key="type.id">
                     <span class="type">{{type.program_type}}</span>
-                    <span class="delete" v-if="Math.abs(curIndex - today) <= 1">
-                      <a><i class="material-icons-round">delete</i></a>
+                    <span class="delete" v-if="Math.abs(curIndex - today) <= 1 && entrySchedule[curIndex][index][index2] !== null">
+                      <a @click="deleteProgram(index, index2)"><i class="material-icons-round">delete</i></a>
                     </span>
                     <span class="delete-disabled" v-else>
                       <a><i class="material-icons-round">delete_outline</i></a>
                     </span>
-                    <div class="program-name input-field">
+                    <div v-if="typeof entrySchedule[curIndex][index][index2] === 'string' || entrySchedule[curIndex][index][index2] === null" class="program-name input-field">
                       <input :id="type.id + 'a'"
                         class="program-input"
                         type="text"
-                        v-model="entrySchedule[index][index2]"
+                        v-model="entrySchedule[curIndex][index][index2]"
                         :disabled="Math.abs(curIndex - today) > 1"
-                        :class="{'disabled': Math.abs(curIndex - today) > 1}"/>
+                        :class="{'disabled': Math.abs(curIndex - today) > 1}"
+                        @keyup.enter="insertProgram(index, index2)"
+                        @keyup.esc="cancelInsert(index,index2)"/>
                       <label :for="type.id + 'a'" class="text-black">Program</label>
+                    </div>
+                    <div v-else class="program-name">
+                      <a class="program-name-entered" @click="editProgramEntry(index, index2)">{{entrySchedule[curIndex][index][index2].program_name}}</a>
                     </div>
                   </div>
                 </div>
@@ -222,8 +227,17 @@
       position: relative;
       float: right;
 
-      .duration-input {
-        width: 6vw;
+      .program-name-entered {
+        color: black;
+        font-size: 1.5em;
+        top: 1.6em;
+        position: relative;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10vw;
+        height: 30px;
+        white-space: nowrap;
+        display: inline-block;
       }
 
       label {

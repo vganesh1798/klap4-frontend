@@ -34,6 +34,8 @@ export default class Programming extends Vue {
     logList: any = []
     identList: any = []
 
+    editingEntry: any = {}
+
     offset: number = 0
 
     identEnteredList: any = []
@@ -48,6 +50,7 @@ export default class Programming extends Vue {
     today: number = 0
 
     identified = true
+    editing = false
 
     programName = ''
     duration = ''
@@ -123,6 +126,71 @@ export default class Programming extends Vue {
         }
     }
 
+    editProgramEntry(schedOffsetIdx, logIdx) {
+        if (Math.abs(this.curIndex - this.today) <= 1) {
+            this.editing = true
+            let progName = this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].program_name
+            this.editingEntry = {...this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx]}
+            this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = progName
+            this.$forceUpdate()
+        }
+    }
+
+    cancelInsert(schedOffsetIdx, logIdx) {
+        if (this.editing) {
+            this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = this.editingEntry
+            this.editing = false
+            console.log(this.entrySchedule)
+        } else {
+            this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = null
+        }
+    }
+
+    insertProgram(schedOffsetIdx, logIdx) {
+        const nameIndex = (this.curIndex * 6) + ((schedOffsetIdx * 2) + logIdx - (this.offset * 2))
+
+        if (Math.abs(this.curIndex - this.today) <= 1) {
+            if (this.editing) {
+                this.editing = false
+
+                //TODO: Add the update query here
+            } else {
+                const stationIdParams: ProgramLogEntry = {
+                    type: 'station_id',
+                    name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
+                    slotId: this.logList[nameIndex].id,
+                    timestamp: '',
+                    dj: this.$store.state.currentUser,
+                    newName: ''
+                }
+                console.log(stationIdParams, this.logList)
+                this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
+                    this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = res
+                    console.log(res)
+                    this.$forceUpdate()
+                })
+            }
+        }
+    }
+
+    deleteProgram(schedOffsetIdx, logIdx) {
+        if (Math.abs(this.curIndex - this.today) <= 1) {
+            const stationIdParams: ProgramLogEntry = {
+                type: 'station_id',
+                name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
+                slotId: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].slot_id,
+                timestamp: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].timestamp,
+                dj: this.$store.state.currentUser,
+                newName: ''
+            }
+
+            this.$store.dispatch('removeProgramLogEntry', stationIdParams).then(res => {
+                this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = null
+                this.$forceUpdate()
+            })
+        }
+    }
+
     pagnateHours(fullHour) {
         for (let idx = 0; idx < this.logList.length; idx++) {
             if ((this.logList[idx] as ProgramSlots).program_type === 'station_id') {
@@ -172,6 +240,7 @@ export default class Programming extends Vue {
         }
 
         frontToMidLogs.reverse()
+        frontToMidEntries.reverse()
 
         this.schedule = [beginLogs, ...frontToMidLogs, ...midToBackLogs, endLogs]
         this.entrySchedule = [beginLogsEntries, ...frontToMidEntries, ...midToBackEntries, endLogEntries]
@@ -190,6 +259,8 @@ export default class Programming extends Vue {
 
         this.curIndex = frontToMidLogs.length
         this.today = this.curIndex
+        console.log(this.curIndex)
+        console.log(this.logEntries)
     }
 
     pageUp() {
