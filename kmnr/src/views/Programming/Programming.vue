@@ -1,5 +1,5 @@
 <template>
-  <div class="full-deets">
+  <div class="full-deets" :class="{'opened-table': timeTableOpen}">
     <div class="container">
       <div class="row">
         <div class="col s12">
@@ -80,7 +80,7 @@
               md-content="Your post <strong>Material Design is awesome</strong> has been created." />
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell class="add-btn-col" md-label="Add">
-                <a class="program-adder"><i class="material-icons-round">playlist_add</i></a>
+                <a class="program-adder" @click="openLogEntries(item)"><i class="material-icons-round">playlist_add</i></a>
               </md-table-cell>
               <md-table-cell md-label="Type" md-sort-by="id" md-numeric>{{ item.type }}
                 <md-tooltip md-direction="top">More information</md-tooltip>
@@ -92,6 +92,7 @@
         </div>
       </div>
     </div>
+    <TimeTable id="time-table" class="time-table" v-if="timeTableOpen" :possibleTimes="openTimes" @closeTable="closeTable" />
   </div>
 </template>
 
@@ -417,6 +418,13 @@
 
   .full-deets {
     padding-top: 4%;
+  }
+
+  .time-table {
+    position: absolute;
+    z-index: 999;
+    left: 35%;
+    top: 25%;
   }
  
   //----------- Fixing materialize stuff to get better looks -----------//

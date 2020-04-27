@@ -2,6 +2,7 @@ import { Component, Vue } from 'vue-property-decorator';
 
 import {ProgramSearch, ProgramSlots, ProgramLogEntry} from '../../Models/Program';
 
+import TimeTable from '../../components/ProgramLog.vue'
 
 enum Days {
     'Monday',
@@ -13,7 +14,11 @@ enum Days {
     'Sunday'
 }
 
-@Component
+@Component({
+    components: {
+        TimeTable
+    }
+})
 export default class Programming extends Vue {
     constructor() {
         super()
@@ -56,6 +61,9 @@ export default class Programming extends Vue {
 
     programName = ''
     duration = ''
+
+    timeTableOpen = false
+    openTimes: any = []
 
     curDay(ind) {
         return Days[ind]
@@ -319,5 +327,14 @@ export default class Programming extends Vue {
         }
 
         return finalTime
+    }
+
+    openLogEntries(entry) {
+        this.openTimes = []
+        this.timeTableOpen = true
+    }
+
+    closeTable() {
+        this.timeTableOpen = false
     }
 }
