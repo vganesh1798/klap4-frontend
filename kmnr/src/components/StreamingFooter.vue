@@ -42,7 +42,14 @@
       </md-dialog-actions>
     </md-dialog>
     </div>
-
+        <md-snackbar class="snack"
+      :md-position="position"
+      :md-duration="isInfinity ? Infinity : duration"
+      :md-active.sync="showsnackbar"
+      md-persistent
+    >
+      <span>Now Playing: {{this.currentTrack}}</span>
+    </md-snackbar>
     </div>
 </template>
 
@@ -99,12 +106,29 @@
       queue = this.playlist
       curVol = 1
       muted = false
-
+      currentTrack = ''
+      position ="left"
+      duration= 7000
+      isInfinity= false
       stillWatching = false
-
+      showsnackbar = false
       clickedInProgressBar = false
       clickedInVolumeSlider = false
-      
+      oIndex = ''
+      nIndex = ''
+        index: number = -1
+
+      updateSong(index) {
+          this.index = index
+      }
+
+      onEnd(evt){
+        console.log(this.queue)
+          this.oIndex = evt.oldIndex
+          this.nIndex = evt.newIndex
+          console.log(this.oIndex)
+          console.log(this.nIndex)
+        }
       mousedownListener = (e) => {
         e.preventDefault()
         this.clickedInProgressBar = true
@@ -238,8 +262,11 @@
       }
 
       playPause(index) {
-        if (!this.playing)
+        if (!this.playing){
+          this.showsnackbar = true
+          this.currentTrack = this.playlist[this.curIndex].title
           this.play(index)
+        }
         else
           this.pause()
       }
@@ -280,6 +307,7 @@
       }
 
       next() {
+        this.showsnackbar = true
         this.playlist[this.curIndex].song.stop()
 
         if ((this.curIndex + 1) > this.playlist.length - 1) {
@@ -287,11 +315,12 @@
         } else {
           this.curIndex++
         }
-
+        this.currentTrack = this.playlist[this.curIndex].title
         this.play(this.curIndex)
       }
 
       prev() {
+        this.showsnackbar = true
         const pastFive = this.playlist[this.curIndex].song.seek()
         this.playlist[this.curIndex].song.stop()
 
@@ -304,7 +333,7 @@
         } else {
           
         }
-
+       this.currentTrack = this.playlist[this.curIndex].title
         this.play(this.curIndex)
       }
 
@@ -332,7 +361,6 @@
       }
 
       openQueue() {
-        console.log(this.queue)
         this.queueOpen = true
       }
 
@@ -343,6 +371,9 @@
 </script>
 
 <style lang="scss" scoped>
+.snack{
+  padding-bottom: 6%
+}
 .queue {
   position:fixed;
 }

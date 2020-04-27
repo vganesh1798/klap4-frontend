@@ -66,7 +66,7 @@
         onEnd(evt){
             console.log(evt)
             this.oldIndex = evt.oldIndex
-            this.newIndex = evt.newIndexß
+            this.newIndex = evt.newIndex
         }
     }
 </script>
