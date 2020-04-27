@@ -10,8 +10,8 @@ export default class Albumdeets extends Vue {
     albums = [];
 
     getArtistInfo() {
-        this.$store.dispatch('displayArtists', this.$route.params.albumParam).then(res => {
-            this.artist = this.$store.state.singleArtist["artist"];
+        this.$store.dispatch('displayArtist', this.$route.params.albumParam).then(res => {
+            this.artist = this.$store.state.singleArtist;
             this.albums = this.$store.state.singleArtist["albums"];
         })
     }

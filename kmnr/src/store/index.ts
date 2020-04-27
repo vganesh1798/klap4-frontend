@@ -7,7 +7,7 @@ import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
 import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots} from '../Models/Program'
 
-import DisplayAlbum, {Album, AlbumSearch, Reviews, Problem} from '../Models/Album'
+import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -25,8 +25,8 @@ export default new Vuex.Store({
     currentUser: '',
     programs: Array<Program>(),
     logEntry: Array<ProgramLogEntry>(),
-    reviews: Array<Reviews>(),
-    problems: Array<Problem>(),
+    reviews: Array<AlbumReview>(),
+    problems: Array<AlbumProblem>(),
     schedule: Array<ProgramSlots>()
   },
   // A function to be accessed with commit to modify any states
@@ -63,10 +63,10 @@ export default new Vuex.Store({
     addToLog(state, newLog: Array<ProgramLogEntry>) {
       state.logEntry = newLog
     },
-    addToReviews(state, newReview: Array<Reviews>) {
+    addToReviews(state, newReview: Array<AlbumReview>) {
       state.reviews = newReview
     },
-    addToProblems(state, newProblem: Array<Problem>) {
+    addToProblems(state, newProblem: Array<AlbumProblem>) {
       state.problems = newProblem
     },
     addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
@@ -128,10 +128,11 @@ export default new Vuex.Store({
       })
       .catch(err => console.log(err))
     },
-    displayArtists({commit, state}, id: string) {
+    displayArtist({commit, state}, id: string) {
       return axios.get(`http://localhost:5000/display/artist/${id}`)
       .then(res =>{ 
           this.commit('singleArtistMut', (res.data as SingleArtist))
+          console.log(res.data)
           return res.data
           // OR
           //res.data.map(artist => {this.commit('addToArtists', artist))
@@ -163,7 +164,6 @@ export default new Vuex.Store({
       return axios.get(`http://localhost:5000/display/album/${id}`)
         .then(res => {
           this.commit('addSingleAlbum', (res.data as DisplayAlbum))
-          console.log(res.data)
           return res.data
         })
         .catch(err => console.log(err))
@@ -240,28 +240,28 @@ export default new Vuex.Store({
       .then((res) => console.log(res.data))
       .catch(err => console.log(err))
     },
-    postReview({commit, state}, reviewParams: Reviews) {
+    postReview({commit, state}, reviewParams: AlbumReview) {
       const postObject = {
-        'dj_id': reviewParams.dj_id,
-        'content': reviewParams.content
+        'dj_id': reviewParams.reviwer,
+        'content': reviewParams.review
       }
 
       return axios.post('http://localhost:5000/album/review', postObject)
       .then(res => {
-        this.commit('addToReviews', (res.data as Array<Reviews>))
+        this.commit('addToReviews', (res.data as Array<AlbumReview>))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    postProblem({commit, state}, problemParams: Problem) {
+    postProblem({commit, state}, problemParams: AlbumProblem) {
       const postObject = {
-        'dj_id': problemParams.dj_id,
-        'content': problemParams.content
+        'dj_id': problemParams.reporter,
+        'content': problemParams.problem
       }
 
       return axios.post('http://localhost:5000/album/problem', postObject)
       .then(res => {
-        this.commit('addToProblems', (res.data as Array<Problem>))
+        this.commit('addToProblems', (res.data as Array<AlbumProblem>))
         return res.data
       })
       .catch(err => console.log(err))

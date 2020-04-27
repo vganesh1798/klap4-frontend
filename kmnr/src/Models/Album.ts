@@ -9,59 +9,42 @@ export class AlbumSearch {
 }
 
 export class Album {
-    artist_num?: number | null
+    album_id?: number | null
+    artist_id?: number | null
+    album_name?: string | null
+    artist_name ?: string | null
+    genre ?: string | null
+    label ?: string | null
+    promoter ?: string | null
     date_added?: string | null
-    format_bitfield?: number | null
-    genre_abbr?: string | null
-    id?: string | null
-    label_id?: string | null
-    letter?: string | null
-    missing?: boolean | null
-    name?: string | null
-    promoter_id?: string | null
+    format ?: string | null
+    missing ?: boolean | null
+    new_album ?: boolean | null
 }
 
-export class AlbumArtist {
-    artist_num: number = 0
-    genre_abbr: string = ''
-    id: string = ''
-    number: number = 0
+export class AlbumReview {
+    date_entered ?: string | null
+    reviwer ?: string | null
+    review ?: string | null
+}
+
+export class AlbumProblem {
+    reporter ?: string | null
+    problem ?: string | null
 }
 
 export class Song {
-    id: string = ''
-    genre_abbr: string = ''
-    artist_num: number = 0
-    album_letter: string = ''
-    number: number = 0
-    name: string = ''
-    fcc_status: number = 0
-    last_played: string = ''
-    times_played: number = 0
-    recommended: boolean = false
-}
-
-export class Problem {
-    genre_abbr: string = ''
-    artist_num: number = 0
-    album_letter: string = ''
-    dj_id: string = ''
-    content: string = ''
-}
-
-export class Reviews {
-    genre_abbr: string = ''
-    artist_num: number = 0
-    album_letter: string = ''
-    dj_id: string = ''
-    date_entered: string = ''
-    content: string = ''
+    song_number ?: number | null
+    song_name ?: string | null
+    fcc_status ?: number | null
+    times_played ?: number | null
+    last_played ?: string | null
+    recommended ?: boolean | null
 }
 
 export default class DisplayAlbum {
     album: Album = new Album()
-    artist: AlbumArtist = new AlbumArtist()
-    reviews: Array<Reviews> = []
-    problems: Array<Problem> = []
+    reviews: Array<AlbumReview> = []
+    problems: Array<AlbumProblem> = []
     songs: Array<Song> = []
 }

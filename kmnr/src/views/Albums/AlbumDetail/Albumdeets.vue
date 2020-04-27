@@ -26,10 +26,10 @@
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
           <div class="card-content">
-            <span class="card-title">{{album['album'].name}}</span>
-            <p>{{album.artist.name}}</p>
-            <p>{{album.album.date_added}}</p>
-            <p>{{ album.album.genre_abbr }}</p>
+            <span class="card-title">{{album.name}}</span>
+            <p>{{album.artist}}</p>
+            <p>{{album.date_added}}</p>
+            <p>{{ album.genre }}</p>
           </div>
         </div>
         </div>
@@ -40,17 +40,17 @@
               <tr>
                 <th style="width: 25%;">Track</th>
                 <th style="width: 25%;">Name</th>
-                <th style="width: 25%;">Runtime</th>
+                <th style="width: 25%;">FCC Status</th>
                 <th style="width: 25%;">Plays</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="item in tracks" :key="item.id">
-                <td>{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.run }}</td>
-                <td>{{ item.plays }}</td>
+              <tr v-for="item in tracks" :key="item.number">
+                <td>{{ item.number }}</td>
+                <td>{{ item.song_name }}</td>
+                <td>{{ item.fcc_status }}</td>
+                <td>{{ item.times_played }}</td>
               </tr>
             </tbody>
           </table>
@@ -89,6 +89,7 @@
       this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
         this.tracks = this.$store.state.singleAlbum.songs
         this.album = this.$store.state.singleAlbum
+        console.log(this.album)
       })
       .finally(() => {
         this.loaded = true
