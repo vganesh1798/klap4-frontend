@@ -206,6 +206,10 @@
                     console.log("album")
                     router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
                 }
+                else if(res.response.status == 404) {
+                    console.log("not found")
+                    router.push({ name: 'Search'})
+                }
         });
         }
 }

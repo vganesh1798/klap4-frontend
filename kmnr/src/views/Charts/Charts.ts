@@ -96,5 +96,46 @@ export default class ChartsPage extends Vue {
 
     sortBy(field) {
         this.sort_selection = field;
+        if(field=="Popularity") {
+            this.getCharts();
+            // this.charts.sort((n1, n2) => {
+            //     if(n1.times_played < n2.times_played) {
+            //         return 1;
+            //     }
+            //     if(n1.times_played > n2.times_played)
+            //         return -1;
+            //     return 0;
+            // })
+        }
+        if(field=="Genre") {
+            this.charts.sort((n1: any, n2: any) => {
+                if(n1.genre > n2.genre) {
+                    return 1;
+                }
+                if(n1.genre < n2.genre)
+                    return -1;
+                return 0;
+            })
+        }
+        if(field=="Artist") {
+            this.charts.sort((n1: any, n2: any) => {
+                if(n1.artist_name > n2.artist_name) {
+                    return 1;
+                }
+                if(n1.artist_name < n2.artist_name)
+                    return -1;
+                return 0;
+            })
+        }
+        if(field=="Album") {
+            this.charts.sort((n1: any, n2: any) => {
+                if(n1.album_name > n2.album_name) {
+                    return 1;
+                }
+                if(n1.album_name < n2.album_name)
+                    return -1;
+                return 0;
+            })
+        }
     }
 };

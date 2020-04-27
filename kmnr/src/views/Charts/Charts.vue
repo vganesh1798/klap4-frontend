@@ -34,19 +34,19 @@
                 <a class="dropdown-item" @click="sortBy('Popularity')">Popularity</a>
                 <a class="dropdown-item" @click="sortBy('Genre')">Genre</a>
                 <a class="dropdown-item" @click="sortBy('Artist')">Artist</a>
-                <a class="dropdown-item" @click="sortBy('Release')">Release Date</a>
-                <a class="dropdown-item" @click="sortBy('Likes')">Number of Likes</a>
+                <a class="dropdown-item" @click="sortBy('Album')">Album</a>
+                <!--a class="dropdown-item" @click="sortBy('Likes')">Number of Likes</a-->
               </div>
             </div>
           </div>
           <div class="col s5"></div>
-          <div class="col s2" v-if="new_charts">
-              <p>New album charts for the last {{weeks}} weeks</p>
+          <div class="col s3" v-if="new_charts">
+              <p style="text-align: right;">New album charts for the last {{weeks}} weeks</p>
             <!--a v-if="new_charts">Charts for the last weeks:  </a>
             <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts"-->
           </div>
-          <div class="col s2" v-else>
-            <p>All charts for the last {{weeks}} weeks</p>
+          <div class="col s3" v-else>
+            <p style="text-align: right;">All charts for the last {{weeks}} weeks</p>
           </div>
           <div class="col s1" v-if="new_charts">
             <p class="range-field">
