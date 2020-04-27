@@ -70,7 +70,7 @@
         <div class="col s5">
           <md-table class="table" v-model="programs" md-card>
             <md-table-toolbar>
-              <div class="inputSearch">
+              <div class="inputSearch center">
                 <input v-model=typeSearch type="text" class="search-bar" placeholder="Search programming by type"
                   @keyup.enter="searchProgram()">
                 <input v-model=nameSearch type="text" class="search-bar" placeholder="Search programming by name">
@@ -307,8 +307,13 @@
     margin-left: 5% !important;
     height: 40em !important;
 
+    .inputSearch {
+      width: 39em;
+      display: inherit;
+    }
+
     .search-bar {
-      display: inline;
+      margin-right: 2em;
     }
 
     .add-btn-col {
