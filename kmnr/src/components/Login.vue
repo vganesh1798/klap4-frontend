@@ -60,9 +60,11 @@
             console.log(encoding)
             this.$store.dispatch('login', encoding).then(isUserAuth => {
                 console.log(isUserAuth)
-                if (isUserAuth)
-                    this.loggedIn()
-                else
+                if (isUserAuth) {
+                    this.$store.dispatch('getCurrUser').then(res => {
+                        this.loggedIn()
+                    })
+                } else
                     this.error = true
             })
         }

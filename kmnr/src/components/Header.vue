@@ -123,6 +123,7 @@
             }
 
             if (this.$cookies.isKey('csrf_access_token')) {
+                this.$store.dispatch('getCurrUser')
                 this.userAuth = true
             }
         }
