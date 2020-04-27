@@ -49,6 +49,8 @@ export default class Programming extends Vue {
     curIndex: number = 0
     today: number = 0
 
+    todayHour: number = 0
+
     identified = true
     editing = false
 
@@ -86,6 +88,13 @@ export default class Programming extends Vue {
     created() {
         this.getAllPrograms();
         this.getAllLogs();
+
+        setInterval(() => {
+            if (this.todayHour !== new Date().getHours() + 24) {
+                this.getAllPrograms()
+                this.getAllLogs()
+            }
+        }, 500)
     }
 
     stationIdentified(idx) {
@@ -118,7 +127,6 @@ export default class Programming extends Vue {
 
                     this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
                         this.identEnteredList[identIndex] = res
-                        console.log(res)
                         this.$forceUpdate()
                     })
                 }
@@ -140,7 +148,6 @@ export default class Programming extends Vue {
         if (this.editing) {
             this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = this.editingEntry
             this.editing = false
-            console.log(this.entrySchedule)
         } else {
             this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = null
         }
@@ -163,10 +170,8 @@ export default class Programming extends Vue {
                     dj: this.$store.state.currentUser,
                     newName: ''
                 }
-                console.log(stationIdParams, this.logList)
                 this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
                     this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = res
-                    console.log(res)
                     this.$forceUpdate()
                 })
             }
@@ -209,6 +214,7 @@ export default class Programming extends Vue {
         }
 
         let curHour = new Date().getHours() + 24
+        this.todayHour = curHour
         
         if (curHour === 0) curHour = 24
 
@@ -259,8 +265,6 @@ export default class Programming extends Vue {
 
         this.curIndex = frontToMidLogs.length
         this.today = this.curIndex
-        console.log(this.curIndex)
-        console.log(this.logEntries)
     }
 
     pageUp() {
@@ -272,8 +276,6 @@ export default class Programming extends Vue {
     pageDown() {
         if (this.curIndex - 1 >= 0)
             this.curIndex -= 1
-
-        console.log(this.curIndex)
     }
 
     setToCurDay() {
@@ -308,11 +310,11 @@ export default class Programming extends Vue {
         if (hours > 12 || hours == 0) {
             hours = Math.abs(hours - 12)
             finalTime = hours + ':00 '
-            if (hours === 12) finalTime += 'AM'
+            if (hours % 12 === 0) finalTime += 'AM'
             else finalTime += 'PM'
         } else {
             finalTime = hours + ':00 '
-            if (hours === 12) finalTime += 'PM'
+            if (hours % 12 === 0) finalTime += 'PM'
             else finalTime += 'AM'
         }
 
