@@ -85,7 +85,7 @@
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" href="http://www.cleveland.kmnr.org">ARSE</a>
+            }" href="http://www.cleveland.kmnr.org">Cleveland</a>
         </nav>
         <login v-if="loginOpen" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
     </div>
@@ -124,6 +124,7 @@
             }
 
             if (this.$cookies.isKey('csrf_access_token')) {
+                this.$store.dispatch('getCurrUser')
                 this.userAuth = true
             }
         }

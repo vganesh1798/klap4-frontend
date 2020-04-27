@@ -312,7 +312,7 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     getProgrammingLogEntry({commit, state}) {
-      return axios.get('http://localhost:5000//programming/log')
+      return axios.get('http://localhost:5000/programming/log')
         .then(res => {
           this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
           console.log(res.data)
@@ -325,12 +325,11 @@ export default new Vuex.Store({
           'programType': logParams.type,
           'programName': logParams.name,
           'slotId': logParams.slotId,
-          'Dj': logParams.dj
+          'djId': logParams.dj
         }
-
         return axios.post('http://localhost:5000/programming/log', postObject)
         .then(res => {
-          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          console.log(res)
           return res.data
         })
         .catch(err => console.log(err))
@@ -340,7 +339,7 @@ export default new Vuex.Store({
         'programType': logParams.type,
         'programName': logParams.name,
         'slotId': logParams.slotId,
-        'Dj': logParams.dj,
+        'djId': logParams.dj,
         'newName': logParams.newName
       }
 
@@ -355,33 +354,35 @@ export default new Vuex.Store({
       const removeObject = {
         'programType': logParams.type,
         'timestamp': logParams.timestamp,
-        'Dj': logParams.dj
+        'djId': logParams.dj
       }
 
-      return axios.delete('http://localhost:5000/programming/log', {params: {"object": removeObject}})
+      return axios.delete('http://localhost:5000/programming/log', {data: removeObject})
       .then((res) => console.log(res.data))
       .catch(err => console.log(err))
     },
-    postReview({commit, state}, reviewParams: AlbumReview) {
+    postReview({commit, state}, reviewParams: any) {
+      const id = reviewParams.id;
       const postObject = {
-        'dj_id': reviewParams.reviwer,
+        'dj_id': reviewParams.reviewer,
         'content': reviewParams.review
       }
 
-      return axios.post('http://localhost:5000/album/review', postObject)
+      return axios.post(`http://localhost:5000/album/review/${id}`, postObject)
       .then(res => {
         this.commit('addToReviews', (res.data as Array<AlbumReview>))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    postProblem({commit, state}, problemParams: AlbumProblem) {
+    postProblem({commit, state}, problemParams: any) {
+      const id = problemParams.id;
       const postObject = {
         'dj_id': problemParams.reporter,
         'content': problemParams.problem
       }
 
-      return axios.post('http://localhost:5000/album/problem', postObject)
+      return axios.post(`http://localhost:5000/album/problem/${id}`, postObject)
       .then(res => {
         this.commit('addToProblems', (res.data as Array<AlbumProblem>))
         return res.data
@@ -411,7 +412,6 @@ export default new Vuex.Store({
         })
     },
     getCurrUser() {
-      let secure = {}
       return axios.get('http://localhost:5000/', {withCredentials: true})
         .then(res => {
           this.commit('setUser', res.data['logged_in_as'])

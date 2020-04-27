@@ -12,20 +12,43 @@
         <div class="col s6">
           <div class="log-container">
             <div class="log-contents">
-              <div v-for="log in schedule[curIndex]" :key="log[0].id">
+              <div v-for="(log, index) in schedule[curIndex]" :key="log[0].id">
                 <div class="log-entry">
                   <div class="log-header">
                     <span class="time">{{toTime(log[0].time)}}</span>
                     <span class="day">{{curDay(log[0].day)}}</span>
-                    <span class="station-id"><a @click="stationIdentified()">
-                      <i class="material-icons-round">{{identified ? 'check_circle' : 'radio_button_unchecked'}}</i></a>
-                    </span>
+                    <span class="station-id"><span class="sid-label">Station Identified</span><a @click="stationIdentified(index)">
+                      <i class="material-icons-round" :class="{
+                        'disabled': Math.abs(curIndex - today) > 1,
+                        'enabled': Math.abs(curIndex - today) <= 1
+                        }" v-if="identEnteredList[(curIndex * 3) + (index - offset)] !== false">check_circle</i>
+                      <i class="material-icons-round" :class="{
+                        'disabled': Math.abs(curIndex - today) > 1,
+                        'enabled': Math.abs(curIndex - today) <= 1
+                        }" v-else>radio_button_unchecked</i>
+                    </a></span>
                   </div>
-                  <div class="log-body" v-for="type in log" :key="type.id">
-                    <span class="type">{{type.program_type}}</span><span class="delete"><a><i class="material-icons-round">delete</i></a></span>
-                    <div class="program-name input-field">
-                      <input :id="type.id + 'a'" class="program-input" type="text" v-model="programName" />
+                  <div class="log-body" v-for="(type, index2) in log" :key="type.id">
+                    <span class="type">{{type.program_type}}</span>
+                    <span class="delete" v-if="Math.abs(curIndex - today) <= 1 && entrySchedule[curIndex][index][index2] !== null">
+                      <a @click="deleteProgram(index, index2)"><i class="material-icons-round">delete</i></a>
+                    </span>
+                    <span class="delete-disabled" v-else>
+                      <a><i class="material-icons-round">delete_outline</i></a>
+                    </span>
+                    <div v-if="typeof entrySchedule[curIndex][index][index2] === 'string' || entrySchedule[curIndex][index][index2] === null" class="program-name input-field">
+                      <input :id="type.id + 'a'"
+                        class="program-input"
+                        type="text"
+                        v-model="entrySchedule[curIndex][index][index2]"
+                        :disabled="Math.abs(curIndex - today) > 1"
+                        :class="{'disabled': Math.abs(curIndex - today) > 1}"
+                        @keyup.enter="insertProgram(index, index2)"
+                        @keyup.esc="cancelInsert(index,index2)"/>
                       <label :for="type.id + 'a'" class="text-black">Program</label>
+                    </div>
+                    <div v-else class="program-name">
+                      <a class="program-name-entered" @click="editProgramEntry(index, index2)">{{entrySchedule[curIndex][index][index2].program_name}}</a>
                     </div>
                   </div>
                 </div>
@@ -44,10 +67,10 @@
             <a @click="pageUp()"><i class="material-icons-round">keyboard_arrow_down</i></a>
           </div>
         </div>
-        <div class="col s3">
+        <div class="col s5">
           <md-table class="table" v-model="programs" md-card>
             <md-table-toolbar>
-              <div class="inputSearch">
+              <div class="inputSearch center">
                 <input v-model=typeSearch type="text" class="search-bar" placeholder="Search programming by type"
                   @keyup.enter="searchProgram()">
                 <input v-model=nameSearch type="text" class="search-bar" placeholder="Search programming by name">
@@ -56,6 +79,9 @@
             <md-dialog-alert md-title="Post created!"
               md-content="Your post <strong>Material Design is awesome</strong> has been created." />
             <md-table-row slot="md-table-row" slot-scope="{ item }">
+              <md-table-cell class="add-btn-col" md-label="Add">
+                <a class="program-adder"><i class="material-icons-round">playlist_add</i></a>
+              </md-table-cell>
               <md-table-cell md-label="Type" md-sort-by="id" md-numeric>{{ item.type }}
                 <md-tooltip md-direction="top">More information</md-tooltip>
               </md-table-cell>
@@ -105,12 +131,17 @@
     margin-bottom: 0px;
   }
 
+  .container {
+    margin-left: 13%;
+  }
+
   .log-container {
     background-color: rgba(0,0,0,.25);
     height: 40em;
     border-radius: 2px;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
     position: relative;
+    margin-top: 4px;
 
     .log-entry {
       height: 13rem;
@@ -140,6 +171,12 @@
         position: relative;
         left: 3%;
         top: 25%;
+        width: 25%;
+        height: 1.2em;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
 
@@ -165,10 +202,24 @@
       margin-right: 2em;
       margin-top: .5%;
 
+      .sid-label {
+        position: relative;
+        bottom: .7em;
+        margin-right: .5em;
+      }
+
       .material-icons-round {
+        font-size: 30px;
+      }
+
+      .enabled {
         cursor: pointer;
         color: #4daf7c;
-        font-size: 30px;
+      }
+
+      .disabled {
+        cursor: not-allowed;
+        color: #393939;
       }
 
       a:hover {
@@ -178,19 +229,32 @@
 
     .program-name {
       width: 10vw;
-      margin-right: 10em;
+      margin-right: 25%;
       bottom: 1.5em;
       height: 0px;
       position: relative;
       float: right;
 
-      .duration-input {
-        width: 6vw;
+      .program-name-entered {
+        color: black;
+        font-size: 1.5em;
+        top: 1.6em;
+        position: relative;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 10vw;
+        height: 30px;
+        white-space: nowrap;
+        display: inline-block;
       }
 
       label {
         margin-top: 7px;
         color: black;
+      }
+
+      .disabled {
+        cursor: not-allowed;
       }
     }
 
@@ -204,6 +268,20 @@
       .material-icons-round {
         color: black;
         cursor: pointer;
+        user-select: none;
+      }
+    }
+
+    .delete-disabled {
+      position: relative;
+      float: right;
+      margin-top: .8em;
+
+      right: 2em;
+
+      .material-icons-round {
+        color: #393939;
+        cursor: not-allowed;
         user-select: none;
       }
     }
@@ -225,8 +303,33 @@
   .table {
     position: absolute;
     color: black;
-    width: 30% !important;
+    width: 35% !important;
     margin-left: 5% !important;
+    height: 40em !important;
+
+    .inputSearch {
+      width: 39em;
+      display: inherit;
+    }
+
+    .search-bar {
+      margin-right: 2em;
+    }
+
+    .add-btn-col {
+      width: 0%;
+    }
+
+    .program-adder {
+      position: relative;
+      top: 3px;
+
+      .material-icons-round {
+        cursor: pointer;
+        color: black;
+        font-size: 1.5em;
+      }
+    }
   }
 
   .prog-heading-main {
@@ -330,12 +433,20 @@
 
 
   /* Inactive/Active Default input field color */
-    .input-field input[type]:not([readonly]),
-    .input-field input[type]:focus:not([readonly]),
+    .input-field input[type=text]:not([readonly]),
+    .input-field input[type=text]:focus:not([readonly]),
     .input-field textarea:not([readonly]),
     .input-field textarea:focus:not([readonly]) {
-        border-bottom: 0px solid black;
-        box-shadow: 0 1px 0 0 black;
+        border-bottom: 1px solid black;
+        box-shadow: 0 0px 0 0 black;
+    }
+
+    .input-field input[type]:not([readonly]):disabled,
+    .input-field input[type]:focus:not([readonly]):disabled,
+    .input-field textarea:not([readonly]):disabled,
+    .input-field textarea:focus:not([readonly]):disabled {
+        border-bottom: 1px dotted #393939;
+        box-shadow: 0 0px dotted 0 0 #393939 !important;
     }
 
     /* Inactive/Active Default input label color */

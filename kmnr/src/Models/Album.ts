@@ -24,7 +24,7 @@ export class Album {
 
 export class AlbumReview {
     date_entered ?: string | null
-    reviwer ?: string | null
+    reviewer ?: string | null
     review ?: string | null
 }
 
