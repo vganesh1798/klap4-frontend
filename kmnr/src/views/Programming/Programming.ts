@@ -145,6 +145,13 @@ export default class Programming extends Vue {
             });
     }
 
+    displayProgram(type: string) {
+        this.$store.dispatch('displayProgram', type)
+            .then(res => {
+                console.log(res.data);
+            }) 
+    }
+
     postLogEntry() {
         const logParams: ProgramLogEntry = {
             type: this.typeSearch.toLowerCase(),

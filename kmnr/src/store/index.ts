@@ -5,7 +5,7 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
-import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots} from '../Models/Program'
+import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots, ProgramFormat} from '../Models/Program'
 
 import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem} from '../Models/Album'
 
@@ -24,6 +24,7 @@ export default new Vuex.Store({
     singleAlbum: {},
     currentUser: '',
     programs: Array<Program>(),
+    singleProgram: {},
     logEntry: Array<ProgramLogEntry>(),
     reviews: Array<AlbumReview>(),
     problems: Array<AlbumProblem>(),
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     },
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
+    },
+    addSingleProgram(state, sProgram: ProgramFormat) {
+      state.singleProgram = sProgram
     },
     addToLog(state, newLog: Array<ProgramLogEntry>) {
       state.logEntry = newLog
@@ -185,6 +189,14 @@ export default new Vuex.Store({
       return axios.post('http://localhost:5000/search/program', searchQuery)
         .then(res => {
           this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    displayProgram({commit, state}, id: string) {
+      return axios.get(`http://localhost:5000/display/program/${id}`)
+        .then(res => {
+          this.commit('addSingleProgram', (res.data as ProgramFormat))
           return res.data
         })
         .catch(err => console.log(err))
