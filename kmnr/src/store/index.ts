@@ -5,9 +5,9 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
-import Program, {ProgramSearch, ProgramSlots} from '../Models/Program'
+import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots} from '../Models/Program'
 
-import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
+import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -24,6 +24,9 @@ export default new Vuex.Store({
     singleAlbum: {},
     currentUser: '',
     programs: Array<Program>(),
+    logEntry: Array<ProgramLogEntry>(),
+    reviews: Array<AlbumReview>(),
+    problems: Array<AlbumProblem>(),
     schedule: Array<ProgramSlots>()
   },
   // A function to be accessed with commit to modify any states
@@ -56,6 +59,15 @@ export default new Vuex.Store({
     },
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
+    },
+    addToLog(state, newLog: Array<ProgramLogEntry>) {
+      state.logEntry = newLog
+    },
+    addToReviews(state, newReview: Array<AlbumReview>) {
+      state.reviews = newReview
+    },
+    addToProblems(state, newProblem: Array<AlbumProblem>) {
+      state.problems = newProblem
     },
     addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
       state.schedule = newProgramSlots
@@ -116,10 +128,11 @@ export default new Vuex.Store({
       })
       .catch(err => console.log(err))
     },
-    displayArtists({commit, state}, id: string) {
+    displayArtist({commit, state}, id: string) {
       return axios.get(`http://localhost:5000/display/artist/${id}`)
       .then(res =>{ 
           this.commit('singleArtistMut', (res.data as SingleArtist))
+          console.log(res.data)
           return res.data
           // OR
           //res.data.map(artist => {this.commit('addToArtists', artist))
@@ -151,7 +164,6 @@ export default new Vuex.Store({
       return axios.get(`http://localhost:5000/display/album/${id}`)
         .then(res => {
           this.commit('addSingleAlbum', (res.data as DisplayAlbum))
-          console.log(res.data)
           return res.data
         })
         .catch(err => console.log(err))
@@ -176,6 +188,83 @@ export default new Vuex.Store({
           return res.data
         })
         .catch(err => console.log(err))
+    },
+    getProgrammingLogEntry({commit, state}) {
+      return axios.get('http://localhost:5000//programming/log')
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          console.log(res.data)
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    postProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+        const postObject = {
+          'programType': logParams.type,
+          'programName': logParams.name,
+          'slotId': logParams.slotId,
+          'Dj': logParams.dj
+        }
+
+        return axios.post('http://localhost:5000/programming/log', postObject)
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    updateProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+      const updateObject = {
+        'programType': logParams.type,
+        'programName': logParams.name,
+        'slotId': logParams.slotId,
+        'Dj': logParams.dj,
+        'newName': logParams.newName
+      }
+
+      return axios.put('http://localhost:5000/programming/log', updateObject)
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    removeProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+      const removeObject = {
+        'programType': logParams.type,
+        'timestamp': logParams.timestamp,
+        'Dj': logParams.dj
+      }
+
+      return axios.delete('http://localhost:5000/programming/log', {params: {"object": removeObject}})
+      .then((res) => console.log(res.data))
+      .catch(err => console.log(err))
+    },
+    postReview({commit, state}, reviewParams: AlbumReview) {
+      const postObject = {
+        'dj_id': reviewParams.reviwer,
+        'content': reviewParams.review
+      }
+
+      return axios.post('http://localhost:5000/album/review', postObject)
+      .then(res => {
+        this.commit('addToReviews', (res.data as Array<AlbumReview>))
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+    postProblem({commit, state}, problemParams: AlbumProblem) {
+      const postObject = {
+        'dj_id': problemParams.reporter,
+        'content': problemParams.problem
+      }
+
+      return axios.post('http://localhost:5000/album/problem', postObject)
+      .then(res => {
+        this.commit('addToProblems', (res.data as Array<AlbumProblem>))
+        return res.data
+      })
+      .catch(err => console.log(err))
     },
     login({commit, state}, encoding: string) {
       return axios.post(`http://localhost:5000/token/auth`, {}, {headers: {'Authorization': encoding}, withCredentials: true})
