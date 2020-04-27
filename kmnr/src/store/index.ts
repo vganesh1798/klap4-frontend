@@ -87,6 +87,8 @@ export default new Vuex.Store({
     },
     addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
       state.schedule = newProgramSlots
+    },
+    redirect() {
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -171,7 +173,9 @@ export default new Vuex.Store({
       const playlistData = {
         'username': editedPlaylist.dj_id,
         'playlistName': editedPlaylist.p_name,
-        'show': editedPlaylist.show
+        'show': editedPlaylist.show,
+        'newName': editedPlaylist.new_name,
+        'newShow': editedPlaylist.new_show
       }
 
       return axios.put(`http://localhost:5000/playlist/${editedPlaylist.dj_id}`, playlistData, {withCredentials: true})
@@ -428,7 +432,13 @@ export default new Vuex.Store({
           console.log(res.data)
           return res.data
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          if (err.response.status == 404){
+            return err
+          }
+          else
+            console.log(err)
+        })
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import

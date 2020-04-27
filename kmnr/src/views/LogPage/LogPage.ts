@@ -5,6 +5,7 @@ import defaultButton from "../../components/Button.vue"
 import playlist from "../../components/NewPlaylist.vue";
 import defaultTable from "../../components/Table.vue";
 import edit from "../../components/CurrentPlaylists.vue";
+import editPlaylist from "../../components/EditPlaylist.vue";
 import switchPlaylist from "../../components/PlaylistSwitch.vue";
 import draggable from "vuedraggable";
 
@@ -15,12 +16,13 @@ import draggable from "vuedraggable";
                       defaultTable,
                       edit,
                       switchPlaylist,
+                      editPlaylist,
                       draggable }
     })
 
 export default class LogPage extends Vue {
     playlistSelected: Boolean = false;
-    currentShow: string = "EXAMPLE_SHOW";
+    currentPlaylist: string = "EXAMPLE_SHOW";
     name="";
     song: string = "";
     artist: string = "";
@@ -30,22 +32,19 @@ export default class LogPage extends Vue {
     prevalbum: string = "";
     entries: Object[] = [];
     num: number = 0;
-    savedPlaylists: Object[] = [];
-    playlist_name: string = " ";
     uploadBox: Boolean = false;
     playlistBox: Boolean = false;
     editBox: Boolean = false;
     switchBox: Boolean = false;
     showPlaylists: Boolean = false;
-    songname = "";
     djname = "";
 
     addSong() {
+     console.log(this.song, this.artist, this.album)
      const PlaylistParam = {
        dj_id: "test",
-       playlistName: this.currentShow,
+       playlistName: this.currentPlaylist,
        show: this.name,
-       ///index: this.num,
        index: this.num++,
        //ref: this.song + this.artist + this.album
        entry: {song: this.song, artist: this.artist, album: this.album}
@@ -60,13 +59,9 @@ export default class LogPage extends Vue {
     }
 
     removeSong(row) {
-        //this.currentShow = val.toString();
-        //this.$delete(this.entries, val)
-        //num: this.num--;
-
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentShow,
+            playlistName: this.currentPlaylist,
             index: row.index,
             //ref: "songartistalbum"
             entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
@@ -87,7 +82,7 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentShow,
+            playlistName: this.currentPlaylist,
             show: this.name,
             ///index: this.num,
             ref: 1,
@@ -114,7 +109,7 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentShow,
+            playlistName: this.currentPlaylist,
             show: this.name,
             ///index: this.num,
             ref: 1,
@@ -141,7 +136,7 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentShow,
+            playlistName: this.currentPlaylists,
             show: this.name,
             ///index: this.num,
             ref: 1,
@@ -169,7 +164,7 @@ export default class LogPage extends Vue {
         //console.log(this.artist, this.album);
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentShow,
+            playlistName: this.currentPlaylist,
             show: this.name,
             ///index: this.num,
             ref: 1,
@@ -199,14 +194,14 @@ export default class LogPage extends Vue {
         console.log(row.entry.album)
         //console.log("please work")
     }
-    savePlaylist() {
-      let entry = {
-        name: "test playlist",
-        totalSongs: 2
-    };
+    // savePlaylist() {
+    //   let entry = {
+    //     name: "test playlist",
+    //     totalSongs: 2
+    // };
 
-    this.savedPlaylists.push(entry);
-    }
+    // this.savedPlaylists.push(entry);
+    // }
 
     allowUpload() {
       this.uploadBox = true;
@@ -228,7 +223,7 @@ export default class LogPage extends Vue {
         return this.playlistBox;
     }
 
-    choosePlaylist() {
+    editPlaylist() {
         this.editBox = true; 
     }
 
@@ -258,7 +253,7 @@ export default class LogPage extends Vue {
     @Watch('newPlaylistCreated')
         newPlaylistCreated(id) {
             console.log(id[0], id[1], id[2]);
-            this.currentShow = id[1];
+            this.currentPlaylist = id[1];
             this.name = id[2];
             this.playlistSelected = true;
             this.getSongs();
@@ -268,14 +263,15 @@ export default class LogPage extends Vue {
     getSongs() {
         const PlaylistParam = {
                 dj_id: "test",
-                playlistName: this.currentShow
+                playlistName: this.currentPlaylist
             }
         this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
             this.entries = res.playlist_entries || [];
+            console.log("the state variable" ,this.$store.state.logs)
             this.num = this.entries.length;
-            console.log(res);
+            //console.log(res);
             console.log(this.entries);
-            console.log(this.entries.length);
+            //console.log(this.entries.length);
         });
     }
 
@@ -283,7 +279,7 @@ export default class LogPage extends Vue {
         newPlaylist(name) {
             console.log("newPlaylist caught")
             this.playlistSelected = true;
-            this.currentShow = name;
+            this.currentPlaylist = name;
             this.getSongs();
         }
 

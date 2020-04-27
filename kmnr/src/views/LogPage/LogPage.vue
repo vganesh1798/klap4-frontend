@@ -6,8 +6,14 @@
                 <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
                 <defaultButton class="colored editButton" @click.native="switchPlaylist()">Switch Playlist</defaultButton>
                 <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch" @newPlaylist="newPlaylist"></switchPlaylist>
-                <edit v-if="editBox" @closeEdit="closeEdit"></edit>
-                <h1>{{currentShow}}</h1>
+                <!--edit v-if="editBox" @closeEdit="closeEdit"></edit-->
+                <h1>
+                    {{currentPlaylist}} 
+                    <defaultButton @click.native="editPlaylist()">
+                        <i class="material-icons">edit</i>
+                    </defaultButton>
+                </h1>
+                <editPlaylist :currentPlaylist="currentPlaylist" :currentShow="name" v-if="editBox" @closeEdit="closeEdit" @editPlaylist="editPlaylist"></editPlaylist>
                 <div class="row">
                     <div class="col s6 offset-s3">
                         <div class="form">
@@ -34,7 +40,7 @@
                                 <br/>
 
                                 <defaultButton class="colored mybtn" type="submit" style="margin-right: 15px;">Post playlist!</defaultButton>
-                                <defaultButton class="colored mybtn" type="submit" @click.native="savePlaylist()">Save playlist!</defaultButton>
+                                <defaultButton class="colored mybtn" type="submit">Save playlist!</defaultButton>
                             </form>
                         </div>
                     </div>
@@ -55,13 +61,13 @@
                                         <!--td id="tablecols" v-html="song" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)" @focusout="editstuff(entry)" @keyup.enter="editstuff(entry.index)"--->
                                         <!--td id="tablecols" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)"-->
                                         <td id="tablecols">
-                                            <p @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)">{{ entry.entry.song }}</p>
+                                            <p v-html="entry.entry.song" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)">{{ entry.entry.song }}</p>
                                         </td>
                                         <td id="tablecols">
-                                            <p @blur="updateArtist" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.artist }}</p>
+                                            <p v-html="entry.entry.artist" @blur="updateArtist" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.artist }}</p>
                                         </td>
                                         <td id="tablecols">
-                                            <p @blur="updateAlbum" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.album}}</p>
+                                            <p v-html="entry.entry.album" @blur="updateAlbum" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.album}}</p>
                                         </td>
                                         <td style="min-width: 20px;">
                                             <defaultButton  @click.native="removeSong(entry)">
@@ -100,6 +106,7 @@
                 <playlist v-if="playlistBox" @closePlaylist="closePlaylist" @newPlaylistCreated="newPlaylistCreated"></playlist>
                 <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
                 <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch" @newPlaylist="newPlaylist"></switchPlaylist>
+                <editPlaylist v-if="editBox" @closeEdit="closeEdit" @editPlaylist="editPlaylist"></editPlaylist>
                 <table v-if="showPlaylists">
                      <tbody>
                         <tr v-for="playlist in myPlaylists" v-bind:key="playlist.id">
