@@ -251,26 +251,28 @@ export default new Vuex.Store({
       .then((res) => console.log(res.data))
       .catch(err => console.log(err))
     },
-    postReview({commit, state}, reviewParams: AlbumReview) {
+    postReview({commit, state}, reviewParams: any) {
+      const id = reviewParams.id;
       const postObject = {
-        'dj_id': reviewParams.reviwer,
+        'dj_id': reviewParams.reviewer,
         'content': reviewParams.review
       }
 
-      return axios.post('http://localhost:5000/album/review', postObject)
+      return axios.post(`http://localhost:5000/album/review/${id}`, postObject)
       .then(res => {
         this.commit('addToReviews', (res.data as Array<AlbumReview>))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    postProblem({commit, state}, problemParams: AlbumProblem) {
+    postProblem({commit, state}, problemParams: any) {
+      const id = problemParams.id;
       const postObject = {
         'dj_id': problemParams.reporter,
         'content': problemParams.problem
       }
 
-      return axios.post('http://localhost:5000/album/problem', postObject)
+      return axios.post(`http://localhost:5000/album/problem/${id}`, postObject)
       .then(res => {
         this.commit('addToProblems', (res.data as Array<AlbumProblem>))
         return res.data

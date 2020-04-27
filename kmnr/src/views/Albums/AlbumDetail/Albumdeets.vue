@@ -26,9 +26,10 @@
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
           <div class="card-content">
-            <span class="card-title">{{album.name}}</span>
-            <p>{{album.artist}}</p>
-            <p>{{album.date_added}}</p>
+            <span class="card-title">{{album.name}} ({{album.id}})</span>
+            <p>by {{album.artist}} ({{album.artist_id}})</p>
+            <p v-if="album.label">{{album.label}}</p>
+            <p>Added on {{album.date_added}}</p>
             <p>{{ album.genre }}</p>
           </div>
         </div>
