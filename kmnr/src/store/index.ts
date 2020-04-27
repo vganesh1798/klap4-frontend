@@ -32,18 +32,18 @@ export default new Vuex.Store({
   // A function to be accessed with commit to modify any states
   mutations: {
     // Mutations are necessary to push any changes to states
-    addLog(state, newLog: Log) {
+    addLog(state, newLog: Array<Log>) {
       // Pushing new logs from the API call to the list of logs
-      state.logs.push(newLog);
+      state.logs = newLog;
     },
-    addToAllChart(state, nextChartData: ChartData) {
-      state.allChart.push(nextChartData);
+    addToAllChart(state, nextChartData: Array<ChartData>) {
+      state.allChart = nextChartData;
     },
-    addToNewChart(state, nextChartData: ChartData) {
-      state.newChart.push(nextChartData);
+    addToNewChart(state, nextChartData: Array<ChartData>) {
+      state.newChart = nextChartData;
     },
-    addToArtists(state, newArtist: Artist) {
-      state.artists.push(newArtist);
+    addToArtists(state, newArtist: Array<Artist>) {
+      state.artists = newArtist;
     },
     singleArtistMut(state, sArtist: Artist){
       state.singleArtist = sArtist
@@ -83,26 +83,26 @@ export default new Vuex.Store({
         .then(res =>  {
           // Loop through all logs within the response
           //   and add each to the log state
-          res.data.map((log: Log) => this.commit('addLog', log)) // Commit is used with the data to push data to a mutation
+          this.commit('addLog', (res.data as Log)) // Commit is used with the data to push data to a mutation
           return res.data
         })
         // Simple catch to output if error occurs
         .catch(err => console.log(err))
     },
-    getAllChartData() {
+    getAllChartData({commit, state}, weeks: number) {
       return axios
-      .get('http://localhost:5000/charts/all')
+      .get(`http://localhost:5000/charts/all/${weeks}`)
       .then(res => {
-        res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
+        this.commit('addToAllChart', (res.data as ChartData))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    getNewChartData() {
+    getNewChartData({commit, state}, weeks: number) {
       return axios
-      .get('http://localhost:5000/charts/new')
+      .get(`http://localhost:5000/charts/new/${weeks}`)
       .then(res => {
-        res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
+        this.commit('addToNewChart', (res.data as ChartData))
         return res.data
       })
       .catch(err => console.log(err))
@@ -110,7 +110,7 @@ export default new Vuex.Store({
     getAllArtists() {
       return axios.get('http://localhost:5000/search/artist')
       .then(res =>{
-        res.data.map((artist: Artist) => this.commit('addToArtists', artist))
+        this.commit('addToArtists', (res.data as Array<Artist>))
         return res.data
       })
       .catch(err => console.log(err))
@@ -123,7 +123,7 @@ export default new Vuex.Store({
 
       return axios.post('http://localhost:5000/search/artist', searchQuery)
       .then(res =>{ 
-          res.data.map((artist: Artist) => this.commit('addToArtists', artist))
+          this.commit('addToArtists', (res.data as Array<Artist>))
           return res.data
       })
       .catch(err => console.log(err))

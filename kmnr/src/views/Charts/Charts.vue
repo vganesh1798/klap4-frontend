@@ -41,15 +41,23 @@
           </div>
           <div class="col s5"></div>
           <div class="col s2" v-if="new_charts">
-              <p>Top Charts from the last {{val}} weeks</p>
+              <p>New album charts for the last {{weeks}} weeks</p>
             <!--a v-if="new_charts">Charts for the last weeks:  </a>
             <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts"-->
           </div>
+          <div class="col s2" v-else>
+            <p>All charts for the last {{weeks}} weeks</p>
+          </div>
           <div class="col s1" v-if="new_charts">
             <p class="range-field">
-            <input v-model='val' type="range" id="test5" min="1" max="52" />
+            <input v-model='weeks' type="range" id="test5" min="1" max="52" @change="getNewCharts()"/>
             </p>
-            </div>
+          </div>
+          <div class="col s1" v-else>
+            <p class="range-field">
+              <input v-model='weeks' type="range" id="test5" min="1" max="52" @change="getCharts()"/>
+            </p>
+          </div>
 
         </div>
 
