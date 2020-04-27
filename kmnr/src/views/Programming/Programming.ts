@@ -31,10 +31,19 @@ export default class Programming extends Vue {
     newNameSearch = "";
     timestampSearch = "";
 
+    logList: any = []
+    identList: any = []
 
-    logList = []
+    offset: number = 0
+
+    identEnteredList: any = []
+
+    logEntries: any = []
+    logEntriesResponse: any = []
 
     schedule: any = []
+    entrySchedule: any = []
+
     curIndex: number = 0
     today: number = 0
 
@@ -42,8 +51,6 @@ export default class Programming extends Vue {
 
     programName = ''
     duration = ''
-
-    scheduleInputs: any = [['', ''], ['', ''], ['', '']]
 
     curDay(ind) {
         return Days[ind]
@@ -59,6 +66,16 @@ export default class Programming extends Vue {
     getAllLogs() {
         this.$store.dispatch('getProgramSlots').then(() => {
             this.logList = this.$store.state.schedule.program_slots.yesterday.concat(this.$store.state.schedule.program_slots.today, this.$store.state.schedule.program_slots.tomorrow)
+            this.logEntriesResponse = this.$store.state.schedule.program_log_entries.yesterday.concat(this.$store.state.schedule.program_log_entries.today, this.$store.state.schedule.program_log_entries.tomorrow)
+
+            for (let i in this.logList) {
+                let entryIdx = this.logEntriesResponse.map(entry => {return entry.slot_id}).indexOf(this.logList[i].id)
+                if (entryIdx !== -1)
+                    this.logEntries.push(this.logEntriesResponse[entryIdx])
+                else
+                    this.logEntries.push(null)
+            }
+
             this.pagnateHours(this.logList.length/3)
         })
     }
@@ -68,17 +85,61 @@ export default class Programming extends Vue {
         this.getAllLogs();
     }
 
-    stationIdentified() {
-        if (Math.abs(this.curIndex - this.today) <= 1)
-            this.identified = !this.identified
+    stationIdentified(idx) {
+        const identIndex = (this.curIndex * 3) + (idx - this.offset)
+        if (Math.abs(this.curIndex - this.today) <= 1) {
+            if (this.$store.state.currentUser !== '' || this.$store.state.currentUser !== 'Anonymous') {
+                if (this.identEnteredList[identIndex] !== false) {
+                    const stationIdParams: ProgramLogEntry = {
+                        type: 'station_id',
+                        name: '',
+                        slotId: this.identEnteredList[identIndex].slot_id,
+                        timestamp: this.identEnteredList[identIndex].timestamp,
+                        dj: this.$store.state.currentUser,
+                        newName: ''
+                    }
+
+                    this.$store.dispatch('removeProgramLogEntry', stationIdParams).then(res => {
+                        this.identEnteredList[identIndex] = false
+                        this.$forceUpdate()
+                    })
+                } else {
+                    const stationIdParams: ProgramLogEntry = {
+                        type: 'station_id',
+                        name: '',
+                        slotId: this.identList[identIndex].id,
+                        timestamp: '',
+                        dj: this.$store.state.currentUser,
+                        newName: ''
+                    }
+
+                    this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
+                        this.identEnteredList[identIndex] = res
+                        console.log(res)
+                        this.$forceUpdate()
+                    })
+                }
+            }
+        }
     }
 
     pagnateHours(fullHour) {
         for (let idx = 0; idx < this.logList.length; idx++) {
-            if ((this.logList[idx] as ProgramSlots).program_type === 'station_id')
+            if ((this.logList[idx] as ProgramSlots).program_type === 'station_id') {
+                if (this.logEntries[idx] !== null)
+                    if (this.logEntries[idx].program_type === 'station_id')
+                        this.identEnteredList.push(this.logEntries[idx])
+                    else
+                        this.identEnteredList.push(false)
+                else
+                    this.identEnteredList.push(false)
+
+                this.identList.push(this.logList[+idx])
                 this.logList.splice(+idx,1)
+                this.logEntries.splice(+idx,1)
+            }
         }
-    
+
         let curHour = new Date().getHours() + 24
         
         if (curHour === 0) curHour = 24
@@ -86,30 +147,48 @@ export default class Programming extends Vue {
         const beginLogs = [this.setLogs(0), this.setLogs(1), this.setLogs(2)]
         const endLogs = [this.setLogs(fullHour - 3), this.setLogs(fullHour - 2), this.setLogs(fullHour - 1)]
 
+        const beginLogsEntries = [this.setLogEntries(0), this.setLogEntries(1), this.setLogEntries(2)]
+        const endLogEntries = [this.setLogEntries(fullHour - 3), this.setLogEntries(fullHour - 2), this.setLogEntries(fullHour - 1)]
+
         const midToBackRange = this.range(curHour, fullHour - 2, 3)
         const frontToMidRange = this.range(curHour, 1, -3)
 
         let frontToMidLogs: any  = []
         let midToBackLogs: any = []
 
+        let frontToMidEntries: any  = []
+        let midToBackEntries: any = []
+
         for (let i in frontToMidRange) {
             frontToMidLogs.push([this.setLogs(frontToMidRange[i] - 1), this.setLogs(frontToMidRange[i]), this.setLogs(frontToMidRange[i] + 1)])
+            frontToMidEntries.push([this.setLogEntries(frontToMidRange[i] - 1), this.setLogEntries(frontToMidRange[i]), this.setLogEntries(frontToMidRange[i] + 1)])
         }
-
-        console.log(frontToMidLogs)
 
         for (let i in midToBackRange) {
             if (midToBackRange[i] !== curHour) {
                 midToBackLogs.push([this.setLogs(midToBackRange[i] - 1), this.setLogs(midToBackRange[i]), this.setLogs(midToBackRange[i] + 1)])
+                midToBackEntries.push([this.setLogEntries(frontToMidRange[i] - 1), this.setLogEntries(frontToMidRange[i]), this.setLogEntries(frontToMidRange[i] + 1)])
             }
         }
 
         frontToMidLogs.reverse()
 
         this.schedule = [beginLogs, ...frontToMidLogs, ...midToBackLogs, endLogs]
+        this.entrySchedule = [beginLogsEntries, ...frontToMidEntries, ...midToBackEntries, endLogEntries]
+
+        switch(frontToMidLogs[0][0][0].time) {
+            case '03:00:00':
+                this.offset = 0
+                break
+            case '02:00:00':
+                this.offset = 1
+                break
+            case '01:00:00':
+                this.offset = 2
+                break
+        }
 
         this.curIndex = frontToMidLogs.length
-
         this.today = this.curIndex
     }
 
@@ -120,7 +199,7 @@ export default class Programming extends Vue {
     }   
 
     pageDown() {
-        if (this.curIndex - 1 > 0)
+        if (this.curIndex - 1 >= 0)
             this.curIndex -= 1
 
         console.log(this.curIndex)
@@ -135,6 +214,11 @@ export default class Programming extends Vue {
         return [this.logList[newIndex], this.logList[newIndex + 1]]
     }
 
+    setLogEntries(index) {
+        const newIndex = index * 2
+        return [this.logEntries[newIndex], this.logEntries[newIndex + 1]]
+    }
+
     searchProgram() {
         const searchParam: ProgramSearch = {
             type: this.typeSearch.toLowerCase(),
@@ -144,56 +228,6 @@ export default class Programming extends Vue {
             .then(res => {
                 this.programs = this.$store.state.programs;
             });
-    }
-
-    postLogEntry() {
-        const logParams: ProgramLogEntry = {
-            type: this.typeSearch.toLowerCase(),
-            name: this.nameSearch.toLowerCase(),
-            slotId: +this.slotIdSearch,
-            dj: this.djSearch,
-            newName: '',
-            timestamp: ''
-        };
-        this.$store.dispatch('postProgramLogEntry', logParams)
-            .then(res => {
-               this.logEntry = this.$store.state.logEntry;
-            }
-        );
-    }
-
-    updateLogEntry() {
-        const logParams: ProgramLogEntry = {
-            type: this.typeSearch.toLowerCase(),
-            name: this.nameSearch.toLowerCase(),
-            slotId: +this.slotIdSearch,
-            dj: this.djSearch,
-            newName: this.newNameSearch,
-            timestamp: ''
-        };
-
-        this.$store.dispatch('updateProgramLogEntry', logParams)
-            .then(res => {
-               this.logEntry = this.$store.state.logEntry;
-            }
-        );
-    }
-
-    removeLogEntry() {
-        const logParams: ProgramLogEntry = {
-            type: this.typeSearch.toLowerCase(),
-            timestamp: this.timestampSearch,
-            dj: this.djSearch,
-            slotId: 0,
-            name: '',
-            newName: ''
-        };
-
-        this.$store.dispatch('removeProgramLogEntry', logParams)
-            .then(res => {
-               this.logEntry = this.$store.state.logEntry;
-            }
-        );
     }
 
     toTime(time) {

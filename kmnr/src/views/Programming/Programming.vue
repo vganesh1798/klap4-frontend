@@ -17,17 +17,32 @@
                   <div class="log-header">
                     <span class="time">{{toTime(log[0].time)}}</span>
                     <span class="day">{{curDay(log[0].day)}}</span>
-                    <span class="station-id"><a @click="stationIdentified()">
+                    <span class="station-id"><span class="sid-label">Station Identified</span><a @click="stationIdentified(index)">
                       <i class="material-icons-round" :class="{
                         'disabled': Math.abs(curIndex - today) > 1,
                         'enabled': Math.abs(curIndex - today) <= 1
-                        }">{{identified ? 'check_circle' : 'radio_button_unchecked'}}</i></a>
-                    </span>
+                        }" v-if="identEnteredList[(curIndex * 3) + (index - offset)] !== false">check_circle</i>
+                      <i class="material-icons-round" :class="{
+                        'disabled': Math.abs(curIndex - today) > 1,
+                        'enabled': Math.abs(curIndex - today) <= 1
+                        }" v-else>radio_button_unchecked</i>
+                    </a></span>
                   </div>
                   <div class="log-body" v-for="(type, index2) in log" :key="type.id">
-                    <span class="type">{{type.program_type}}</span><span class="delete"><a><i class="material-icons-round">delete</i></a></span>
+                    <span class="type">{{type.program_type}}</span>
+                    <span class="delete" v-if="Math.abs(curIndex - today) <= 1">
+                      <a><i class="material-icons-round">delete</i></a>
+                    </span>
+                    <span class="delete-disabled" v-else>
+                      <a><i class="material-icons-round">delete_outline</i></a>
+                    </span>
                     <div class="program-name input-field">
-                      <input :id="type.id + 'a'" class="program-input" type="text" v-model="programName" :disabled="Math.abs(curIndex - today) > 1"/>
+                      <input :id="type.id + 'a'"
+                        class="program-input"
+                        type="text"
+                        v-model="entrySchedule[index][index2]"
+                        :disabled="Math.abs(curIndex - today) > 1"
+                        :class="{'disabled': Math.abs(curIndex - today) > 1}"/>
                       <label :for="type.id + 'a'" class="text-black">Program</label>
                     </div>
                   </div>
@@ -174,6 +189,12 @@
       margin-right: 2em;
       margin-top: .5%;
 
+      .sid-label {
+        position: relative;
+        bottom: .7em;
+        margin-right: .5em;
+      }
+
       .material-icons-round {
         font-size: 30px;
       }
@@ -209,6 +230,10 @@
         margin-top: 7px;
         color: black;
       }
+
+      .disabled {
+        cursor: not-allowed;
+      }
     }
 
     .delete {
@@ -221,6 +246,20 @@
       .material-icons-round {
         color: black;
         cursor: pointer;
+        user-select: none;
+      }
+    }
+
+    .delete-disabled {
+      position: relative;
+      float: right;
+      margin-top: .8em;
+
+      right: 2em;
+
+      .material-icons-round {
+        color: #393939;
+        cursor: not-allowed;
         user-select: none;
       }
     }
