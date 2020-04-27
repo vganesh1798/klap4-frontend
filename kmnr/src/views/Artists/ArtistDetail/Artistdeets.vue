@@ -12,7 +12,7 @@
           </div>
           <div class="card-content">
             <span class="card-title">{{artist.name}}</span>
-            <p>{{artist.genre_abbr}}</p>
+            <p>{{artist.genre}}</p>
           </div>
         </div>
         </div>
@@ -31,8 +31,8 @@
             <tbody>
               <tr v-for="item in albums" :key="item.id">
                 <td>{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.format_bitfield }}</td>
+                <td>{{ item.album_name }}</td>
+                <td>{{ item.album_format }}</td>
                 <td>{{ item.missing }}</td>
               </tr>
             </tbody>

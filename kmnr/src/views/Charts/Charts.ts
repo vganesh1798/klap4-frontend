@@ -30,7 +30,7 @@ export default class ChartsPage extends Vue {
     getCharts() {
         this.new_charts = false;
         this.range = 0;
-        this.$store.dispatch('getAllChartData').then(res => {
+        this.$store.dispatch('getAllChartData', this.weeks).then(res => {
             this.charts = res;
             console.log(this.charts);
         });
@@ -39,7 +39,7 @@ export default class ChartsPage extends Vue {
     getNewCharts() {
         this.new_charts = true;
         this.range = 0;
-        this.$store.dispatch('getNewChartData').then(res => {
+        this.$store.dispatch('getNewChartData', this.weeks).then(res => {
             this.charts = res;
             console.log(this.charts);
         });

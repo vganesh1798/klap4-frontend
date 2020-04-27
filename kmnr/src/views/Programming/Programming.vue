@@ -2,9 +2,13 @@
   <div class="full-deets">
     <div class="container">
       <div class="row">
-        <h1>
-          <span class="prog-heading-main">Programming</span>
-        </h1>
+        <div class="col s12">
+          <h1>
+            <span class="prog-heading-main">Programming</span>
+          </h1>
+        </div>
+      </div>
+      <div class="row program-contents">
         <div class="col s6">
           <div class="log-container">
             <div class="log-contents">
@@ -13,11 +17,12 @@
                   <div class="log-header">
                     <span class="time">{{toTime(log[0].time)}}</span>
                     <span class="day">{{curDay(log[0].day)}}</span>
-                    <span class="station-id"><a @click="stationIdentified()"><i
-                          class="material-icons-round">{{identified ? 'check_circle' : 'radio_button_unchecked'}}</i></a></span>
+                    <span class="station-id"><a @click="stationIdentified()">
+                      <i class="material-icons-round">{{identified ? 'check_circle' : 'radio_button_unchecked'}}</i></a>
+                    </span>
                   </div>
                   <div class="log-body" v-for="type in log" :key="type.id">
-                    <span class="type">{{type.program_type}}</span>
+                    <span class="type">{{type.program_type}}</span><span class="delete"><a><i class="material-icons-round">delete</i></a></span>
                     <div class="program-name input-field">
                       <input :id="type.id + 'a'" class="program-input" type="text" v-model="programName" />
                       <label :for="type.id + 'a'" class="text-black">Program</label>
@@ -28,12 +33,15 @@
             </div>
           </div>
         </div>
-        <div class="nav-buttons">
+        <div class="nav-buttons col s1">
           <div class="up">
-            <a @click="pageUp"><i class="material-icons-round">keyboard_arrow_up</i></a>
+            <a @click="pageDown()"><i class="material-icons-round">keyboard_arrow_up</i></a>
+          </div>
+          <div class="current-day">
+            <a @click="setToCurDay()"><i class="material-icons-round">today</i></a>
           </div>
           <div class="down">
-            <a @click="pageDown"><i class="material-icons-round">keyboard_arrow_down</i></a>
+            <a @click="pageUp()"><i class="material-icons-round">keyboard_arrow_down</i></a>
           </div>
         </div>
         <div class="col s3">
@@ -68,12 +76,28 @@
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
   .nav-buttons {
+    padding-left: 0px;
+    padding-right: 0px;
+
+    width: 3em !important;
+
     position: relative;
-    top: 18em;
+    top: 14.5em;
+
+    user-select: none;
 
     .material-icons-round {
+      cursor: pointer;
       color: black;
       font-size: 40px;
+    }
+
+    .up {
+      margin-bottom: 2em;
+    }
+
+    .down {
+      margin-top: 2em;
     }
   }
 
@@ -109,6 +133,8 @@
       box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
       background-color:rgba(220,225,220,.15);
       border-radius: 5px;
+
+      z-index: 99;
 
       .type {
         position: relative;
@@ -152,7 +178,7 @@
 
     .program-name {
       width: 10vw;
-      margin-right: 4em;
+      margin-right: 10em;
       bottom: 1.5em;
       height: 0px;
       position: relative;
@@ -167,6 +193,20 @@
         color: black;
       }
     }
+
+    .delete {
+      position: relative;
+      float: right;
+      margin-top: .8em;
+
+      right: 2em;
+
+      .material-icons-round {
+        color: black;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
   }
 
   .main {
@@ -177,6 +217,10 @@
     background-size: cover;
     min-height: 100%;
     height: auto;
+
+    .program-contents {
+      margin-top: 3em;
+    }
   } 
   .table {
     position: absolute;
@@ -187,10 +231,10 @@
 
   .prog-heading-main {
     display: block;
-    font-size: 5vw;
+    font-size: 3.5vw;
     font-weight: 60;
-    padding-top: 5%;
-    padding-left: 35%;
+    padding-top: 3%;
+    padding-left: 38%;
     padding-bottom: 1%;
     color: Black;
     font-family: 'Montserrat';

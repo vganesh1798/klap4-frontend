@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import Log from '@/Models/Playlist'
 import Playlist from '@/Models/Playlist'
 import PlaylistEntry from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
-import Program, {ProgramSearch, ProgramSlots} from '../Models/Program'
+import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots, ProgramFormat} from '../Models/Program'
 
-import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
+import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
   // The variable to be shared between components
   state: {
     // An empty list of logs to be stored when called
+    logs: Array<Log>(),
     playlists: Array<Playlist>(),
     playlist: {},
     allChart: Array<ChartData>(),
@@ -26,6 +28,10 @@ export default new Vuex.Store({
     singleAlbum: {},
     currentUser: '',
     programs: Array<Program>(),
+    singleProgram: {},
+    logEntry: Array<ProgramLogEntry>(),
+    reviews: Array<AlbumReview>(),
+    problems: Array<AlbumProblem>(),
     schedule: Array<ProgramSlots>()
   },
   // A function to be accessed with commit to modify any states
@@ -38,14 +44,18 @@ export default new Vuex.Store({
     displayPlaylist(state, newPlaylistEntry: PlaylistEntry) {
       state.playlist = newPlaylistEntry;
     },
-    addToAllChart(state, nextChartData: ChartData) {
-      state.allChart.push(nextChartData);
+    addLog(state, newLog: Array<Log>) {
+      // Pushing new logs from the API call to the list of logs
+      state.logs = newLog;
     },
-    addToNewChart(state, nextChartData: ChartData) {
-      state.newChart.push(nextChartData);
+    addToAllChart(state, nextChartData: Array<ChartData>) {
+      state.allChart = nextChartData;
     },
-    addToArtists(state, newArtist: Artist) {
-      state.artists.push(newArtist);
+    addToNewChart(state, nextChartData: Array<ChartData>) {
+      state.newChart = nextChartData;
+    },
+    addToArtists(state, newArtist: Array<Artist>) {
+      state.artists = newArtist;
     },
     singleArtistMut(state, sArtist: Artist){
       state.singleArtist = sArtist
@@ -62,6 +72,18 @@ export default new Vuex.Store({
     },
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
+    },
+    addSingleProgram(state, sProgram: ProgramFormat) {
+      state.singleProgram = sProgram
+    },
+    addToLog(state, newLog: Array<ProgramLogEntry>) {
+      state.logEntry = newLog
+    },
+    addToReviews(state, newReview: Array<AlbumReview>) {
+      state.reviews = newReview
+    },
+    addToProblems(state, newProblem: Array<AlbumProblem>) {
+      state.problems = newProblem
     },
     addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
       state.schedule = newProgramSlots
@@ -91,7 +113,7 @@ export default new Vuex.Store({
         .then(res =>  {
           // Loop through all logs within the response
           //   and add each to the log state
-          //sthis.commit('displayPlaylist', (res.data as PlaylistEntry)) // Commit is used with the data to push data to a mutation
+          this.commit('addLog', (res.data as Log)) // Commit is used with the data to push data to a mutation
           return res.data
         })
         // Simple catch to output if error occurs
@@ -157,21 +179,20 @@ export default new Vuex.Store({
           return res.data
         }).catch(err => console.error(err))
     },
-    getAllChartData() {
+    getAllChartData({commit, state}, weeks: number) {
       return axios
-      .get('http://localhost:5000/charts/all', {withCredentials: true})
+      .get(`http://localhost:5000/charts/all/${weeks}`)
       .then(res => {
-        res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
-        console.log(res.data)
+        this.commit('addToAllChart', (res.data as ChartData))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    getNewChartData() {
+    getNewChartData({commit, state}, weeks: number) {
       return axios
-      .get('http://localhost:5000/charts/new', {withCredentials: true})
+      .get(`http://localhost:5000/charts/new/${weeks}`)
       .then(res => {
-        res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
+        this.commit('addToNewChart', (res.data as ChartData))
         return res.data
       })
       .catch(err => console.log(err))
@@ -179,7 +200,7 @@ export default new Vuex.Store({
     getAllArtists() {
       return axios.get('http://localhost:5000/search/artist', {withCredentials: true})
       .then(res =>{
-        res.data.map((artist: Artist) => this.commit('addToArtists', artist))
+        this.commit('addToArtists', (res.data as Array<Artist>))
         return res.data
       })
       .catch(err => console.log(err))
@@ -192,15 +213,16 @@ export default new Vuex.Store({
 
       return axios.post('http://localhost:5000/search/artist', searchQuery, {withCredentials: true})
       .then(res =>{ 
-          res.data.map((artist: Artist) => this.commit('addToArtists', artist))
+          this.commit('addToArtists', (res.data as Array<Artist>))
           return res.data
       })
       .catch(err => console.log(err))
     },
-    displayArtists({commit, state}, id: string) {
-      return axios.get(`http://localhost:5000/display/artist/${id}`, {withCredentials: true})
+    displayArtist({commit, state}, id: string) {
+      return axios.get(`http://localhost:5000/display/artist/${id}`)
       .then(res =>{ 
           this.commit('singleArtistMut', (res.data as SingleArtist))
+          console.log(res.data)
           return res.data
           // OR
           //res.data.map(artist => {this.commit('addToArtists', artist))
@@ -276,6 +298,91 @@ export default new Vuex.Store({
           return res.data
         })
         .catch(err => console.log(err))
+    },
+    displayProgram({commit, state}, id: string) {
+      return axios.get(`http://localhost:5000/display/program/${id}`)
+        .then(res => {
+          this.commit('addSingleProgram', (res.data as ProgramFormat))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    getProgrammingLogEntry({commit, state}) {
+      return axios.get('http://localhost:5000//programming/log')
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          console.log(res.data)
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    postProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+        const postObject = {
+          'programType': logParams.type,
+          'programName': logParams.name,
+          'slotId': logParams.slotId,
+          'Dj': logParams.dj
+        }
+
+        return axios.post('http://localhost:5000/programming/log', postObject)
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    updateProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+      const updateObject = {
+        'programType': logParams.type,
+        'programName': logParams.name,
+        'slotId': logParams.slotId,
+        'Dj': logParams.dj,
+        'newName': logParams.newName
+      }
+
+      return axios.put('http://localhost:5000/programming/log', updateObject)
+        .then(res => {
+          this.commit('addToLog', (res.data as Array<ProgramLogEntry>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    removeProgramLogEntry({commit, state}, logParams: ProgramLogEntry){
+      const removeObject = {
+        'programType': logParams.type,
+        'timestamp': logParams.timestamp,
+        'Dj': logParams.dj
+      }
+
+      return axios.delete('http://localhost:5000/programming/log', {params: {"object": removeObject}})
+      .then((res) => console.log(res.data))
+      .catch(err => console.log(err))
+    },
+    postReview({commit, state}, reviewParams: AlbumReview) {
+      const postObject = {
+        'dj_id': reviewParams.reviwer,
+        'content': reviewParams.review
+      }
+
+      return axios.post('http://localhost:5000/album/review', postObject)
+      .then(res => {
+        this.commit('addToReviews', (res.data as Array<AlbumReview>))
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+    postProblem({commit, state}, problemParams: AlbumProblem) {
+      const postObject = {
+        'dj_id': problemParams.reporter,
+        'content': problemParams.problem
+      }
+
+      return axios.post('http://localhost:5000/album/problem', postObject)
+      .then(res => {
+        this.commit('addToProblems', (res.data as Array<AlbumProblem>))
+        return res.data
+      })
+      .catch(err => console.log(err))
     },
     login({commit, state}, encoding: string) {
       return axios.post(`http://localhost:5000/token/auth`, {}, {headers: {'Authorization': encoding}, withCredentials: true})
