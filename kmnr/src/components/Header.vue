@@ -18,7 +18,7 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }">
-              <input id="search" placeholder="Search" type="search">
+              <input v-model="searchquery" id="search" placeholder="Quickjump" type="search" @keyup.enter="search()">
               <!--<label class="label-icon" for="search"><i class="material-icons">search</i></label>
               <i class="material-icons" v-if="searching">close</i>-->
             </div>
@@ -28,8 +28,16 @@
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" @click="openLogin()">
+            }" v-if="!userAuth" @click="openLogin()">
                 Log In
+            </div>
+
+            <div id="logout" :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }" v-else @click="logOut()">
+                Log Out
             </div>
 
            <router-link :class="{
@@ -79,7 +87,7 @@
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">ARSE</a>
         </nav>
-        <login v-if="loginOpen" @closeLogin="closeLogin"></login>
+        <login v-if="loginOpen" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
     </div>
 </template>
 
@@ -100,6 +108,8 @@
         loginOpen = false
         on = false
         logoSource = './radio.png'
+        userAuth = false
+        searchquery = "";
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
@@ -111,6 +121,10 @@
                 this.logoSource = images('./logo.png')
             } else {
                 this.logoSource = images('./radio.png')
+            }
+
+            if (this.$cookies.isKey('csrf_access_token')) {
+                this.userAuth = true
             }
         }
 
@@ -130,10 +144,14 @@
             })
         }
 
-        created() {
-            this.$on('close-log-in', () => {
-                this.closeLogin();
-            })
+        loggedIn() {
+            this.closeLogin()
+            this.userAuth = true
+        }
+
+        logOut() {
+            this.$store.dispatch('logout')
+            this.userAuth = false
         }
 
         beforeDestroy() {
@@ -152,7 +170,6 @@
 
         navScroll() {
             this.scrolledTop = (!this.homepage || (this.homepage && (scrollY > 0)))
-            
             let images = require.context('../assets/', false, /\.png$/)
 
             if (!this.scrolledTop) {
@@ -163,21 +180,43 @@
         }
 
         openLogin() {
+            console.log(this.scrolledTop, this.homepage, this.preload)
             this.loginOpen = true;
             return this.loginOpen;
         }
 
         @Watch('closeLogin')
-            closeLogin() {
-                this.on = true;
-                this.loginOpen = false;
-                return this.loginOpen;
+        closeLogin() {
+            this.on = true;
+            this.loginOpen = false;
+            return this.loginOpen;
+        }
+
+        search() {
+           console.log("searching", this.searchquery);
+           const searchParam = {
+                id: this.searchquery
             }
+            this.$store.dispatch('quicksearch', searchParam).then(res => {  
+                if(res.type == "artist") { 
+                    console.log("artist")
+                    router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
+                }
+                else if(res.type == "album") { 
+                    console.log("album")
+                    router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
+                }
+        });
+        }
 }
 </script>
 
 <style lang="scss">
     $blue:  rgba(17, 2, 65, .25);
+
+    #logout {
+        cursor: pointer;
+    }
 
     #Header .nav-top {
         color: white;

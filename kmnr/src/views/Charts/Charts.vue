@@ -15,7 +15,7 @@
           <div class="col s3"></div>
           <div class="col s6">
             <div class="inputSearch">
-              <input v-model="chartsSearch" type="text" class="search-bar" placeholder="Search by genre"  @keyup.enter="SearchByChartName()">
+              <input v-model="chartsSearch" type="text" class="search-bar" placeholder="Search by album, artist, or genre"  @keyup.enter="SearchByChartName()">
               <defaultButton class="clr-btn" :style="{visibility:cancelSearchVisibility}" @click.native="CancelSearch()">
                 <i class="material-icons">clear</i>
               </defaultButton>
@@ -68,8 +68,8 @@
               </td>
               <td style="width: 28%;">
                 <ul>
-                  <li>{{ item.album_id }}</li>
-                  <li> {{ item.song_name }}</li>
+                  <li>{{ item.genre }}</li>
+                  <li> {{ item.album_id }}</li>
                 </ul>
               </td>
               <td style="width: 20%;">

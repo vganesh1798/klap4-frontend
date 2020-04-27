@@ -74,9 +74,12 @@ export default class ChartsPage extends Vue {
     }
 
     SearchByChartName() {
-        this.charts = this.charts.filter((alb: any) => {
-        return alb.artist_name.toLowerCase().includes(this.chartsSearch.toLowerCase());
-        });
+        this.charts = this.charts
+        .filter((alb: any) => {
+            return (alb.artist_name.toLowerCase().includes(this.chartsSearch.toLowerCase()) || 
+                    alb.album_name.toLowerCase().includes(this.chartsSearch.toLowerCase()) || 
+                    alb.genre.toLowerCase().includes(this.chartsSearch.toLowerCase()));
+        })
 
         this.cancelSearchVisibility = "visible";
     }

@@ -13,17 +13,15 @@
                 <div class="row">
                     <div class="input-field">
                         <label required for="name">Name</label>
-                        <input type="text" id="name" v-model="p_name" />
+                        <input type="text" id="name" v-model="name" />
+                    </div>
+                    <div class="input-field">
+                        <label required for="playlist">Playlist</label>
+                        <input type="text" id="playlist" v-model="playlistName" />
                     </div>
                     <div class="input-field">
                         <label required for="show">Show</label>
                         <input type="text" id="show" v-model="showName" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field">
-                        <label for="comment">Comment</label>
-                        <input required class="col lg6" type="text" id="label" v-model="comment" />
                     </div>
                 </div>
                 <div class="row"/>
@@ -41,17 +39,25 @@
     })
     export default class playlist extends Vue {
         
-        //@Prop() playlist = [{dj_id: 'test', p_name: 'dsaflkj', show: 'adfasd'}];
-        
         close = false;
-        user = 'test'
-        p_name = ''
+        name = ''
+        playlistName = ''
         showName = ''
-        comment = ''
 
         constructor() {
             super()
         }
+
+        created() {
+        this.getCurrentUser();
+      }
+
+    getCurrentUser() {
+       this.$store.dispatch('getCurrUser').then(() => {
+                console.log("after", this.$store.state.currentUser)
+                this.name = this.$store.state.currentUser
+            });
+    }
 
         @Emit('closePlaylist') 
             closePlaylist() {
@@ -60,8 +66,8 @@
 
     createPlaylist() {
         const playlistParams = {
-            dj_id: this.user,
-            p_name: this.p_name,
+            dj_id: this.name,
+            p_name: this.playlistName,
             show: this.showName
         }
         this.$store.dispatch('createNewPlaylist', playlistParams).then(res => {

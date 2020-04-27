@@ -52,17 +52,19 @@
                             <!--tbody-->
                                 <draggable v-model="entries" group="people" @start="drag=true" @end="drag=false">
                                     <tr v-for="(entry, index) in entries" :key="entry.id">
-                                        <td >
-                                            <p>{{ entry.reference }}</p>
+                                        <!--td id="tablecols" v-html="song" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)" @focusout="editstuff(entry)" @keyup.enter="editstuff(entry.index)"--->
+                                        <!--td id="tablecols" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)"-->
+                                        <td id="tablecols">
+                                            <p @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)">{{ entry.entry.song }}</p>
                                         </td>
-                                        <td class="tablecols">
-                                            <p>{{entry.artist}}</p>
+                                        <td id="tablecols">
+                                            <p @blur="updateArtist" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.artist }}</p>
                                         </td>
-                                        <td class="tablecols">
-                                            <p>{{entry.album}}</p>
+                                        <td id="tablecols">
+                                            <p @blur="updateAlbum" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.album}}</p>
                                         </td>
                                         <td style="min-width: 20px;">
-                                            <defaultButton  @click.native="removeSong(index)">
+                                            <defaultButton  @click.native="removeSong(entry)">
                                                 <i class="material-icons">clear</i>
                                             </defaultButton>
                                         </td>
@@ -74,6 +76,11 @@
                 </div>
             </div>
             <div v-else>
+                <div v-if="this.djname=='Anonymous'">
+                    <h1>Playlists</h1>
+                    <h2 style="text-align: center;">Please Log In</h2>
+                </div>
+                <div v-else>
                 <h1>Playlists</h1>
                 <div class="row topbutton">
                     <div class="col s2 offset-s4">
@@ -92,7 +99,6 @@
                 </div>
                 <playlist v-if="playlistBox" @closePlaylist="closePlaylist" @newPlaylistCreated="newPlaylistCreated"></playlist>
                 <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
-                <!--edit v-if="editBox" @closeEdit="closeEdit"></edit-->
                 <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch" @newPlaylist="newPlaylist"></switchPlaylist>
                 <table v-if="showPlaylists">
                      <tbody>
@@ -105,6 +111,7 @@
                 </table>
             </div>
         </div>
+    </div>
     </div>
 </template>
 

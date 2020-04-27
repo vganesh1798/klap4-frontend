@@ -6,6 +6,7 @@ import PlaylistEntry from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
+import Program, {ProgramSearch, ProgramSlots} from '../Models/Program'
 
 import DisplayAlbum, {Album, AlbumSearch} from '../Models/Album'
 
@@ -22,7 +23,10 @@ export default new Vuex.Store({
     artists: Array<Artist>(),
     singleArtist: {},
     albums: Array<Album>(),
-    singleAlbum: {}
+    singleAlbum: {},
+    currentUser: '',
+    programs: Array<Program>(),
+    schedule: Array<ProgramSlots>()
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -51,6 +55,16 @@ export default new Vuex.Store({
     },
     addSingleAlbum(state, sAlbum: DisplayAlbum) {
       state.singleAlbum = sAlbum
+    },
+    setUser(state, curUser: string) {
+      console.log("recieved", curUser)
+      state.currentUser = curUser
+    },
+    addToPrograms(state, newProgram: Array<Program>) {
+      state.programs = newProgram
+    },
+    addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
+      state.schedule = newProgramSlots
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -87,9 +101,33 @@ export default new Vuex.Store({
       axios.delete(`http://localhost:5000/playlist/display/${playlistDelete.dj_id}/${playlistDelete.playlistName}`, {
         data: {
           'index': playlistDelete.index,
-          'ref': playlistDelete.ref
+          //'ref': playlistDelete.ref
+          'entry': playlistDelete.entry
         },
         withCredentials: true
+      })
+      .catch(err => console.log(err))
+    },
+    updatePlaylistEntry({commit, state}, playlistEntry: any) {
+      return axios
+      
+      .put(`http://localhost:5000/playlist/display/${playlistEntry.dj_id}/${playlistEntry.playlistName}`, playlistEntry, {withCredentials: true})
+      .then(res => {
+        console.log(res.data)
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+
+    uploadPlaylist({commit, state}, playlistEntry) {
+      const fileinfo = {
+        'file': playlistEntry.file
+    };
+      return axios
+
+      .post(`http://localhost:5000/playlist/upload/${playlistEntry.dj_id}/${playlistEntry.playlistName}`, playlistEntry, {withCredentials: true})
+      .then(res => {
+        return res.data
       })
       .catch(err => console.log(err))
     },
@@ -124,6 +162,7 @@ export default new Vuex.Store({
       .get('http://localhost:5000/charts/all', {withCredentials: true})
       .then(res => {
         res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
+        console.log(res.data)
         return res.data
       })
       .catch(err => console.log(err))
@@ -216,6 +255,73 @@ export default new Vuex.Store({
         withCredentials: true
       })
       .catch(err => console.log(err))
+    },
+    getAllPrograms() {
+      return axios.get('http://localhost:5000/search/program')
+        .then(res => {
+          this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    getQueriedPrograms({commit, state}, programParams: ProgramSearch) {
+      const searchQuery = {
+        'programType': programParams.type,
+        'name': programParams.name,
+      }
+
+      return axios.post('http://localhost:5000/search/program', searchQuery)
+        .then(res => {
+          this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    login({commit, state}, encoding: string) {
+      return axios.post(`http://localhost:5000/token/auth`, {}, {headers: {'Authorization': encoding}, withCredentials: true})
+        .then(res => {
+          if (res.status !== 200)
+            return false
+
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    logout() {
+      return axios.post(`http://localhost:5000/token/remove`, {}, {withCredentials: true})
+        .then(res => {
+          if (res.status !== 200)
+            return false
+
+          return true
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    getCurrUser() {
+      let secure = {}
+      return axios.get('http://localhost:5000/', {withCredentials: true})
+        .then(res => {
+          this.commit('setUser', res.data['logged_in_as'])
+          return res.data
+        })
+    },
+    getProgramSlots() {
+      return axios.get('http://localhost:5000/programming/log')
+        .then(res => {
+          this.commit('addToProgramSlots', (res.data as Array<ProgramSlots>))
+          return res.data
+        })
+    },
+    quicksearch({commit, state}, searchParam: any) {
+      return axios
+        .get(`http://localhost:5000/quickjump/${searchParam.id}`, {withCredentials: true})
+        .then(res =>  {
+          console.log(res.data)
+          return res.data
+        })
+        .catch(err => console.log(err))
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import
