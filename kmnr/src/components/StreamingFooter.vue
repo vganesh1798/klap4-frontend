@@ -23,7 +23,26 @@
         </div>
       </transition>
       <div class="progress-outer"><div id="prog-inner"></div></div>
-      <StreamQueue class="queue" v-show="queueOpen" v-closable="{exclude: ['btn'], handler: 'closeQueue'}"/>
+      <div>
+      <md-dialog :md-active.sync="queueOpen">
+      <md-dialog-title>Edit Playlist</md-dialog-title>
+
+      <md-tabs md-dynamic-height>
+        <md-tab md-label="Playlist">
+          <draggable v-model="queue" ghost-class="ghost" @end="onEnd">
+                <transition-group type="transition" name="flip-list">
+                    <div class='sortable' v-for="(song, index) in queue" :key="index" @click="updateSong(index)">{{ song.title }}</div>
+            </transition-group>
+            </draggable>
+        </md-tab>
+      </md-tabs>
+        <md-dialog-actions>
+        <md-button class="md-primary" @click="closeQueue()">Close</md-button>
+        <md-button class="md-primary" @click="closeQueue()">Save</md-button>
+      </md-dialog-actions>
+    </md-dialog>
+    </div>
+
     </div>
 </template>
 
@@ -32,12 +51,12 @@
   import * as V from 'vue'
   import StreamQueue from './StreamQueue.vue'
   import { Howl } from 'howler'
-
+  import draggable from 'vuedraggable'
   let handleOutsideClick
 
   @Component({
     components: {
-      StreamQueue
+      draggable
     },
     directives: {
       closable: {
@@ -77,7 +96,7 @@
       curIndex: number = 0
 
       cDur: string = '0:00'
-
+      queue = this.playlist
       curVol = 1
       muted = false
 
@@ -313,6 +332,7 @@
       }
 
       openQueue() {
+        console.log(this.queue)
         this.queueOpen = true
       }
 
@@ -528,5 +548,25 @@
 #playlistBtn {
   left: 0%;
 }
+.sortable{
+    width: 100%;
+    background: white;
+    padding: 1em;
+    cursor: move;
+    margin-bottom: 2px;;
+}
 
+.sortable-drag{
+    opacity: 0
+}
+
+.flip-list-move{
+    transition: transform 0.5s;
+}
+
+.ghost{
+    border-left: 6px solid black;
+    box-shadow: 10px 10px 5px -1px rgba(0, 0, 0, 0.17);
+    opacity: .7;
+}
 </style>
