@@ -1,6 +1,6 @@
 <template>
   <div class="full-view" >
-    <HeaderMobile />
+    <HeaderMobile/>
     <div class="content" :class="{'open':opened}" >
         <div id="navigation-icon" v-if="mobileView"
           v-on:click="toggle()">
@@ -127,7 +127,6 @@ export default class App extends Vue {
     bottom: .2em;
     transition: all .5s cubic-bezier(1,.06,.45,1.4);
   }
-
 
   .streamer {
     position: fixed;

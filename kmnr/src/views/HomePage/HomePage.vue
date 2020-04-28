@@ -59,8 +59,8 @@
 
     .text {
         position: absolute;
-        top: 48%;
-        left: 48%;
+        top: 55%;
+        left: 40%;
         transform: translate(-90%, -30%);
         text-align: center;
     }
