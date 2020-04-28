@@ -2,9 +2,8 @@
   <div class="full-view" >
     <HeaderMobile/>
     <div class="content" :class="{'open':opened}" >
-        <div id="navigation-icon" v-if="mobileView"
-          v-on:click="toggle()">
-          <i class="fas fa-bars"></i>
+        <div v-on:click="toggle()" id="navigation-icon" v-if="mobileView">
+          <i  class="fas fa-bars"></i>
         </div>
             <Header v-if="!mobileView"/>
     <router-view></router-view>
@@ -92,11 +91,9 @@ export default class App extends Vue {
         }
     show () {
             this.opened = true;
-            setTimeout(() => document.addEventListener('click',this.hide), 0);
         }
     hide () {
             this.opened = false;
-            document.removeEventListener('click',this.hide);
       }
    created() {
     this.handleView();
