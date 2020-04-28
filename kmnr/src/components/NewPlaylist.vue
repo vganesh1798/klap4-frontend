@@ -49,8 +49,8 @@
         }
 
         created() {
-        this.getCurrentUser();
-      }
+            this.getCurrentUser();
+        }
 
     getCurrentUser() {
        this.$store.dispatch('getCurrUser').then(() => {
