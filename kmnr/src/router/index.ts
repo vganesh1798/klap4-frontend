@@ -35,7 +35,11 @@ const routes = [
   {
     path: '/search',
     name: 'Search',
-    component: SearchPage
+    component: SearchPage,
+    props(route) {
+      console.log(route)
+      return route.query || {}
+    }
   },
   {
     path: '/stream',

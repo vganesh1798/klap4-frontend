@@ -47,6 +47,7 @@
       :md-duration="isInfinity ? Infinity : duration"
       :md-active.sync="showsnackbar"
       md-persistent
+      style="z-index: 999999"
     >
       <span>Now Playing: {{this.currentTrack}}</span>
     </md-snackbar>
