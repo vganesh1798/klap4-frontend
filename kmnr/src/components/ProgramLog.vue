@@ -13,9 +13,14 @@
                 <div class="col s6 offset-s2">
                     <div class="table">
                         <ul>
-                            <li class="time-slot" v-for="time in possibleTimes" :key="time.time + time.slot.toString()">
-                                <span class="time">{{time.time}}</span><span class="slot">Slot ID:{{time.slot}}</span>
-                                <span class="add-btn"><a @click="addToSlot()"><i class="material-icons-round">playlist_add</i></a></span>
+                            <li class="time-slot" v-for="time in possibleTimeWithDays" :key="time.id">
+                                <div v-if="!time.header">
+                                    <span class="time">{{toTime(time.time)}}</span><span class="slot">Slot ID: {{time.id}}</span>
+                                    <span class="add-btn"><a @click="addToSlot(time)"><i class="material-icons-round">playlist_add</i></a></span>
+                                </div>
+                                <div v-else>
+                                    <span class="day">{{getDay(time.day)}}</span>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -30,6 +35,16 @@ import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
 
 import defaultButton from './Button.vue';
 
+enum Days {
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+}
+
 @Component({
     components: {
         defaultButton
@@ -39,10 +54,63 @@ export default class TimeTable extends Vue {
     @Prop({type: Array, default: []}) possibleTimes
     close = false
 
+    possibleTimeWithDays: any = []
+
+    created() {
+        this.createListOfDays()
+    }
+
+    createListOfDays() {
+        let firstDaySet = true
+        let secondDaySet = false
+        let firstDay = 0
+
+        for (let idx in this.possibleTimes) {
+            let time: any = this.possibleTimes[idx]
+            if (firstDaySet) {
+                firstDay = time.day
+                firstDaySet = false
+                secondDaySet = true
+                this.possibleTimeWithDays.push({'time': '0','day': time.day, 'id': time.id*3, 'header': true})
+            } else if (secondDaySet && time.day !== firstDay) {
+                secondDaySet = false
+                this.possibleTimeWithDays.push({'time': '0','day': time.day, 'id': time.id*3, 'header': true})
+            }
+            this.possibleTimeWithDays.push({'time': time.time,'day': time.day, 'id': time.id, 'header': false})
+        }
+        console.log(this.possibleTimeWithDays)
+    }
+
+    toTime(time) {
+        let hours = time.substr(0,time.indexOf(':'))
+        let finalTime = '12:00 PM'
+
+        if (hours > 12 || hours == 0) {
+            hours = Math.abs(hours - 12)
+            finalTime = hours + ':00 '
+            if (hours % 12 === 0) finalTime += 'AM'
+            else finalTime += 'PM'
+        } else {
+            finalTime = hours + ':00 '
+            if (hours % 12 === 0) finalTime += 'PM'
+            else finalTime += 'AM'
+        }
+
+        return finalTime
+    }
 
     @Emit('closeTable') 
     closeTable() {
         this.close = true
+    }
+
+    getDay(idx) {
+        return Days[idx]
+    }
+
+    @Emit('addToSlot')
+    addToSlot(timeSlot) {
+        return timeSlot
     }
 }
 </script>
@@ -96,6 +164,8 @@ export default class TimeTable extends Vue {
         overflow-y: auto;
         background-color: rgba(200,200,200,.4);
 
+        border-radius: 3px;
+
         .material-icons-round {
             cursor: pointer;
             font-size: 25px;
@@ -107,10 +177,7 @@ export default class TimeTable extends Vue {
         .time-slot {
             height: 2em;
             margin-bottom: 5px;
-
-            &:hover {
-                background-color: rgba(0,0,0,.3)
-            }
+            border-bottom: 1px solid;
         }
 
         .time {
@@ -123,6 +190,11 @@ export default class TimeTable extends Vue {
             color: rgba(0,0,0,.5);
             font-size: 13px;
             margin-left: 10px;
+        }
+
+        .day {
+            font-size: 25px;
+            margin-left: .25em;
         }
     }
 </style>

@@ -92,7 +92,7 @@
         </div>
       </div>
     </div>
-    <TimeTable id="time-table" class="time-table" v-if="timeTableOpen" :possibleTimes="openTimes" @closeTable="closeTable" />
+    <TimeTable id="time-table" class="time-table" v-if="timeTableOpen" :possibleTimes="openTimes" @closeTable="closeTable" @addToSlot="addToSlot" />
   </div>
 </template>
 

@@ -65,6 +65,8 @@ export default class Programming extends Vue {
     timeTableOpen = false
     openTimes: any = []
 
+    programSelected: any = {}
+
     curDay(ind) {
         return Days[ind]
     }
@@ -161,27 +163,43 @@ export default class Programming extends Vue {
         }
     }
 
-    insertProgram(schedOffsetIdx, logIdx) {
-        const nameIndex = (this.curIndex * 6) + ((schedOffsetIdx * 2) + logIdx - (this.offset * 2))
+    insertProgram(schedOffsetIdx?, logIdx?, slot?) {
+        if (slot !== null) {
+            const stationIdParams: ProgramLogEntry = {
+                type: this.programSelected.type,
+                name: this.programSelected.name,
+                slotId: slot.id,
+                timestamp: '',
+                dj: this.$store.state.currentUser,
+                newName: ''
+            }
 
-        if (Math.abs(this.curIndex - this.today) <= 1) {
-            if (this.editing) {
-                this.editing = false
+            this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
+                this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = res
+                this.$forceUpdate()
+            })
+        } else {
+            const nameIndex = (this.curIndex * 6) + ((schedOffsetIdx * 2) + logIdx - (this.offset * 2))
 
-                //TODO: Add the update query here
-            } else {
-                const stationIdParams: ProgramLogEntry = {
-                    type: 'station_id',
-                    name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
-                    slotId: this.logList[nameIndex].id,
-                    timestamp: '',
-                    dj: this.$store.state.currentUser,
-                    newName: ''
+            if (Math.abs(this.curIndex - this.today) <= 1) {
+                if (this.editing) {
+                    this.editing = false
+
+                    //TODO: Add the update query here
+                } else {
+                    const stationIdParams: ProgramLogEntry = {
+                        type: this.logList[nameIndex].program_type,
+                        name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
+                        slotId: this.logList[nameIndex].id,
+                        timestamp: '',
+                        dj: this.$store.state.currentUser,
+                        newName: ''
+                    }
+                    this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
+                        this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = res
+                        this.$forceUpdate()
+                    })
                 }
-                this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
-                    this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = res
-                    this.$forceUpdate()
-                })
             }
         }
     }
@@ -257,6 +275,7 @@ export default class Programming extends Vue {
         frontToMidEntries.reverse()
 
         this.schedule = [beginLogs, ...frontToMidLogs, ...midToBackLogs, endLogs]
+
         this.entrySchedule = [beginLogsEntries, ...frontToMidEntries, ...midToBackEntries, endLogEntries]
 
         switch(frontToMidLogs[0][0][0].time) {
@@ -330,8 +349,38 @@ export default class Programming extends Vue {
     }
 
     openLogEntries(entry) {
+        let nameIndex = (this.curIndex * 6)
         this.openTimes = []
+
+        this.programSelected = entry
+
+        for (let i in this.range(0,3)) {
+            nameIndex = (this.curIndex + +i - 1) * 6
+
+            for (let j in this.range(0,6)) {
+                if (this.logList[nameIndex + +j].program_type === entry.type) {
+                    this.openTimes.push(this.logList[nameIndex + +j])
+                }
+            }
+        }
+
         this.timeTableOpen = true
+    }
+
+    addToSlot(logSlot) {
+        let slotFound = false
+        for (let i in this.schedule) {
+            for (let j in this.schedule[i]) {
+                for (let k in this.schedule[i][j]) {
+                    if (this.schedule[i][j][k].id === logSlot.id) {
+                        slotFound = true
+                        this.insertProgram(null, null, logSlot)
+                        break
+                    }
+                }
+            }
+            if (slotFound) break
+        }
     }
 
     closeTable() {
