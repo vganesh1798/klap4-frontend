@@ -1,7 +1,7 @@
 <template>
-    <div class="loginpage">
+    <div class="loginpage" >
         <div class="blur-background" @click="closeLogin"></div>
-        <div class="login">
+        <div class="login fade-in" >
             <div class="row">
                 <div class="col l11"></div>
                 <div class="col l1">
@@ -27,11 +27,11 @@
                         <input required type="password" id="password" autocomplete="current-password" v-model="pswd"/>
                     </div>
                 </div>
-                <div class="row">
-                    <defaultButton class="green btn" type="submit">Login</defaultButton>
+                <div class="row center">
+                    <md-button class="md-raised md-accent green" type="submit">Login</md-button>
                 </div>
             </form>
-            <a href="http://www.account.kmnr.org">Forgot Password</a>
+            <a class='help' href="http://www.account.kmnr.org">Forgot Password?</a>
         </div>
     </div>
 </template>
@@ -83,6 +83,25 @@
 </script>
 
 <style lang="scss" scoped>
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+.help{
+    padding-bottom: 15%;
+}
 .error {
     background-color: red;
     color: black;
@@ -124,19 +143,20 @@ a {
 }
 
 .login {
-    background-color:white;
+    background-color: #F7F7F7;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     height: 400px;
     width: 500px;
-    padding: 0% 5% 20% 5%;
-    border-radius: 3%;
+    padding: 0% 5% 25% 5%;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    // border-radius: 1%;
     font-family: 'Montserrat';
     z-index: 9999;
 }
-
 .btn {
     background-color: rgba(100,100,100, .4);
     position: absolute;
@@ -147,5 +167,29 @@ a {
     margin: 0 0 0 0;
     width: 50%;
 }
-
+.mfp-zoom-in {
+  
+  /* start state */
+  .mfp-with-anim {
+    opacity: 0;
+    transition: all 0.2s ease-in-out; 
+    transform: scale(0.8); 
+  }
+  
+  &.mfp-bg {
+    opacity: 0;
+	  transition: all 0.3s ease-out;
+  }
+  
+  /* animate in */
+  &.mfp-ready {
+    .mfp-with-anim {
+      opacity: 1;
+      transform: scale(1); 
+    }
+    &.mfp-bg {
+      opacity: 0.8;
+    }
+  }
+  }
 </style>
