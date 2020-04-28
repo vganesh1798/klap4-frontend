@@ -75,6 +75,9 @@
         @Emit('loggedIn')
         loggedIn() {
             this.close = true
+            this.$store.dispatch('getCurrUser').then(() => {
+                console.log("after", this.$store.state.currentUser)
+            });
         }
     }
 </script>

@@ -18,7 +18,7 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }">
-              <input id="search" placeholder="Quickjump" type="search">
+              <input v-model="searchquery" id="search" placeholder="Quickjump" type="search" @keyup.enter="search()">
               <!--<label class="label-icon" for="search"><i class="material-icons">search</i></label>
               <i class="material-icons" v-if="searching">close</i>-->
             </div>
@@ -109,6 +109,7 @@
         on = false
         logoSource = './radio.png'
         userAuth = false
+        searchquery = "";
 
         get curUser() {
             return this.$store.state.currentUser
@@ -205,6 +206,24 @@
             this.on = true;
             this.loginOpen = false;
             return this.loginOpen;
+        }
+
+        search() {
+           console.log("searching", this.searchquery);
+           const searchParam = {
+                id: this.searchquery
+            }
+            this.$store.dispatch('quicksearch', searchParam).then(res => {  
+                if(res.type == "artist") { 
+                    router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
+                }
+                else if(res.type == "album") { 
+                    router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
+                }
+                else if(res.response.status == 404) {
+                    router.push({ name: 'Search'})
+                }
+        });
         }
 }
 </script>

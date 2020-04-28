@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-l11">
                 <div class="whomstdve">
-                    {{this.$store.state.dj}}'s Playlists
+                    {{this.$store.state.currentUser}}'s Playlists
                 </div>
                 <div class="playlists">
                     <ul id="playlist-list">
@@ -14,7 +14,12 @@
                             class="playlist-element" 
                             v-for="playlist in playlists" 
                             :key="playlist['id']">
+                            <defaultButton class="colored" @click.native="newPlaylist(playlist['dj_id'], playlist['name'], playlist['show'])">
                             {{playlist['name']}}
+                            </defaultButton>
+                            <button type="button" @click="deletePlaylist(playlist['name'])" class="btn-floating btn waves-effect waves-light red">
+                            <i class="material-icons">delete</i>
+                            </button>
                         </li>
                     </ul>
                 </div>
@@ -26,17 +31,62 @@
 <script lang="ts">
 import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
 import Playlist from '../Models/Playlist';
+import defaultButton from "./Button.vue";
 
-@Component
+@Component ({
+    components: { defaultButton }
+})
 export default class PlaylistSwitch extends Vue {
     @Prop(Array)
     playlists
 
     closed = false;
+    dj = "";
+
+    created() {
+        this.getCurrentUser();
+        //this.getPlaylists();
+      }
+
+    getCurrentUser() {
+       this.$store.dispatch('getCurrUser').then(() => {
+                console.log("after", this.$store.state.currentUser)
+                this.getPlaylists();
+            });
+    }
+
+    getPlaylists() {
+        const djParam = {
+                dj_id: this.$store.state.currentUser
+            }
+        this.$store.dispatch('displayPlaylists', djParam.dj_id).then(res => {
+            this.playlists = res;
+            console.log(this.playlists);
+        });
+    }
+
+    deletePlaylist(playlistName) {
+        const playlistParam = {
+                dj_id: this.$store.state.currentUser,
+                p_name: playlistName
+            }
+        console.log(playlistParam);
+        this.$store.dispatch('deletePlaylist', playlistParam).then(res => {
+            //this.playlists = res;
+            //console.log(this.playlists);
+    });
+    this.getPlaylists();
+    }
 
     @Emit('closeSwitch')
     closeSwitch() {
         this.closed = true;
+    }
+
+    @Emit('newPlaylist')
+    newPlaylist(id, playlist, show) {
+        console.log("emit new playlist");
+        this.closeSwitch();
     }
 }
 </script>
@@ -78,9 +128,15 @@ export default class PlaylistSwitch extends Vue {
     .playlists {
         color: whitesmoke;
         height: 20vw;
+        max-height: 20vw;
+        overflow: auto;
         background-color: #253e4d;
     }
 
+    .playlist-list {
+        max-height: 50px;
+        overflow: auto;
+    }
     .close {
         padding-left: 32vw;
         padding-top: 4%;

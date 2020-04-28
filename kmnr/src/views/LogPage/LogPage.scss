@@ -54,12 +54,13 @@ h1 {
     border-radius: 2%;
 }
 
-.tablecols {
-    min-width: 130px;
+#tablecols {
+    min-width: 135px;
+    max-width: 135px;
 }
 
 .header {
-    min-width: 130px;
+    min-width: 135px;
 }
 
 .uploadButton {

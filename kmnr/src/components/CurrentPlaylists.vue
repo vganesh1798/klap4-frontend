@@ -37,10 +37,6 @@
             closeEdit() {
                 this.close = true;
             }
-        
-        select() {
-            console.log("clicked");
-        }
     }
 </script>
 
