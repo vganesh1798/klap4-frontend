@@ -372,7 +372,7 @@
 
 <style lang="scss" scoped>
 .snack{
-  padding-bottom: 6%
+  padding-bottom: 10%
 }
 .queue {
   position:fixed;
