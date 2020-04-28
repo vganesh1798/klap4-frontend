@@ -7,7 +7,7 @@
             </div>
         </div>
         <div class="row">
-            <h1>Issue</h1>
+            <h1>Reporting problem for {{album}} by {{artist}}</h1>
         </div>
           <div class="row">
             <div class="input-field">
@@ -30,8 +30,11 @@
         close = false;
         problem = "";
         constructor() {
-            super()
+            super();
         }
+        @Prop(String) album !: string
+        @Prop(String) artist !: string
+
 
         postProblem() {
             const problemParams = {

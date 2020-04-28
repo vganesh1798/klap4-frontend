@@ -7,7 +7,7 @@ import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
 import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots, ProgramFormat} from '../Models/Program'
 
-import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem} from '../Models/Album'
+import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem, FCCAlbum} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -28,7 +28,8 @@ export default new Vuex.Store({
     logEntry: Array<ProgramLogEntry>(),
     reviews: Array<AlbumReview>(),
     problems: Array<AlbumProblem>(),
-    schedule: Array<ProgramSlots>()
+    schedule: Array<ProgramSlots>(),
+    fcc: {}
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -75,6 +76,9 @@ export default new Vuex.Store({
     },
     addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
       state.schedule = newProgramSlots
+    },
+    changeFCC(state, newFCC:FCCAlbum) {
+      state.fcc = newFCC
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -314,6 +318,31 @@ export default new Vuex.Store({
           this.commit('addToProgramSlots', (res.data as Array<ProgramSlots>))
           return res.data
         })
+    },
+    changeSingleFCC({commit, state}, FCCParams: FCCAlbum) {
+      const fccChange = {
+        'id': FCCParams.id,
+        'song_number': FCCParams.songNumber,
+        'fcc': FCCParams.FCC
+      }
+      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/single}`, fccChange)
+      .then(res => {
+        this.commit('changeFCC', (res.data as FCCAlbum))
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+    changeAlbumFCC({commit, state}, FCCParams: FCCAlbum) {
+      const fccChange = {
+        'id': FCCParams.id,
+        'fcc': FCCParams.FCC
+      }
+      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/all}`, fccChange)
+      .then(res => {
+        this.commit('changeFCC', (res.data as FCCAlbum))
+        return res.data
+      })
+      .catch(err => console.log(err))
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import

@@ -42,6 +42,12 @@ export class Song {
     recommended ?: boolean | null
 }
 
+export class FCCAlbum {
+    id ?: number | null
+    songNumber ?: number | null
+    FCC ?: number | null
+}
+
 export default class DisplayAlbum {
     album: Album = new Album()
     reviews: Array<AlbumReview> = []

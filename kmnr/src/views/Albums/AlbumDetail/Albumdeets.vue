@@ -15,8 +15,8 @@
         </div>
       </div>
     </div>
-    <review v-if="reviewOpen" @closeReview="closeReview"></review>
-    <issue v-if="issueOpen" @closeIssue="closeIssue"></issue>
+    <review :album="album.name" :artist="album.artist" v-if="reviewOpen" @closeReview="closeReview"></review>
+    <issue :album="album.name" :artist="album.artist" v-if="issueOpen" @closeIssue="closeIssue"></issue>
     
     <div id="container">
       <div class="row">
@@ -83,6 +83,7 @@
     tracks = []
     issueOpen = false;
     reviewOpen = false;
+    fcc = 0;
 
     loaded = false;
 
@@ -95,6 +96,30 @@
       .finally(() => {
         this.loaded = true
       })
+    }
+
+    changeSingleFCC(songNumber) {
+      const FCCParams = {
+        'id': this.$route.params.albumParam,
+        'songNumber': songNumber,
+        'fcc': this.fcc
+      };
+      this.$store.dispatch('changeSingleFCC', FCCParams)
+        .then(res => {
+          console.log(res.data);
+        })
+    }
+
+    changeAlbumFCC() {
+      const FCCParams = {
+        'id': this.$route.params.albumParam,
+        'songNumber': null,
+        'fcc': this.fcc
+      };
+      this.$store.dispatch('changeAlbumFCC', FCCParams)
+        .then(res => {
+          console.log(res.data);
+        })
     }
 
     openReview() {
