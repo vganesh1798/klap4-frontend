@@ -1,7 +1,7 @@
 <template>
-    <div class="loginpage">
+    <div class="loginpage" >
         <div class="blur-background" @click="closeLogin"></div>
-        <div class="login">
+        <div class="login" >
             <div class="row">
                 <div class="col l11"></div>
                 <div class="col l1">
@@ -27,11 +27,11 @@
                         <input required type="password" id="password" autocomplete="current-password" v-model="pswd"/>
                     </div>
                 </div>
-                <div class="row">
-                    <defaultButton class="green btn" type="submit">Login</defaultButton>
+                <div class="row center">
+                    <md-button class="md-raised md-accent green" type="submit">Login</md-button>
                 </div>
             </form>
-            <a href="http://www.account.kmnr.org">Forgot Password</a>
+            <a class='help' href="http://www.account.kmnr.org">Forgot Password?</a>
         </div>
     </div>
 </template>
@@ -83,6 +83,9 @@
 </script>
 
 <style lang="scss" scoped>
+.help{
+    padding-bottom: 15%;
+}
 .error {
     background-color: red;
     color: black;
@@ -131,7 +134,7 @@ a {
     transform: translate(-50%, -50%);
     height: 400px;
     width: 500px;
-    padding: 0% 5% 20% 5%;
+    padding: 0% 5% 25% 5%;
     border-radius: 3%;
     font-family: 'Montserrat';
     z-index: 9999;
@@ -147,5 +150,29 @@ a {
     margin: 0 0 0 0;
     width: 50%;
 }
-
+.mfp-zoom-in {
+  
+  /* start state */
+  .mfp-with-anim {
+    opacity: 0;
+    transition: all 0.2s ease-in-out; 
+    transform: scale(0.8); 
+  }
+  
+  &.mfp-bg {
+    opacity: 0;
+	  transition: all 0.3s ease-out;
+  }
+  
+  /* animate in */
+  &.mfp-ready {
+    .mfp-with-anim {
+      opacity: 1;
+      transform: scale(1); 
+    }
+    &.mfp-bg {
+      opacity: 0.8;
+    }
+  }
+  }
 </style>
