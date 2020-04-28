@@ -79,10 +79,17 @@ export default class App extends Vue {
     updateSong(index) {
         this.index = index
     }
-
     handleView() {
-      this.mobileView = window.innerWidth <= 1420;
+      if(window.innerWidth <= 1420){
+        this.mobileView = true 
+      }
+      else{
+        this.mobileView = false
+        this.hide()
+      }
     }
+
+    
     toggle () {
             if (this.opened) {
                 return this.hide()
