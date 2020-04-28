@@ -1,7 +1,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 
-import {ProgramSearch, ProgramSlots, ProgramLogEntry} from '../../Models/Program';
+const M = require('materialize-css')
 
+import {ProgramSearch, ProgramSlots, ProgramLogEntry} from '../../Models/Program';
 import TimeTable from '../../components/ProgramLog.vue'
 
 enum Days {
@@ -99,16 +100,41 @@ export default class Programming extends Vue {
         })
     }
 
-    created() {
-        this.getAllPrograms();
+    mounted() {
         this.getAllLogs();
+        this.getAllPrograms();
+        let autocompleteLoaded = false
 
         setInterval(() => {
+            if (this.programs !== [] && !autocompleteLoaded) {
+                autocompleteLoaded = true;
+                this.loadAutocomplete()
+            }
             if (this.todayHour !== new Date().getHours() + 24) {
                 this.getAllPrograms()
                 this.getAllLogs()
             }
         }, 500)
+    }
+
+    loadAutocomplete() {
+        let autocomplete = {}
+        const unique = [...new Set(this.programs.map((item: any) => item.type.replace(/\s+/g, '-')))];
+        console.log(unique)
+        for (let i in unique) {
+            autocomplete[unique[i]] = []
+            for (let j in this.programs) {
+                autocomplete[unique[i]][(this.programs[j] as any).name] = (this.programs[j] as any).name
+            }
+        }
+
+        for (let i in unique) {
+            const autocompleteOptions = {
+                data: autocomplete[unique[i]]
+            }
+            let elems = document.querySelectorAll('.autocomplete-' + unique[i]);
+            let instances = M.Autocomplete.init(elems, autocompleteOptions);
+        }
     }
 
     stationIdentified(idx) {
@@ -482,3 +508,4 @@ export default class Programming extends Vue {
         this.timeTableOpen = false
     }
 }
+

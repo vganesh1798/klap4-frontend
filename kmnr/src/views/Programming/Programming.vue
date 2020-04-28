@@ -42,7 +42,8 @@
                         type="text"
                         v-model="entrySchedule[curIndex][index][index2]"
                         :disabled="Math.abs(curIndex - today) > 1"
-                        :class="{'disabled': Math.abs(curIndex - today) > 1}"
+                        :class="{'disabled': Math.abs(curIndex - today) > 1,
+                                  ['autocomplete-' + type.program_type.replace(/\s+/g, '-')]: true}"
                         @keyup.enter="insertProgram(index, index2)"
                         @keyup.esc="cancelInsert(index,index2)"/>
                       <label :for="type.id + 'a'" class="text-black">Program</label>
