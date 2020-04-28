@@ -13,46 +13,38 @@ export default class Artist {
 }
 
 export class singleArtist {
-    genre_abbr: string;
+    genre: string;
     id: string;
     name: string;
-    number: number;
-    album_list: Array<albums>;
+    albums: Array<albums>;
     artist_picture:null;
 
-    constructor(genre_abbr, id, name, number, album_list, artist_picture) {
-        this.genre_abbr = genre_abbr;
+    constructor(genre, id, name, albums, artist_picture) {
+        this.genre = genre;
         this.id = id;
         this.name = name;
-        this.number = number;
-        this.album_list = album_list;
+        this.albums = albums;
         this.artist_picture = artist_picture;
     }
 }
 
 export class albums {
-    artist_num: number;
-    date_added: string;
-    format_bitfield: number;
-    genre_abbr: string;
+    album_format: number;
+    album_name: string;
+    has_problems: boolean;
+    has_reviews: boolean;
     id: string;
-    label_id: string;
-    letter: string;
     missing: boolean;
-    name: string;
-    promoter_id: string;
+    new_album: boolean;
 
-    constructor(artist_num, date_added, format_bitfield, genre_abbr, id, label_id, letter, missing, name, promoter_id) {
-        this.artist_num = artist_num;
-        this.date_added = date_added;
-        this.format_bitfield = format_bitfield;
-        this.genre_abbr = genre_abbr;
+    constructor(album_format, album_name, has_problems, has_reviews, id, missing, new_album) {
+        this.album_format = album_format;
+        this.album_name = album_name;
+        this.has_problems = has_problems;
+        this.has_reviews = has_reviews;
         this.id = id;
-        this.label_id = label_id;
-        this.letter = letter;
         this.missing = missing;
-        this.name = name;
-        this.promoter_id = promoter_id;
+        this.new_album = new_album;
 
     }
 

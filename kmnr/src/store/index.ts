@@ -5,9 +5,9 @@ import Log from '@/Models/Playlist'
 import ChartData from '@/Models/ChartData'
 import SingleArtist  from '../Models/Artist'
 import Artist  from '../Models/Artist'
-import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots} from '../Models/Program'
+import Program, {ProgramSearch, ProgramLogEntry, ProgramSlots, ProgramFormat} from '../Models/Program'
 
-import DisplayAlbum, {Album, AlbumSearch, Reviews, Problem} from '../Models/Album'
+import DisplayAlbum, {Album, AlbumSearch, AlbumReview, AlbumProblem, FCCAlbum} from '../Models/Album'
 
 Vue.use(Vuex)
 
@@ -24,26 +24,28 @@ export default new Vuex.Store({
     singleAlbum: {},
     currentUser: '',
     programs: Array<Program>(),
+    singleProgram: {},
     logEntry: Array<ProgramLogEntry>(),
-    reviews: Array<Reviews>(),
-    problems: Array<Problem>(),
-    schedule: Array<ProgramSlots>()
+    reviews: Array<AlbumReview>(),
+    problems: Array<AlbumProblem>(),
+    schedule: Array<ProgramSlots>(),
+    fcc: {}
   },
   // A function to be accessed with commit to modify any states
   mutations: {
     // Mutations are necessary to push any changes to states
-    addLog(state, newLog: Log) {
+    addLog(state, newLog: Array<Log>) {
       // Pushing new logs from the API call to the list of logs
-      state.logs.push(newLog);
+      state.logs = newLog;
     },
-    addToAllChart(state, nextChartData: ChartData) {
-      state.allChart.push(nextChartData);
+    addToAllChart(state, nextChartData: Array<ChartData>) {
+      state.allChart = nextChartData;
     },
-    addToNewChart(state, nextChartData: ChartData) {
-      state.newChart.push(nextChartData);
+    addToNewChart(state, nextChartData: Array<ChartData>) {
+      state.newChart = nextChartData;
     },
-    addToArtists(state, newArtist: Artist) {
-      state.artists.push(newArtist);
+    addToArtists(state, newArtist: Array<Artist>) {
+      state.artists = newArtist;
     },
     singleArtistMut(state, sArtist: Artist){
       state.singleArtist = sArtist
@@ -60,17 +62,23 @@ export default new Vuex.Store({
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
     },
+    addSingleProgram(state, sProgram: ProgramFormat) {
+      state.singleProgram = sProgram
+    },
     addToLog(state, newLog: Array<ProgramLogEntry>) {
       state.logEntry = newLog
     },
-    addToReviews(state, newReview: Array<Reviews>) {
+    addToReviews(state, newReview: Array<AlbumReview>) {
       state.reviews = newReview
     },
-    addToProblems(state, newProblem: Array<Problem>) {
+    addToProblems(state, newProblem: Array<AlbumProblem>) {
       state.problems = newProblem
     },
     addToProgramSlots(state, newProgramSlots: Array<ProgramSlots>) {
       state.schedule = newProgramSlots
+    },
+    changeFCC(state, newFCC:FCCAlbum) {
+      state.fcc = newFCC
     }
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
@@ -83,26 +91,26 @@ export default new Vuex.Store({
         .then(res =>  {
           // Loop through all logs within the response
           //   and add each to the log state
-          res.data.map((log: Log) => this.commit('addLog', log)) // Commit is used with the data to push data to a mutation
+          this.commit('addLog', (res.data as Log)) // Commit is used with the data to push data to a mutation
           return res.data
         })
         // Simple catch to output if error occurs
         .catch(err => console.log(err))
     },
-    getAllChartData() {
+    getAllChartData({commit, state}, weeks: number) {
       return axios
-      .get('http://localhost:5000/charts/all')
+      .get(`http://localhost:5000/charts/all/${weeks}`)
       .then(res => {
-        res.data.map((albumData: ChartData) => this.commit('addToAllChart', albumData))
+        this.commit('addToAllChart', (res.data as ChartData))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    getNewChartData() {
+    getNewChartData({commit, state}, weeks: number) {
       return axios
-      .get('http://localhost:5000/charts/new')
+      .get(`http://localhost:5000/charts/new/${weeks}`)
       .then(res => {
-        res.data.map((albumData: ChartData) => this.commit('addToNewChart', albumData))
+        this.commit('addToNewChart', (res.data as ChartData))
         return res.data
       })
       .catch(err => console.log(err))
@@ -110,7 +118,7 @@ export default new Vuex.Store({
     getAllArtists() {
       return axios.get('http://localhost:5000/search/artist')
       .then(res =>{
-        res.data.map((artist: Artist) => this.commit('addToArtists', artist))
+        this.commit('addToArtists', (res.data as Array<Artist>))
         return res.data
       })
       .catch(err => console.log(err))
@@ -123,15 +131,16 @@ export default new Vuex.Store({
 
       return axios.post('http://localhost:5000/search/artist', searchQuery)
       .then(res =>{ 
-          res.data.map((artist: Artist) => this.commit('addToArtists', artist))
+          this.commit('addToArtists', (res.data as Array<Artist>))
           return res.data
       })
       .catch(err => console.log(err))
     },
-    displayArtists({commit, state}, id: string) {
+    displayArtist({commit, state}, id: string) {
       return axios.get(`http://localhost:5000/display/artist/${id}`)
       .then(res =>{ 
           this.commit('singleArtistMut', (res.data as SingleArtist))
+          console.log(res.data)
           return res.data
           // OR
           //res.data.map(artist => {this.commit('addToArtists', artist))
@@ -163,7 +172,6 @@ export default new Vuex.Store({
       return axios.get(`http://localhost:5000/display/album/${id}`)
         .then(res => {
           this.commit('addSingleAlbum', (res.data as DisplayAlbum))
-          console.log(res.data)
           return res.data
         })
         .catch(err => console.log(err))
@@ -185,6 +193,14 @@ export default new Vuex.Store({
       return axios.post('http://localhost:5000/search/program', searchQuery)
         .then(res => {
           this.commit('addToPrograms', (res.data as Array<Program>))
+          return res.data
+        })
+        .catch(err => console.log(err))
+    },
+    displayProgram({commit, state}, id: string) {
+      return axios.get(`http://localhost:5000/display/program/${id}`)
+        .then(res => {
+          this.commit('addSingleProgram', (res.data as ProgramFormat))
           return res.data
         })
         .catch(err => console.log(err))
@@ -239,28 +255,30 @@ export default new Vuex.Store({
       .then((res) => console.log(res.data))
       .catch(err => console.log(err))
     },
-    postReview({commit, state}, reviewParams: Reviews) {
+    postReview({commit, state}, reviewParams: any) {
+      const id = reviewParams.id;
       const postObject = {
-        'dj_id': reviewParams.dj_id,
-        'content': reviewParams.content
+        'dj_id': reviewParams.reviewer,
+        'content': reviewParams.review
       }
 
-      return axios.post('http://localhost:5000/album/review', postObject)
+      return axios.post(`http://localhost:5000/album/review/${id}`, postObject)
       .then(res => {
-        this.commit('addToReviews', (res.data as Array<Reviews>))
+        this.commit('addToReviews', (res.data as Array<AlbumReview>))
         return res.data
       })
       .catch(err => console.log(err))
     },
-    postProblem({commit, state}, problemParams: Problem) {
+    postProblem({commit, state}, problemParams: any) {
+      const id = problemParams.id;
       const postObject = {
-        'dj_id': problemParams.dj_id,
-        'content': problemParams.content
+        'dj_id': problemParams.reporter,
+        'content': problemParams.problem
       }
 
-      return axios.post('http://localhost:5000/album/problem', postObject)
+      return axios.post(`http://localhost:5000/album/problem/${id}`, postObject)
       .then(res => {
-        this.commit('addToProblems', (res.data as Array<Problem>))
+        this.commit('addToProblems', (res.data as Array<AlbumProblem>))
         return res.data
       })
       .catch(err => console.log(err))
@@ -300,6 +318,31 @@ export default new Vuex.Store({
           this.commit('addToProgramSlots', (res.data as Array<ProgramSlots>))
           return res.data
         })
+    },
+    changeSingleFCC({commit, state}, FCCParams: FCCAlbum) {
+      const fccChange = {
+        'id': FCCParams.id,
+        'song_number': FCCParams.songNumber,
+        'fcc': FCCParams.FCC
+      }
+      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/single}`, fccChange)
+      .then(res => {
+        this.commit('changeFCC', (res.data as FCCAlbum))
+        return res.data
+      })
+      .catch(err => console.log(err))
+    },
+    changeAlbumFCC({commit, state}, FCCParams: FCCAlbum) {
+      const fccChange = {
+        'id': FCCParams.id,
+        'fcc': FCCParams.FCC
+      }
+      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/all}`, fccChange)
+      .then(res => {
+        this.commit('changeFCC', (res.data as FCCAlbum))
+        return res.data
+      })
+      .catch(err => console.log(err))
     }
   },
   // Used if we create separate stores (state, mutations, actions, etc.) to import

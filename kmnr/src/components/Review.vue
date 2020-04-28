@@ -7,26 +7,16 @@
             </div>
         </div>
         <div class="row">
-            <h1>Review</h1>
+            <h1>Writing review for {{album}} by {{artist}}</h1>
         </div>
-        <div class="row">
-            <div class="input-field">
-              <label for="first">First Name</label>
-              <input type="text" id="first" />
-            </div>
-            <div class="input-field">
-              <label for="last">Last Name</label>
-              <input type="text" id="last" />
-            </div>
-          </div>
           <div class="row">
             <div class="input-field">
               <label for="review">Write a review</label>
-              <textarea type="text" class="materialize-textarea" id="review"></textarea>
+              <textarea v-model="review" type="text" class="materialize-textarea" id="review"></textarea>
             </div>
-              <button class="btn">Submit</button>
-            </div>
+              <button v-on:click=postReview() class="btn">Submit</button>
           </div>
+        </div>
     </div>
 </template>
 
@@ -39,8 +29,24 @@
     })
     export default class review extends Vue {
         close = false;
+        review = "";
         constructor() {
             super()
+        }
+
+        @Prop(String) album !: string
+        @Prop(String) artist !: string
+
+        postReview() {
+            const reviewParams = {
+                'id': this.$route.params.albumParam,
+                'reviewer': this.$store.state.currentUser,
+                'review': this.review
+            }
+            this.$store.dispatch('postReview', reviewParams)
+                .then(res => {
+                    console.log(res.data)
+                })
         }
 
         @Emit('closeReview') 

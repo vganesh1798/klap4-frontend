@@ -23,3 +23,8 @@ export class ProgramSlots {
     day: number = 0
     time: string = ''
 }
+
+export class ProgramFormat {
+    type: string = '';
+    description: string = '';
+}

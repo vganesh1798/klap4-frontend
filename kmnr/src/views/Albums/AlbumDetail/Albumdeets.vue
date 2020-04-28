@@ -15,8 +15,8 @@
         </div>
       </div>
     </div>
-    <review v-if="reviewOpen" @closeReview="closeReview"></review>
-    <issue v-if="issueOpen" @closeIssue="closeIssue"></issue>
+    <review :album="album.name" :artist="album.artist" v-if="reviewOpen" @closeReview="closeReview"></review>
+    <issue :album="album.name" :artist="album.artist" v-if="issueOpen" @closeIssue="closeIssue"></issue>
     
     <div id="container">
       <div class="row">
@@ -26,10 +26,11 @@
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
           <div class="card-content">
-            <span class="card-title">{{album['album'].name}}</span>
-            <p>{{album.artist.name}}</p>
-            <p>{{album.album.date_added}}</p>
-            <p>{{ album.album.genre_abbr }}</p>
+            <span class="card-title">{{album.name}} ({{album.id}})</span>
+            <p>by {{album.artist}} ({{album.artist_id}})</p>
+            <p v-if="album.label">{{album.label}}</p>
+            <p>Added on {{album.date_added}}</p>
+            <p>{{ album.genre }}</p>
           </div>
         </div>
         </div>
@@ -40,17 +41,17 @@
               <tr>
                 <th style="width: 25%;">Track</th>
                 <th style="width: 25%;">Name</th>
-                <th style="width: 25%;">Runtime</th>
+                <th style="width: 25%;">FCC Status</th>
                 <th style="width: 25%;">Plays</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="item in tracks" :key="item.id">
-                <td>{{ item.id }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.run }}</td>
-                <td>{{ item.plays }}</td>
+              <tr v-for="item in tracks" :key="item.number">
+                <td>{{ item.number }}</td>
+                <td>{{ item.song_name }}</td>
+                <td>{{ item.fcc_status }}</td>
+                <td>{{ item.times_played }}</td>
               </tr>
             </tbody>
           </table>
@@ -82,6 +83,7 @@
     tracks = []
     issueOpen = false;
     reviewOpen = false;
+    fcc = 0;
 
     loaded = false;
 
@@ -89,10 +91,35 @@
       this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
         this.tracks = this.$store.state.singleAlbum.songs
         this.album = this.$store.state.singleAlbum
+        console.log(this.album)
       })
       .finally(() => {
         this.loaded = true
       })
+    }
+
+    changeSingleFCC(songNumber) {
+      const FCCParams = {
+        'id': this.$route.params.albumParam,
+        'songNumber': songNumber,
+        'fcc': this.fcc
+      };
+      this.$store.dispatch('changeSingleFCC', FCCParams)
+        .then(res => {
+          console.log(res.data);
+        })
+    }
+
+    changeAlbumFCC() {
+      const FCCParams = {
+        'id': this.$route.params.albumParam,
+        'songNumber': null,
+        'fcc': this.fcc
+      };
+      this.$store.dispatch('changeAlbumFCC', FCCParams)
+        .then(res => {
+          console.log(res.data);
+        })
     }
 
     openReview() {
