@@ -1,7 +1,7 @@
 <template>
     <div class="loginpage" >
         <div class="blur-background" @click="closeLogin"></div>
-        <div class="login" >
+        <div class="login fade-in" >
             <div class="row">
                 <div class="col l11"></div>
                 <div class="col l1">
@@ -83,6 +83,22 @@
 </script>
 
 <style lang="scss" scoped>
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
 .help{
     padding-bottom: 15%;
 }
