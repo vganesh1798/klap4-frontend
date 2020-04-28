@@ -57,9 +57,7 @@
 
         authenticate() {
             const encoding = 'Basic ' + btoa(this.username + ':' + this.pswd)
-            console.log(encoding)
             this.$store.dispatch('login', encoding).then(isUserAuth => {
-                console.log(isUserAuth)
                 if (isUserAuth) {
                     this.$store.dispatch('getCurrUser').then(res => {
                         this.loggedIn()
