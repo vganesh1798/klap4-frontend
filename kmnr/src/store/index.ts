@@ -27,6 +27,7 @@ export default new Vuex.Store({
     albums: Array<Album>(),
     singleAlbum: {},
     currentUser: '',
+    currentPlaylist: '',
     programs: Array<Program>(),
     singleProgram: {},
     logEntry: Array<ProgramLogEntry>(),
@@ -69,6 +70,10 @@ export default new Vuex.Store({
     setUser(state, curUser: string) {
       console.log("recieved", curUser)
       state.currentUser = curUser
+    },
+    setPlaylist(state, curPlaylist: string) {
+      console.log("recieved", curPlaylist)
+      state.currentPlaylist = curPlaylist
     },
     addToPrograms(state, newProgram: Array<Program>) {
       state.programs = newProgram
@@ -166,6 +171,7 @@ export default new Vuex.Store({
       
       return axios.post(`http://localhost:5000/playlist/${newPlaylist.dj_id}`, playlistData, {withCredentials: true})
         .then(res => {
+          this.commit('setPlaylist', newPlaylist.p_name)
           return res.data
         }).catch(err => console.error(err))
     },
@@ -180,6 +186,7 @@ export default new Vuex.Store({
 
       return axios.put(`http://localhost:5000/playlist/${editedPlaylist.dj_id}`, playlistData, {withCredentials: true})
         .then(res => {
+          //this.commit('setPlaylist', editedPlaylist.p_name)
           return res.data
         }).catch(err => console.error(err))
     },
@@ -415,6 +422,15 @@ export default new Vuex.Store({
       return axios.get('http://localhost:5000/', {withCredentials: true})
         .then(res => {
           this.commit('setUser', res.data['logged_in_as'])
+          return res.data
+        })
+    },
+    
+    setCurrPlaylist({commit, state}, name: any) {
+      console.log("setCurrPlaylist", name.playlist_name)
+      return axios.get('http://localhost:5000/', {withCredentials: true})
+        .then(res => {
+          this.commit('setPlaylist', name.playlist_name)
           return res.data
         })
     },

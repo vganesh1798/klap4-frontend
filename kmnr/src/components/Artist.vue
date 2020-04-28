@@ -108,7 +108,6 @@ import { ArtistSearch } from '../Models/Artist';
     SearchByArtist() {    
         this.$store.dispatch('getQueryArtists', this.searchQuery).then(res => {
             this.artists = res;
-            console.log(this.artists);
         })
         .finally(() => this.loading = false)
 

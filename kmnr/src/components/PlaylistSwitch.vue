@@ -14,7 +14,7 @@
                             class="playlist-element" 
                             v-for="playlist in playlists" 
                             :key="playlist['id']">
-                            <defaultButton class="colored" @click.native="newPlaylist(playlist['name'])">
+                            <defaultButton class="colored" @click.native="newPlaylist(playlist['dj_id'], playlist['name'], playlist['show'])">
                             {{playlist['name']}}
                             </defaultButton>
                             <button type="button" @click="deletePlaylist(playlist['name'])" class="btn-floating btn waves-effect waves-light red">
@@ -84,7 +84,7 @@ export default class PlaylistSwitch extends Vue {
     }
 
     @Emit('newPlaylist')
-    newPlaylist(name) {
+    newPlaylist(id, playlist, show) {
         console.log("emit new playlist");
         this.closeSwitch();
     }

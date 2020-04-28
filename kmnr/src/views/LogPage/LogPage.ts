@@ -8,6 +8,7 @@ import edit from "../../components/CurrentPlaylists.vue";
 import editPlaylist from "../../components/EditPlaylist.vue";
 import switchPlaylist from "../../components/PlaylistSwitch.vue";
 import draggable from "vuedraggable";
+import Playlist from '@/Models/Playlist';
 
     @Component ({
         components: { uploadBox,
@@ -23,13 +24,11 @@ import draggable from "vuedraggable";
 export default class LogPage extends Vue {
     playlistSelected: Boolean = false;
     currentPlaylist: string = "EXAMPLE_SHOW";
+    currentShow: string = "";
     name="";
     song: string = "";
     artist: string = "";
     album: string = "";
-    prevsong: string = "";
-    prevartist: string = "";
-    prevalbum: string = "";
     entries: Object[] = [];
     num: number = 0;
     uploadBox: Boolean = false;
@@ -39,18 +38,27 @@ export default class LogPage extends Vue {
     showPlaylists: Boolean = false;
     djname = "";
 
+    getSongs() {
+        const PlaylistParam = {
+                dj_id: "test",
+                playlistName: this.currentPlaylist
+            }
+        this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
+            this.entries = res.playlist_entries || [];
+            console.log("the state variable" ,this.$store.state.logs)
+            //this.num = this.entries.length;
+            console.log(this.entries);
+        });
+    }
+
     addSong() {
-     console.log(this.song, this.artist, this.album)
+     console.log(this.currentPlaylist)
      const PlaylistParam = {
        dj_id: "test",
        playlistName: this.currentPlaylist,
-       show: this.name,
-       index: this.num++,
-       //ref: this.song + this.artist + this.album
+       //index: ++this.num,
        entry: {song: this.song, artist: this.artist, album: this.album}
-       //entry: {song: 'song1', artist: 'artist1', album: 'album1'}
      }
-
      this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
         this.entries = res.playlist_entries;
         console.log(res);
@@ -63,145 +71,46 @@ export default class LogPage extends Vue {
             dj_id: "test",
             playlistName: this.currentPlaylist,
             index: row.index,
-            //ref: "songartistalbum"
             entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
-            //entry: {song: 'song1', artist: 'artist1', album: 'album1'}
           }
-     
           this.$store.dispatch('deletePlaylistEntry', PlaylistParam).then(res => {
-             //this.entries = res.playlist_entries;
-             console.log(res);
              this.getSongs();
           });
-        //   this.getSongs();
+          this.num--;
     }
 
-    updateSong(e) {
-        console.log("update");
-        console.log(e.target.innerHTML);
-
+    updateEntry(row) {
+        console.log("updating entry", row.index)
         const PlaylistParam = {
             dj_id: "test",
             playlistName: this.currentPlaylist,
-            show: this.name,
-            ///index: this.num,
-            ref: 1,
-            index: 0,
-            newIndex: 0,
-            //ref: this.song + this.artist + this.album
-            //entry: {song: 'song1', artist: 'artist1', album: 'album1'},
-            entry: {song: this.prevsong, artist: this.prevartist, album: this.prevalbum},
-            newEntry: {song: e.target.innerHTML, artist: this.prevartist, album: this.prevalbum}
-            //newEntry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
-          }
-     
-          this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-             //this.entries = res.playlist_entries;
-             console.log(res);
-             this.getSongs();
-          });
-        //console.log(entry.index);
-    }
-
-    updateArtist(e) {
-        console.log("update");
-        console.log(e.target.innerHTML);
-
-        const PlaylistParam = {
-            dj_id: "test",
-            playlistName: this.currentPlaylist,
-            show: this.name,
-            ///index: this.num,
-            ref: 1,
-            index: 0,
-            newIndex: 0,
-            //ref: this.song + this.artist + this.album
-            //entry: {song: 'song1', artist: 'artist1', album: 'album1'},
-            entry: {song: this.prevsong, artist: this.prevartist, album: this.prevalbum},
-            newEntry: {song: this.prevsong, artist: e.target.innerHTML, album: this.prevalbum}
-            //newEntry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
-          }
-     
-          this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-             //this.entries = res.playlist_entries;
-             console.log(res);
-             this.getSongs();
-          });
-        //console.log(entry.index);
-    }
-
-    updateAlbum(e) {
-        console.log("update");
-        console.log(e.target.innerHTML);
-
-        const PlaylistParam = {
-            dj_id: "test",
-            playlistName: this.currentPlaylists,
-            show: this.name,
-            ///index: this.num,
-            ref: 1,
-            index: 0,
-            newIndex: 0,
-            //ref: this.song + this.artist + this.album
-            //entry: {song: 'song1', artist: 'artist1', album: 'album1'},
-            entry: {song: this.prevsong, artist: this.prevartist, album: this.prevalbum},
-            newEntry: {song: this.prevsong, artist: this.prevartist, album: e.target.innerHTML}
-            //newEntry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
-          }
-     
-          this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-             //this.entries = res.playlist_entries;
-             console.log(res);
-             this.getSongs();
-          });
-        //console.log(entry.index);
-    }
-
-    editstuff(row) {
-        console.log("fired");
-        console.log("editing to", row.entry.song);
-        console.log(this.entries[2])
-        //console.log(this.artist, this.album);
-        const PlaylistParam = {
-            dj_id: "test",
-            playlistName: this.currentPlaylist,
-            show: this.name,
-            ///index: this.num,
-            ref: 1,
             index: row.index,
-            newIndex: row.index,
-            //ref: this.song + this.artist + this.album
-            //entry: {song: 'song1', artist: 'artist1', album: 'album1'},
-            entry: {song: this.prevsong, artist: this.prevartist, album: this.prevalbum},
-            newEntry: {song: 'newsong', artist: 'newartist', album: 'newalbum'}
-            //newEntry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
-          }
-     
-          this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-             //this.entries = res.playlist_entries;
-             console.log(res);
-             this.getSongs();
-          });
+            entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album},
+            newEntry: {song: 'newsong', artist: 'newartist', album:'newalbum'}
+        }
+        this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
+            console.log(res);
+            this.getSongs();
+         });
     }
 
-    storeOriginal(row) {
-        //this.startingVal = song: 'this.entries[index].elements.song'
-        this.prevsong = row.entry.song;
-        this.prevartist = row.entry.artist;
-        this.prevalbum = row.entry.album;
-        console.log(row.entry.song)
-        console.log(row.entry.artist)
-        console.log(row.entry.album)
-        //console.log("please work")
+    movePlaylistEntry(val){
+        //console.log("moved row", val.moved.newIndex, val.moved.oldIndex)
+        //console.log("updating entry")
+        const PlaylistParam = {
+            dj_id: "test",
+            playlistName: this.currentPlaylist,
+            index: val.moved.oldIndex+1,
+            newIndex: val.moved.newIndex+1
+            //entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album},
+            //newEntry: {song: 'newsong', artist: 'newartist', album:'newalbum'}
+        }
+        console.log(PlaylistParam.index, PlaylistParam.newIndex);
+        this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
+            console.log(res);
+            this.getSongs();
+         });
     }
-    // savePlaylist() {
-    //   let entry = {
-    //     name: "test playlist",
-    //     totalSongs: 2
-    // };
-
-    // this.savedPlaylists.push(entry);
-    // }
 
     allowUpload() {
       this.uploadBox = true;
@@ -242,56 +151,109 @@ export default class LogPage extends Vue {
         this.switchBox = false;
         return this.switchBox;
     }
-    onMove({ relatedContext, draggedContext }) {
-        const relatedElement = relatedContext.element;
-        const draggedElement = draggedContext.element;
-        return (
-          (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-        );
-    }
 
     @Watch('newPlaylistCreated')
         newPlaylistCreated(id) {
-            console.log(id[0], id[1], id[2]);
+            this.djname = id[0]
             this.currentPlaylist = id[1];
-            this.name = id[2];
+            this.currentShow = id[2];
             this.playlistSelected = true;
+            console.log("dj= ", this.djname, "currentPlaylist= ", this.currentPlaylist, "currentShow= ", this.currentShow)
             this.getSongs();
             return this.playlistSelected;
         }
+
+    @Watch('newPlaylist')
+        newPlaylist(id, playlist, show) {
+            console.log("newPlaylist caught")
+            this.playlistSelected = true;
+            this.djname = id[0];
+            this.currentPlaylist = id[1];
+            this.currentShow = id[2];
+            console.log(this.djname, this.currentPlaylist, this.currentShow)
+            this.getCurrentPlaylist(this.currentPlaylist);
+            this.getCurrentUser();
+            //this.getCurrentPlaylist(this.currentPlaylist);
+            this.getSongs();
+        }
     
-    getSongs() {
-        const PlaylistParam = {
-                dj_id: "test",
-                playlistName: this.currentPlaylist
-            }
-        this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
-            this.entries = res.playlist_entries || [];
-            console.log("the state variable" ,this.$store.state.logs)
-            this.num = this.entries.length;
-            //console.log(res);
-            console.log(this.entries);
-            //console.log(this.entries.length);
+    getCurrentUser() {
+        this.$store.dispatch('getCurrUser').then(() => {
+                console.log("after", this.$store.state.currentUser)
+                this.djname = this.$store.state.currentUser
+            });
+    }
+    
+    getCurrentPlaylist(pl) {
+        const param = {
+            playlist_name: pl
+        }
+        console.log("playlist name im sending", param.playlist_name)
+        this.$store.dispatch('setCurrPlaylist', param).then(() => {
+            console.log("after", this.$store.state.currentPlaylist)
         });
     }
 
-    @Watch('newPlaylist')
-        newPlaylist(name) {
-            console.log("newPlaylist caught")
-            this.playlistSelected = true;
-            this.currentPlaylist = name;
-            this.getSongs();
-        }
+    updateSong(e, entry) {
+        console.log("update songs");
+        console.log(e.target.innerHTML);
+        console.log(entry)
 
-        //this isn't the right event, but idk which one it is
-        created() {
-            this.getCurrentUser();
+        const PlaylistParam = {
+            dj_id: "test",
+            playlistName: this.currentPlaylist,
+            index: entry.index,
+            entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
+            newEntry: {song: e.target.innerHTML, artist: entry.entry.artist, album: entry.entry.album}
           }
-    
-        getCurrentUser() {
-           this.$store.dispatch('getCurrUser').then(() => {
-                    console.log("after", this.$store.state.currentUser)
-                    this.djname = this.$store.state.currentUser
-                });
-        }
+     
+           this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
+              //this.entries = res.playlist_entries;
+              console.log(res);
+              this.getSongs();
+           });
+        // console.log(entry.index);
+    }
+
+    updateArtist(e, entry) {
+        console.log("update songs");
+        console.log(e.target.innerHTML);
+        console.log(entry)
+
+        const PlaylistParam = {
+            dj_id: "test",
+            playlistName: this.currentPlaylist,
+            index: entry.index,
+            entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
+            newEntry: {song: entry.entry.song, artist: e.target.innerHTML, album: entry.entry.album}
+          }
+     
+           this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
+              //this.entries = res.playlist_entries;
+              console.log(res);
+              this.getSongs();
+           });
+        // console.log(entry.index);
+    }
+
+    updateAlbum(e, entry) {
+        console.log("update songs");
+        console.log(e.target.innerHTML);
+        console.log(entry)
+
+        const PlaylistParam = {
+            dj_id: "test",
+            playlistName: this.currentPlaylist,
+            index: entry.index,
+            entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
+            newEntry: {song: entry.entry.song, artist: entry.entry.artist, album: e.target.innerHTML}
+          }
+     
+           this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
+              //this.entries = res.playlist_entries;
+              console.log(res);
+              this.getSongs();
+           });
+        // console.log(entry.index);
+    }
 }

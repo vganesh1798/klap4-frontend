@@ -1,6 +1,8 @@
 <template>
     <div class="playlist">
         <div class="row">
+            <p>{{this.current_playlist}}</p>
+            <p>{{this.current_show}}</p>
             <div class="col l11"></div>
             <div class="col l1">
                 <defaultButton class="closeBtn" @click.native="closeEdit" type="submit">X</defaultButton>
@@ -39,8 +41,8 @@
         name = ''
         playlistName = ''
         showName = ''
-        @Prop(String) currentPlaylist!: string
-        @Prop(String) currentShow!: string
+        @Prop(String) current_playlist!: string
+        @Prop(String) current_show!: string
 
         constructor() {
             super()
@@ -63,11 +65,11 @@
             }
 
     updatePlaylist() {
-        console.log(this.name, this.currentPlaylist, this.currentShow, this.playlistName, this.showName);
+        console.log(this.name, this.current_playlist, this.current_show, this.playlistName, this.showName);
         const playlistParams = {
             dj_id: this.name,
-            p_name: 'updatedplaylist',
-            show: 'updatedshow',
+            show: this.current_show,
+            p_name: this.current_playlist,
             new_name: this.playlistName,
             new_show: this.showName
         }
@@ -76,11 +78,6 @@
             //this.newPlaylistCreated(playlistParams.dj_id, playlistParams.p_name, playlistParams.show);
         })
     }
-
-    // @Emit('newPlaylistCreated')
-    //     newPlaylistCreated(id, name, show) {
-    //         console.log("created")
-    //     }
 }
 </script>
 

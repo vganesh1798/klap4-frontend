@@ -1,19 +1,27 @@
 <template>
     <div class="full-page">
         <div class="container log-container">
-            <div v-if="playlistSelected">
+            <!--h1>{{this.$store.state.currentUser}}</h1>
+            <h1>{{this.$store.state.currentPlaylist}}</h1-->
+            <div v-if="this.$store.state.currentUser === 'Anonymous'">
+                    <h1>Playlists</h1>
+                    <h2 style="text-align: center;">Please Log In</h2>
+            </div>
+            <div v-else>
+            <!--div v-if="playlistSelected"-->
+            <div v-if="this.$store.state.currentPlaylist !== ''">
                 <defaultButton class="colored uploadButton" @click.native="allowUpload()">Upload A Playlist</defaultButton>
                 <uploadBox v-if="uploadBox" @closeUpload="closeUpload"></uploadBox>
                 <defaultButton class="colored editButton" @click.native="switchPlaylist()">Switch Playlist</defaultButton>
                 <switchPlaylist v-if="switchBox" @closeSwitch="closeSwitch" @newPlaylist="newPlaylist"></switchPlaylist>
                 <!--edit v-if="editBox" @closeEdit="closeEdit"></edit-->
                 <h1>
-                    {{currentPlaylist}} 
+                    {{this.$store.state.currentPlaylist}} 
                     <defaultButton @click.native="editPlaylist()">
                         <i class="material-icons">edit</i>
                     </defaultButton>
                 </h1>
-                <editPlaylist :currentPlaylist="currentPlaylist" :currentShow="name" v-if="editBox" @closeEdit="closeEdit" @editPlaylist="editPlaylist"></editPlaylist>
+                <editPlaylist :current_playlist="currentPlaylist" :current_show="currentShow" v-if="editBox" @closeEdit="closeEdit" @editPlaylist="editPlaylist"></editPlaylist>
                 <div class="row">
                     <div class="col s6 offset-s3">
                         <div class="form">
@@ -56,18 +64,25 @@
                                 </tr>
                             </thead>
                             <!--tbody-->
-                                <draggable v-model="entries" group="people" @start="drag=true" @end="drag=false">
+                                <draggable v-model="entries" group="people" @start="drag=true" @end="drag=false" @change="movePlaylistEntry($event)">
                                     <tr v-for="(entry, index) in entries" :key="entry.id">
                                         <!--td id="tablecols" v-html="song" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)" @focusout="editstuff(entry)" @keyup.enter="editstuff(entry.index)"--->
                                         <!--td id="tablecols" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)"-->
                                         <td id="tablecols">
-                                            <p v-html="entry.entry.song" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)">{{ entry.entry.song }}</p>
+                                            <p v-html="entry.entry.song" @blur="updateSong($event, entry)" contenteditable="true">
+                                                {{ entry.entry.song }}
+                                            </p>
+                                            <!--p>{{ entry.entry.song}}</p-->
                                         </td>
                                         <td id="tablecols">
-                                            <p v-html="entry.entry.artist" @blur="updateArtist" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.artist }}</p>
+                                            <p v-html="entry.entry.artist" @blur="updateArtist($event, entry)" contenteditable="true">
+                                                {{entry.entry.artist }}
+                                            </p>
                                         </td>
                                         <td id="tablecols">
-                                            <p v-html="entry.entry.album" @blur="updateAlbum" contenteditable="true" @click="storeOriginal(entry)">{{entry.entry.album}}</p>
+                                            <p v-html="entry.entry.album" @blur="updateAlbum($event, entry)" contenteditable="true">
+                                                {{entry.entry.album}}
+                                            </p>
                                         </td>
                                         <td style="min-width: 20px;">
                                             <defaultButton  @click.native="removeSong(entry)">
@@ -82,11 +97,12 @@
                 </div>
             </div>
             <div v-else>
-                <div v-if="this.djname=='Anonymous'">
+                <!--div v-if="this.djname=='Anonymous'"-->
+                <!--div v-if="this.$store.state.currentUser === 'Anonymous'">
                     <h1>Playlists</h1>
                     <h2 style="text-align: center;">Please Log In</h2>
                 </div>
-                <div v-else>
+                <div v-else-->
                 <h1>Playlists</h1>
                 <div class="row topbutton">
                     <div class="col s2 offset-s4">

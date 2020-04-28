@@ -151,7 +151,9 @@
         }
 
         logOut() {
-            this.$store.dispatch('logout')
+            this.$store.dispatch('logout').then(() => {
+                this.$store.dispatch('getCurrUser')
+            })
             this.userAuth = false
         }
 
@@ -200,15 +202,12 @@
             }
             this.$store.dispatch('quicksearch', searchParam).then(res => {  
                 if(res.type == "artist") { 
-                    console.log("artist")
                     router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
                 }
                 else if(res.type == "album") { 
-                    console.log("album")
                     router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
                 }
                 else if(res.response.status == 404) {
-                    console.log("not found")
                     router.push({ name: 'Search'})
                 }
         });

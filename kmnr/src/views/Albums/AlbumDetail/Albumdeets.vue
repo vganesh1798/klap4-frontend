@@ -3,6 +3,7 @@
     <h1>
       <span class="albums-heading-main">Album Information</span>
     </h1>
+    <h1>{{this.$store.state.currentPlaylist}}</h1>  
     <div class="header-container">
       <div class="row">
         <div class="col s1 offset-s10">
@@ -52,6 +53,9 @@
                 <td>{{ item.song_name }}</td>
                 <td>{{ item.fcc_status }}</td>
                 <td>{{ item.times_played }}</td>
+                <defaultButton @click.native="addToPlaylist(item, album)">
+                    <i class="material-icons">add</i>
+                </defaultButton>
               </tr>
             </tbody>
           </table>
@@ -118,6 +122,22 @@
         this.issueOpen = false;
         return this.issueOpen;
       }
+
+    addToPlaylist(item, album) {
+      console.log(item)
+      const PlaylistParam = {
+       dj_id: "test",
+       playlistName: this.$store.state.currentPlaylist,
+       //try to get it so that you don't need to pass an index to add a song
+       //index: 1,
+       entry: {song: item.song_name, artist: album.artist, album: album.name }
+     }
+     this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
+        //this.entries = res.playlist_entries;
+        //console.log(res);
+        //this.getSongs();
+     });
+    }
   }
 </script>
 
