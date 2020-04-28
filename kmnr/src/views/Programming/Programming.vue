@@ -1,6 +1,6 @@
 <template>
   <div class="full-deets" :class="{'opened-table': timeTableOpen}">
-    <div class="container">
+    <div class="container" v-if="curUser !== ''">
       <div class="row">
         <div class="col s12">
           <h1>
@@ -30,7 +30,7 @@
                   </div>
                   <div class="log-body" v-for="(type, index2) in log" :key="type.id">
                     <span class="type">{{type.program_type}}</span>
-                    <span class="delete" v-if="Math.abs(curIndex - today) <= 1 && entrySchedule[curIndex][index][index2] !== null">
+                    <span class="delete" v-if="Math.abs(curIndex - today) <= 1 && entrySchedule[curIndex][index][index2] !== ''">
                       <a @click="deleteProgram(index, index2)"><i class="material-icons-round">delete</i></a>
                     </span>
                     <span class="delete-disabled" v-else>

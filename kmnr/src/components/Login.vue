@@ -18,13 +18,13 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <label for="username">Username</label>
-                        <input required type="text" id="username" v-model="username"/>
+                        <input required type="text" id="username" v-model="username" autocomplete="username" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
                         <label for="password">Password</label>
-                        <input required type="password" id="password" v-model="pswd"/>
+                        <input required type="password" id="password" autocomplete="current-password" v-model="pswd"/>
                     </div>
                 </div>
                 <div class="row">

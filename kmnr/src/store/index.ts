@@ -281,7 +281,7 @@ export default new Vuex.Store({
         .then(res => {
           if (res.status !== 200)
             return false
-
+          this.commit('setUser', '')
           return true
         }).catch(err => {
           console.log(err)

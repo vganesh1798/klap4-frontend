@@ -87,7 +87,7 @@
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">ARSE</a>
         </nav>
-        <login v-if="loginOpen" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
+        <login v-if="loginOpen || (route === '/programming' && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
     </div>
 </template>
 
@@ -109,6 +109,15 @@
         on = false
         logoSource = './radio.png'
         userAuth = false
+
+        get curUser() {
+            return this.$store.state.currentUser
+        }
+
+        get route() {
+            console.log(this.$route.path)
+            return this.$route.path
+        }
 
         beforeMount() {
             window.addEventListener('scroll', this.navScroll)
@@ -144,14 +153,20 @@
             })
         }
 
+        beforeUpdate() {
+            if (this.$cookies.isKey('csrf_access_token')) {
+                this.$store.dispatch('getCurrUser')
+                this.userAuth = true
+            }
+        }
+
         loggedIn() {
             this.closeLogin()
             this.userAuth = true
         }
 
         logOut() {
-            this.$store.dispatch('logout')
-            this.userAuth = false
+            this.$store.dispatch('logout').then(res => this.userAuth = false)
         }
 
         beforeDestroy() {

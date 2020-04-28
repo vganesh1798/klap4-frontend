@@ -71,6 +71,10 @@ export default class Programming extends Vue {
         return Days[ind]
     }
 
+    get curUser() {
+        return this.$store.state.currentUser
+    }
+
     getAllPrograms() {
         this.$store.dispatch('getAllPrograms')
             .then(res => {
@@ -88,7 +92,7 @@ export default class Programming extends Vue {
                 if (entryIdx !== -1)
                     this.logEntries.push(this.logEntriesResponse[entryIdx])
                 else
-                    this.logEntries.push(null)
+                    this.logEntries.push('')
             }
 
             this.pagnateHours(this.logList.length/3)
@@ -146,11 +150,15 @@ export default class Programming extends Vue {
 
     editProgramEntry(schedOffsetIdx, logIdx) {
         if (Math.abs(this.curIndex - this.today) <= 1) {
+            let ref: any = this.schedule[this.curIndex][schedOffsetIdx][logIdx].id + 'a'
             this.editing = true
             let progName = this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].program_name
             this.editingEntry = {...this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx]}
             this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = progName
             this.$forceUpdate()
+            this.$nextTick(() => {
+                (document.getElementById(ref) as HTMLElement).focus()
+            })
         }
     }
 
@@ -161,10 +169,12 @@ export default class Programming extends Vue {
         } else {
             this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = null
         }
+
+        this.$forceUpdate()
     }
 
-    insertProgram(schedOffsetIdx?, logIdx?, slot?) {
-        if (slot !== null) {
+    insertProgram(schedOffsetIdx?, logIdx?, newIdx?, slot?) {
+        if (slot) {
             const stationIdParams: ProgramLogEntry = {
                 type: this.programSelected.type,
                 name: this.programSelected.name,
@@ -175,7 +185,7 @@ export default class Programming extends Vue {
             }
 
             this.$store.dispatch('postProgramLogEntry', stationIdParams).then(res => {
-                this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = res
+                this.entrySchedule[newIdx][schedOffsetIdx][logIdx] = res
                 this.$forceUpdate()
             })
         } else {
@@ -205,20 +215,38 @@ export default class Programming extends Vue {
     }
 
     deleteProgram(schedOffsetIdx, logIdx) {
-        if (Math.abs(this.curIndex - this.today) <= 1) {
+        if (this.editing) {
             const stationIdParams: ProgramLogEntry = {
-                type: 'station_id',
-                name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
-                slotId: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].slot_id,
-                timestamp: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].timestamp,
+                type: this.editingEntry.program_type,
+                name: this.editingEntry.program_name,
+                slotId: this.editingEntry.slot_id,
+                timestamp: this.editingEntry.timestamp,
                 dj: this.$store.state.currentUser,
                 newName: ''
             }
-
+            
             this.$store.dispatch('removeProgramLogEntry', stationIdParams).then(res => {
                 this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = null
                 this.$forceUpdate()
             })
+        } else {
+            const nameIndex = (this.curIndex * 6) + ((schedOffsetIdx * 2) + logIdx - (this.offset * 2))
+
+            if (Math.abs(this.curIndex - this.today) <= 1) {
+                const stationIdParams: ProgramLogEntry = {
+                    type: this.logList[nameIndex].program_type,
+                    name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
+                    slotId: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].slot_id,
+                    timestamp: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].timestamp,
+                    dj: this.$store.state.currentUser,
+                    newName: ''
+                }
+
+                this.$store.dispatch('removeProgramLogEntry', stationIdParams).then(res => {
+                    this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = null
+                    this.$forceUpdate()
+                })
+            }
         }
     }
 
@@ -349,17 +377,18 @@ export default class Programming extends Vue {
     }
 
     openLogEntries(entry) {
-        let nameIndex = (this.curIndex * 6)
+        let nameIndex = (this.today * 6)
         this.openTimes = []
 
         this.programSelected = entry
 
         for (let i in this.range(0,3)) {
-            nameIndex = (this.curIndex + +i - 1) * 6
+            nameIndex = (this.today + +i - 1) * 6
+            console.log(this.offset)
 
             for (let j in this.range(0,6)) {
-                if (this.logList[nameIndex + +j].program_type === entry.type) {
-                    this.openTimes.push(this.logList[nameIndex + +j])
+                if (this.logList[nameIndex + +j - 2 - this.offset].program_type === entry.type && this.logEntries[nameIndex + +j - 2 - this.offset] === '') {
+                    this.openTimes.push(this.logList[nameIndex + +j - 2 - this.offset])
                 }
             }
         }
@@ -374,13 +403,17 @@ export default class Programming extends Vue {
                 for (let k in this.schedule[i][j]) {
                     if (this.schedule[i][j][k].id === logSlot.id) {
                         slotFound = true
-                        this.insertProgram(null, null, logSlot)
+                        this.insertProgram(j, k, i, logSlot)
                         break
                     }
                 }
             }
             if (slotFound) break
         }
+
+        console.log(this.logList.map(e => {return e.id}).findIndex(logSlot))
+        // this.logEntries[logEntryIdx] = logSlot
+        // console.log(this.logEntries)
     }
 
     closeTable() {

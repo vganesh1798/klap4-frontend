@@ -110,6 +110,7 @@ export default class TimeTable extends Vue {
 
     @Emit('addToSlot')
     addToSlot(timeSlot) {
+        this.closeTable()
         return timeSlot
     }
 }
