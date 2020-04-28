@@ -1,6 +1,6 @@
 <template>
   <div class="full-deets" :class="{'opened-table': timeTableOpen}">
-    <div class="container" v-if="curUser !== '' || preload">
+    <div class="container" v-if="curUser !== ''">
       <div class="row">
         <div class="col s12">
           <h1>

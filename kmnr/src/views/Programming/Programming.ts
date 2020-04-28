@@ -67,7 +67,6 @@ export default class Programming extends Vue {
     openTimes: any = []
 
     programSelected: any = {}
-    preload = false
 
     curDay(ind) {
         return Days[ind]
@@ -99,10 +98,6 @@ export default class Programming extends Vue {
 
             this.pagnateHours(this.logList.length/3)
         })
-    }
-
-    created() {
-        this.preload = true
     }
 
     mounted() {

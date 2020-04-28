@@ -87,7 +87,7 @@
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">Cleveland</a>
         </nav>
-        <login v-if="loginOpen || (route === '/programming' && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
+        <login v-if="loginOpen || ((route === '/programming' || route === '/log') && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
     </div>
 </template>
 
@@ -208,7 +208,7 @@
             this.on = true;
             this.loginOpen = false;
 
-            if ((this.$route.path === '/programming' || this.$route.path === '/programming') && this.$store.state.currentUser === '') {
+            if ((this.$route.path === '/programming' || this.$route.path === '/log') && this.$store.state.currentUser === '') {
                 this.$router.push('/')
             }
 
