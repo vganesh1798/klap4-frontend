@@ -11,9 +11,10 @@ export default class HomePage extends Vue {
     scrolledROnce = false
 
     search_des = "Search away at your hearts content! We have a plethroa of songs in the KMNR library."
-
+    stream_des = "Stream your favorite music from our endless collection!"
+    aboutus = "KMNR is a free-format college radio station broadcasting at 89.7 MHz in Rolla, MO. KMNR's license is held by the University of Missouri's board of curators. KMNR is run by its executive board who are responsible for maintaining the station and ensuring compliance with FCC rules. KMNR Executive board are elected at the end of the Spring Semester and serve for a year. KMNR's faculty advisor is Dr. Jeff Schramm. KMNR's Public File is accessible at the station."
     lxst_image = ''
-
+    stream_image = ''
     beforeMount() {
         window.addEventListener('scroll', () => {
             this.revealOnScroll('card-left-on-scroll', true)
@@ -21,6 +22,7 @@ export default class HomePage extends Vue {
         });
         let images = require.context('../../assets/', false, /\.jpeg$/)
         this.lxst_image = images('./LXST_Image.jpeg')
+        this.stream_image = images('./stream.jpeg')
         console.log(this.lxst_image)
     }
 
