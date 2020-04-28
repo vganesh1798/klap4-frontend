@@ -106,9 +106,6 @@ export default class App extends Vue {
       this.handleView();
       window.addEventListener('resize', this.handleView);
     }
-    updated() {
-      this.firstLoad = false
-    }
 };
 </script>
 
