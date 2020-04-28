@@ -7,24 +7,14 @@
             </div>
         </div>
         <div class="row">
-            <h1>Issue</h1>
+            <h1>Reporting problem for {{album}} by {{artist}}</h1>
         </div>
-        <div class="row">
-            <div class="input-field">
-              <label for="first">First Name</label>
-              <input type="text" id="first" />
-            </div>
-            <div class="input-field">
-              <label for="last">Last Name</label>
-              <input type="text" id="last" />
-            </div>
-          </div>
           <div class="row">
             <div class="input-field">
               <label for="issue">Describe the issue</label>
-              <textarea type="text" class="materialize-textarea" id="review"></textarea>
+              <textarea v-model="problem" type="text" class="materialize-textarea" id="review"></textarea>
             </div>
-              <button class="btn">Submit</button>
+              <button v-on:click="postProblem()" class="btn">Submit</button>
             </div>
           </div>
 </template>
@@ -38,8 +28,24 @@
     })
     export default class issue extends Vue {
         close = false;
+        problem = "";
         constructor() {
-            super()
+            super();
+        }
+        @Prop(String) album !: string
+        @Prop(String) artist !: string
+
+
+        postProblem() {
+            const problemParams = {
+                'id': this.$route.params.albumParam,
+                'reporter': this.$store.state.currentUser,
+                'problem': this.problem
+            }
+            this.$store.dispatch('postProblem', problemParams)
+                .then(res => {
+                    console.log(res.data)
+                })
         }
 
         @Emit('closeIssue') 

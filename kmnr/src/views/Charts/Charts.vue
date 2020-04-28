@@ -15,7 +15,7 @@
           <div class="col s3"></div>
           <div class="col s6">
             <div class="inputSearch">
-              <input v-model="chartsSearch" type="text" class="search-bar" placeholder="Search by genre"  @keyup.enter="SearchByChartName()">
+              <input v-model="chartsSearch" type="text" class="search-bar" placeholder="Search by album, artist, or genre"  @keyup.enter="SearchByChartName()">
               <defaultButton class="clr-btn" :style="{visibility:cancelSearchVisibility}" @click.native="CancelSearch()">
                 <i class="material-icons">clear</i>
               </defaultButton>
@@ -34,16 +34,31 @@
                 <a class="dropdown-item" @click="sortBy('Popularity')">Popularity</a>
                 <a class="dropdown-item" @click="sortBy('Genre')">Genre</a>
                 <a class="dropdown-item" @click="sortBy('Artist')">Artist</a>
-                <a class="dropdown-item" @click="sortBy('Release')">Release Date</a>
-                <a class="dropdown-item" @click="sortBy('Likes')">Number of Likes</a>
+                <a class="dropdown-item" @click="sortBy('Album')">Album</a>
+                <!--a class="dropdown-item" @click="sortBy('Likes')">Number of Likes</a-->
               </div>
             </div>
           </div>
-          <div class="col s6"></div>
-          <div class="col s2">
-            <a v-if="new_charts">Charts for the last weeks:  </a>
-            <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts">
+          <div class="col s5"></div>
+          <div class="col s3" v-if="new_charts">
+              <p style="text-align: right;">New album charts for the last {{weeks}} weeks</p>
+            <!--a v-if="new_charts">Charts for the last weeks:  </a>
+            <input class="chooseweeks" type="number" min=1 max=52 v-model.number="weeks" v-if="new_charts"-->
           </div>
+          <div class="col s3" v-else>
+            <p style="text-align: right;">All charts for the last {{weeks}} weeks</p>
+          </div>
+          <div class="col s1" v-if="new_charts">
+            <p class="range-field">
+            <input v-model='weeks' type="range" id="test5" min="1" max="52" @change="getNewCharts()"/>
+            </p>
+          </div>
+          <div class="col s1" v-else>
+            <p class="range-field">
+              <input v-model='weeks' type="range" id="test5" min="1" max="52" @change="getCharts()"/>
+            </p>
+          </div>
+
         </div>
 
         <table class="defaultTable chartsTable" v-if="chartsPaginated.length > 0">
@@ -54,14 +69,15 @@
               </td>
               <td style="width: 60%;">
                 <ul>
-                  <li>{{ item.album_name }}</li>
-                  <li> {{ item.artist_name }}</li>
+                  <router-link :to="{name:'AlbumDetail', params:{albumParam:item.album_id} }" class="links">{{item.album_name}}</router-link> 
+                  <!--router-link :to="{name:'ArtistDetail', params:{albumParam:item.artist_id} }">{{item.artist_name}}</router-link--> 
+                  <li>{{ item.artist_name }}</li>
                 </ul>
               </td>
               <td style="width: 28%;">
                 <ul>
-                  <li>{{ item.album_id }}</li>
-                  <li> {{ item.song_name }}</li>
+                  <li>{{ item.genre }}</li>
+                  <li> {{ item.album_id }}</li>
                 </ul>
               </td>
               <td style="width: 20%;">

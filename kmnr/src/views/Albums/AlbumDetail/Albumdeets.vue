@@ -3,6 +3,7 @@
     <h1>
       <span class="albums-heading-main">Album Information</span>
     </h1>
+    <h1>{{this.$store.state.currentPlaylist}}</h1>  
     <div class="header-container">
       <div class="row">
         <div class="col s1 offset-s10">
@@ -15,58 +16,50 @@
         </div>
       </div>
     </div>
-    <review v-if="reviewOpen" @closeReview="closeReview"></review>
-    <issue v-if="issueOpen" @closeIssue="closeIssue"></issue>
+    <review :album="album.name" :artist="album.artist" v-if="reviewOpen" @closeReview="closeReview"></review>
+    <issue :album="album.name" :artist="album.artist" v-if="issueOpen" @closeIssue="closeIssue"></issue>
     
-    <div id="flex-container">
-      <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child">
-        <md-card>
-          <md-card-media>
-            <img class="album-image" :src="null">
-          </md-card-media>
+    <div id="container">
+      <div class="row">
+        <div class="col s2 offset-s2">
+        <div class="card">
+          <div class="card-image">
+            <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
+          </div>
+          <div class="card-content">
+            <span class="card-title">{{album.name}} ({{album.id}})</span>
+            <p>by {{album.artist}} ({{album.artist_id}})</p>
+            <p v-if="album.label">{{album.label}}</p>
+            <p>Added on {{album.date_added}}</p>
+            <p>{{ album.genre }}</p>
+          </div>
+        </div>
+        </div>
 
-          <md-card-header>
-            <div class="md-title">{{album['album'].name}}</div>
-            <div class="md-subhead">{{album.artist.name}}</div>
-          </md-card-header>
-          <md-card-expand>
-            <md-card-actions md-alignment="space-between">
-              <md-button class="md-icon-button">
-                <md-icon>favorite</md-icon>
-              </md-button>
-              <div>
-                <md-button>Rate</md-button>
-              </div>
+        <div class="tracks col s4 offset-s1">
+          <table class="tracksTable">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Track</th>
+                <th style="width: 25%;">Name</th>
+                <th style="width: 25%;">FCC Status</th>
+                <th style="width: 25%;">Plays</th>
+              </tr>
+            </thead>
 
-              <md-card-expand-trigger>
-                <md-button>Details</md-button>
-              </md-card-expand-trigger>
-            </md-card-actions>
-
-            <md-card-expand-content>
-              <md-card-content>
-                Release Date: {{album.album.date_added}} <br />
-                Category: {{ album.album.genre_abbr }} <br />
-                Tracks: {{ album.songs.length }}
-              </md-card-content>
-            </md-card-expand-content>
-          </md-card-expand>
-        </md-card>
-      </div>
-
-      <div class=" animated fadeInUp ease-out-circ d-1 a-2 flex-child"> 
-        <md-table class="table" v-model="tracks" md-card>
-          <md-table-toolbar>
-            <h1 class="md-title">Tracks</h1>
-              </md-table-toolbar>
-
-              <md-table-row slot="md-table-row" slot-scope="{ item }">
-                <md-table-cell md-label="Track" md-sort-by="id" md-numeric>{{ item.id }}</md-table-cell>
-                <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-                <md-table-cell md-label="Runtime" md-sort-by="title">{{ item.run }}</md-table-cell>
-                <md-table-cell md-label="Plays" md-sort-by="title">{{ item.plays }}</md-table-cell>
-              </md-table-row>
-        </md-table>
+            <tbody>
+              <tr v-for="item in tracks" :key="item.number">
+                <td>{{ item.number }}</td>
+                <td>{{ item.song_name }}</td>
+                <td>{{ item.fcc_status }}</td>
+                <td>{{ item.times_played }}</td>
+                <defaultButton @click.native="addToPlaylist(item, album)">
+                    <i class="material-icons">add</i>
+                </defaultButton>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -94,6 +87,7 @@
     tracks = []
     issueOpen = false;
     reviewOpen = false;
+    fcc = 0;
 
     loaded = false;
 
@@ -101,10 +95,35 @@
       this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
         this.tracks = this.$store.state.singleAlbum.songs
         this.album = this.$store.state.singleAlbum
+        console.log(this.album)
       })
       .finally(() => {
         this.loaded = true
       })
+    }
+
+    changeSingleFCC(songNumber) {
+      const FCCParams = {
+        'id': this.$route.params.albumParam,
+        'songNumber': songNumber,
+        'fcc': this.fcc
+      };
+      this.$store.dispatch('changeSingleFCC', FCCParams)
+        .then(res => {
+          console.log(res.data);
+        })
+    }
+
+    changeAlbumFCC() {
+      const FCCParams = {
+        'id': this.$route.params.albumParam,
+        'songNumber': null,
+        'fcc': this.fcc
+      };
+      this.$store.dispatch('changeAlbumFCC', FCCParams)
+        .then(res => {
+          console.log(res.data);
+        })
     }
 
     openReview() {
@@ -128,11 +147,27 @@
         this.issueOpen = false;
         return this.issueOpen;
       }
+
+    addToPlaylist(item, album) {
+      console.log(item)
+      const PlaylistParam = {
+       dj_id: "test",
+       playlistName: this.$store.state.currentPlaylist,
+       //try to get it so that you don't need to pass an index to add a song
+       //index: 1,
+       entry: {song: item.song_name, artist: album.artist, album: album.name }
+     }
+     this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
+        //this.entries = res.playlist_entries;
+        //console.log(res);
+        //this.getSongs();
+     });
+    }
   }
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 
 
@@ -141,22 +176,9 @@
     background-size: 100% auto;
     background-repeat: repeat;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     position: absolute;
-  }
-
-  .main {
-    margin: 0 auto;
-  }
-
-  .header-container {
-    padding: 0%;
-  }
-
-  .table {
-    position: absolute;
-    width: 30% !important;
-    margin-left: 5% !important;
   }
 
   .albums-heading-main {
@@ -170,12 +192,10 @@
     font-family: 'Montserrat';
   }
 
-  .album-image {
-    border: 7px solid black;
-    /* border-radius: 50%; */
-    padding: 2px;
-    width: 100%;
-    background-color: black;
+  .tracks {
+    max-height: 53vh;
+    min-width: 25vw;
+    overflow: auto;
   }
 
   .headerbtn {
@@ -188,48 +208,13 @@
     margin: 0 0 0 0;
   }
 
-  .md-card {
-    width: 220px;
+  .card {
+    width: 250px;
     margin: 4px;
     display: inline-block;
     vertical-align: top;
-  }
-
-  .md-title {
-    font-family: 'Montserrat';
-  }
-
-  #flex-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-left: 10%;
-    padding-top: 5%;
-  }
-
-  .flex-child {
-    margin-left: 10%;
-  }
-
-  .md-card {
-    opacity: 90%
-  }
-
-  .md-table {
-    width: 100%;
-    opacity: 90%;
-  }
-
-  #first {
-    color: black;
-  }
-
-  #review {
-    color: black;
-  }
-
-  #last {
-    color: black;
+    background-color: rgba(100,100,100,.3);
+    padding: 4%;
   }
 
   .row {
@@ -239,9 +224,5 @@
 
   h1 {
     margin: 0px;
-  }
-
-  .full-deets {
-    padding-top: 4%;
   }
 </style>

@@ -1,0 +1,126 @@
+.full-page {
+    //background-image: url('../../assets/green.jpg');
+    background-image: linear-gradient(white, rgb(36, 206, 107));
+    background-size: 100% auto;
+    background-repeat: repeat;
+    padding-top: 7%;
+    width: 100%;
+    height: 100%;
+}
+
+.log-container { 
+    width: 100% !important;
+}
+
+h1 {
+    margin-top: 0px;
+    font-size: 70px;
+    font-weight: 100;
+    padding-top: 0%;
+    margin-bottom: 0px;
+    text-align: center;
+    padding-bottom: 0% !important;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+}
+
+.list-group {
+    color: purple;
+    border-color: black;
+    border-style: solid;
+}
+
+.topbutton {
+    padding-top: 10%;
+}
+
+.largebtn {
+    margin-left: 30%;
+    padding: 10% !important;
+    font-size: 24px !important;
+    border-radius: 5% !important;
+    width: 15vw;
+}
+
+.newPlaylist {
+    //position: absolute;
+    //right: 2%;
+    display: block;
+    table-layout: fixed;
+    height: 58vh;
+    width: 23vw;
+    overflow: auto;
+    background-color: rgba(114, 107, 107, 0.2); 
+    border-radius: 2%;
+}
+
+#tablecols {
+    min-width: 135px;
+    max-width: 135px;
+}
+
+.header {
+    min-width: 135px;
+}
+
+.uploadButton {
+    position: fixed;
+    top: 10%;
+    left: 1%;
+    width: 13%;
+    font-size: .8vw;
+}
+
+.editButton {
+    //background-color: rgba(100, 100, 100, .2);
+    //color: rgb(70, 68, 68);
+    position: fixed;
+    //display: block;
+    font-size: .8vw;
+    top: 16%;
+    left: 1%;
+    width: 13%;
+}
+
+td.last {
+    width: 1px;
+    white-space: nowrap;
+}
+
+.form {
+    padding: 5% 5%;
+    background-color: rgba(255,255,255,.2);
+    //background-color: rgba(114, 107, 107, 0.2);
+    border-radius: 3%;
+    margin-top: 50px;
+    width: 35vw;
+}
+
+input {
+    color: rgb(70,68,68);
+    border-bottom: 1px rgb(70, 68, 68) !important;
+    box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
+}
+
+label {
+    color: rgb(70,68,68);
+}
+
+.delete {
+    width: 5%;
+}
+
+.mybtn {
+    background-color: rgba(100, 100, 100, .2);
+    color: rgb(70, 68, 68);
+    width: 15vw;
+    font-size: .8vw;
+    padding: 1.5% !important;
+}
+
+.longbtn {
+    background-color: rgba(100, 100, 100, .2);
+    color: rgb(70, 68, 68);
+    width: 31vw;
+    padding: 1.5% !important;
+}
