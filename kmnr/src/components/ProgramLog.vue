@@ -173,6 +173,7 @@ export default class TimeTable extends Vue {
             color: black;
             float: right;
             padding-right: 10px;
+            user-select: none;
         }
 
         .time-slot {

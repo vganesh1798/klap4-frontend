@@ -143,13 +143,11 @@ export default new Vuex.Store({
     },
     updatePlaylistEntry({commit, state}, playlistEntry: any) {
       return axios
-      
-      .put(`http://localhost:5000/playlist/display/${playlistEntry.dj_id}/${playlistEntry.playlistName}`, playlistEntry, {withCredentials: true})
-      .then(res => {
-        console.log(res.data)
-        return res.data
-      })
-      .catch(err => console.log(err))
+        .put(`http://localhost:5000/playlist/display/${playlistEntry.dj_id}/${playlistEntry.playlistName}`, playlistEntry, {withCredentials: true})
+        .then(res => {
+          return res.data
+        })
+        .catch(err => console.log(err))
     },
 
     uploadPlaylist({commit, state}, playlistEntry) {

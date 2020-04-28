@@ -329,6 +329,7 @@
         cursor: pointer;
         color: black;
         font-size: 1.5em;
+        user-select: none;
       }
     }
   }
