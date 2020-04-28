@@ -67,6 +67,7 @@ export default class Programming extends Vue {
     openTimes: any = []
 
     programSelected: any = {}
+    preload = false
 
     curDay(ind) {
         return Days[ind]
@@ -100,6 +101,10 @@ export default class Programming extends Vue {
         })
     }
 
+    created() {
+        this.preload = true
+    }
+
     mounted() {
         this.getAllLogs();
         this.getAllPrograms();
@@ -113,6 +118,7 @@ export default class Programming extends Vue {
             if (this.todayHour !== new Date().getHours() + 24) {
                 this.getAllPrograms()
                 this.getAllLogs()
+                autocompleteLoaded = false
             }
         }, 500)
     }
@@ -293,29 +299,28 @@ export default class Programming extends Vue {
         } else {
             user = this.$store.state.currentUser
         }
+        if (Math.abs(this.curIndex - this.today) <= 1) {
+            if (this.logEntries[userIndex].dj_id === user) {
+                if (this.editing && this.editingEntry.slot_id === this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].slot_id) {
+                    let logEntryIdx = this.logList.map(e => {return e.id}).indexOf(this.editingEntry.slot_id)
 
-        if (this.logEntries[userIndex].dj_id === user) {
-            if (this.editing && this.editingEntry.slot_id === this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx].slot_id) {
-                let logEntryIdx = this.logList.map(e => {return e.id}).indexOf(this.editingEntry.slot_id)
+                    const stationIdParams: ProgramLogEntry = {
+                        type: this.editingEntry.program_type,
+                        name: this.editingEntry.program_name,
+                        slotId: this.editingEntry.slot_id,
+                        timestamp: this.editingEntry.timestamp,
+                        dj: user,
+                        newName: ''
+                    }
+                    
+                    this.$store.dispatch('removeProgramLogEntry', stationIdParams).then(res => {
+                        this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = ''
+                            this.logEntries[logEntryIdx] = ''
+                            this.$forceUpdate()
+                    })
+                } else {
+                    const nameIndex = (this.curIndex * 6) + ((schedOffsetIdx * 2) + logIdx - (this.offset * 2))
 
-                const stationIdParams: ProgramLogEntry = {
-                    type: this.editingEntry.program_type,
-                    name: this.editingEntry.program_name,
-                    slotId: this.editingEntry.slot_id,
-                    timestamp: this.editingEntry.timestamp,
-                    dj: user,
-                    newName: ''
-                }
-                
-                this.$store.dispatch('removeProgramLogEntry', stationIdParams).then(res => {
-                    this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx] = ''
-                        this.logEntries[logEntryIdx] = ''
-                        this.$forceUpdate()
-                })
-            } else {
-                const nameIndex = (this.curIndex * 6) + ((schedOffsetIdx * 2) + logIdx - (this.offset * 2))
-
-                if (Math.abs(this.curIndex - this.today) <= 1) {
                     const stationIdParams: ProgramLogEntry = {
                         type: this.logList[nameIndex].program_type,
                         name: this.entrySchedule[this.curIndex][schedOffsetIdx][logIdx],
@@ -331,10 +336,11 @@ export default class Programming extends Vue {
                         this.$forceUpdate()
                     })
                 }
+            } else {
+                alert('You must be the user who submitted this to delete it.')
             }
-        } else {
-            alert('You must be the user who submitted this to delete it.')
         }
+        
     }
 
     pagnateHours(fullHour) {
@@ -412,18 +418,35 @@ export default class Programming extends Vue {
     }
 
     pageUp() {
-        if (this.curIndex + 1 < this.schedule.length)
+        if (this.curIndex + 1 < this.schedule.length) {
             this.curIndex += 1
+            if (Math.abs(this.curIndex - this.today) <= 1) {
+                this.$nextTick(() => {
+                    this.loadAutocomplete()
+                })
+            }
+        }
 
     }   
 
     pageDown() {
-        if (this.curIndex - 1 >= 0)
+        if (this.curIndex - 1 >= 0) {
             this.curIndex -= 1
+            if (Math.abs(this.curIndex - this.today) <= 1) {
+                this.$nextTick(() => {
+                    this.loadAutocomplete()
+                })
+            }
+        }
     }
 
     setToCurDay() {
         this.curIndex = this.today
+        if (Math.abs(this.curIndex - this.today) <= 1) {
+            this.$nextTick(() => {
+                this.loadAutocomplete()
+            })
+        }
     }
 
     setLogs(index): Array<number> {

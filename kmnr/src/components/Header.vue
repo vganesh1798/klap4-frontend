@@ -92,7 +92,7 @@
 </template>
 
 <script lang='ts'>
-    import { Component, Vue, Watch } from 'vue-property-decorator';
+    import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
     import router from '../router/index';
 
     import login from './Login.vue';
@@ -110,6 +110,8 @@
         logoSource = './radio.png'
         userAuth = false
         searchquery = "";
+
+        @Prop({type: String}) firstLoad
 
         get curUser() {
             return this.$store.state.currentUser
@@ -205,6 +207,11 @@
         closeLogin() {
             this.on = true;
             this.loginOpen = false;
+
+            if ((this.$route.path === '/programming' || this.$route.path === '/programming') && this.$store.state.currentUser === '') {
+                this.$router.push('/')
+            }
+
             return this.loginOpen;
         }
 

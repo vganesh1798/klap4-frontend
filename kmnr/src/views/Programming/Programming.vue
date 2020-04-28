@@ -1,6 +1,6 @@
 <template>
   <div class="full-deets" :class="{'opened-table': timeTableOpen}">
-    <div class="container" v-if="curUser !== ''">
+    <div class="container" v-if="curUser !== '' || preload">
       <div class="row">
         <div class="col s12">
           <h1>
@@ -43,10 +43,10 @@
                         v-model="entrySchedule[curIndex][index][index2]"
                         :disabled="Math.abs(curIndex - today) > 1"
                         :class="{'disabled': Math.abs(curIndex - today) > 1,
-                                  ['autocomplete-' + type.program_type.replace(/\s+/g, '-')]: true}"
+                                  ['autocomplete-' + type.program_type.replace(/[^0-9A-Za-z]+/g, '-')]: true}"
                         @keyup.enter="insertProgram(index, index2)"
-                        @keyup.esc="cancelInsert(index,index2)"/>
-                      <label :for="type.id + 'a'" class="text-black">Program</label>
+                        @keyup.esc="cancelInsert(index,index2)"
+                        placeholder="Program Name"/>
                     </div>
                     <div v-else class="program-name">
                       <a class="program-name-entered" @click="editProgramEntry(index, index2)">{{entrySchedule[curIndex][index][index2].program_name}}</a>
@@ -443,6 +443,22 @@
 
 
   /* Inactive/Active Default input field color */
+    .input-field input[type=text]:not([readonly])::placeholder,
+    .input-field input[type=text]:focus:not([readonly])::placeholder,
+    .input-field textarea:not([readonly])::placeholder,
+    .input-field textarea:focus:not([readonly])::placeholder {
+      color: black;
+      position: relative;
+    }
+
+    .input-field input[type=text]:not([readonly]):disabled::placeholder,
+    .input-field input[type=text]:focus:not([readonly]):disabled::placeholder,
+    .input-field textarea:not([readonly]):disabled::placeholder,
+    .input-field textarea:focus:not([readonly]):disabled::placeholder {
+      color: #393939;
+      position: relative;
+    }
+
     .input-field input[type=text]:not([readonly]),
     .input-field input[type=text]:focus:not([readonly]),
     .input-field textarea:not([readonly]),

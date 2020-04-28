@@ -26,29 +26,34 @@ import HeaderMobile from './components/HeaderMobile.vue';
   }
 })
 export default class App extends Vue {
-      mobileView = false
-      showNav = false
-      opened = false
+    mobileView = false
+    showNav = false
+    opened = false
+    firstLoad = true
+
     handleView() {
       this.mobileView = window.innerWidth <= 1420;
     }
     toggle () {
-            if (this.opened) {
-                return this.hide()
-            }
-            return this.show()
-        }
-    show () {
-            this.opened = true;
-            setTimeout(() => document.addEventListener('click',this.hide), 0);
-        }
-    hide () {
-            this.opened = false;
-            document.removeEventListener('click',this.hide);
+      if (this.opened) {
+          return this.hide()
       }
-   created() {
-    this.handleView();
-    window.addEventListener('resize', this.handleView);
+      return this.show()
+    }
+    show () {
+      this.opened = true;
+      setTimeout(() => document.addEventListener('click',this.hide), 0);
+    }
+    hide () {
+        this.opened = false;
+        document.removeEventListener('click',this.hide);
+      }
+    created() {
+      this.handleView();
+      window.addEventListener('resize', this.handleView);
+    }
+    updated() {
+      this.firstLoad = false
     }
 };
 </script>
