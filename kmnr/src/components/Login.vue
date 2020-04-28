@@ -143,7 +143,7 @@ a {
 }
 
 .login {
-    background-color:white;
+    background-color: #F7F7F7;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -151,11 +151,12 @@ a {
     height: 400px;
     width: 500px;
     padding: 0% 5% 25% 5%;
-    border-radius: 3%;
+    box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    // border-radius: 1%;
     font-family: 'Montserrat';
     z-index: 9999;
 }
-
 .btn {
     background-color: rgba(100,100,100, .4);
     position: absolute;
