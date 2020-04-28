@@ -177,6 +177,7 @@ export default new Vuex.Store({
           return res.data
         }).catch(err => console.error(err))
     },
+
     updatePlaylist({commit, state}, editedPlaylist: any) {
       const playlistData = {
         'username': editedPlaylist.dj_id,
@@ -188,7 +189,7 @@ export default new Vuex.Store({
 
       return axios.put(`http://localhost:5000/playlist/${editedPlaylist.dj_id}`, playlistData, {withCredentials: true})
         .then(res => {
-          //this.commit('setPlaylist', editedPlaylist.p_name)
+          this.commit('setPlaylist', editedPlaylist.new_name)
           return res.data
         }).catch(err => console.error(err))
     },

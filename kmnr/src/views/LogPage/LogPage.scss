@@ -1,5 +1,4 @@
 .full-page {
-    //background-image: url('../../assets/green.jpg');
     background-image: linear-gradient(white, rgb(36, 206, 107));
     background-size: 100% auto;
     background-repeat: repeat;
@@ -24,12 +23,6 @@ h1 {
     font-family: 'Covered By Your Grace';
 }
 
-.list-group {
-    color: purple;
-    border-color: black;
-    border-style: solid;
-}
-
 .topbutton {
     padding-top: 10%;
 }
@@ -42,28 +35,31 @@ h1 {
     width: 15vw;
 }
 
+.tables-row {
+    margin-top: 5%;
+}
+
 .newPlaylist {
-    //position: absolute;
-    //right: 2%;
     display: block;
     table-layout: fixed;
     height: 58vh;
-    width: 23vw;
+    width: 30vw;
     overflow: auto;
     background-color: rgba(114, 107, 107, 0.2); 
     border-radius: 2%;
 }
 
 #tablecols {
-    min-width: 135px;
-    max-width: 135px;
+    min-width: 150px;
+    max-width: 150px;
 }
 
 .header {
-    min-width: 135px;
+    min-width: 115px;
+    max-width: 115px;
 }
 
-.uploadButton {
+.newButton {
     position: fixed;
     top: 10%;
     left: 1%;
@@ -89,11 +85,21 @@ td.last {
 
 .form {
     padding: 5% 5%;
-    background-color: rgba(255,255,255,.2);
-    //background-color: rgba(114, 107, 107, 0.2);
+    //background-color: rgba(255,255,255,.2);
+    background-color: rgba(114, 107, 107, 0.2);
     border-radius: 3%;
-    margin-top: 50px;
-    width: 35vw;
+    //margin-top: 50px;
+    //width: 35vw;
+    height: 58vh;
+    width: 30vw;
+}
+
+.form-header {
+    font-family: 'Montserrat';
+    font-size: 34px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
 }
 
 input {
@@ -113,7 +119,8 @@ label {
 .mybtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 15vw;
+    width: 13vw;
+    height: 5vh;
     font-size: .8vw;
     padding: 1.5% !important;
 }
@@ -121,6 +128,8 @@ label {
 .longbtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 31vw;
+    width: 26.7vw;
+    height: 5vh;
     padding: 1.5% !important;
+    margin-top: 25px;
 }

@@ -14,12 +14,12 @@
                             class="playlist-element" 
                             v-for="playlist in playlists" 
                             :key="playlist['id']">
-                            <defaultButton class="colored" @click.native="newPlaylist(playlist['dj_id'], playlist['name'], playlist['show'])">
-                            {{playlist['name']}}
+                            <defaultButton class="playlistName" @click.native="updatePlaylist(playlist['dj_id'], playlist['name'], playlist['show'])">
+                            <span>{{playlist['name']}}</span>
                             </defaultButton>
-                            <button type="button" @click="deletePlaylist(playlist['name'])" class="btn-floating btn waves-effect waves-light red">
+                            <defaultButton @click.native="deletePlaylist(playlist['name'])" class="deleteBtn btn-floating btn waves-effect waves-light">
                             <i class="material-icons">delete</i>
-                            </button>
+                            </defaultButton>
                         </li>
                     </ul>
                 </div>
@@ -78,6 +78,19 @@ export default class PlaylistSwitch extends Vue {
     this.getPlaylists();
     }
 
+    updatePlaylist(id, playlist, show) {
+        console.log(playlist)
+         const PlaylistParam = {
+                playlist_name: playlist
+            }
+        console.log("i am updating to a new playlist", PlaylistParam.playlist_name)
+        this.$store.dispatch('setCurrPlaylist', PlaylistParam).then(() => {
+                console.log("after", this.$store.state.currentPlaylist)
+                //this.getPlaylists();
+                this.newPlaylist(id, playlist, show)
+            });
+    }
+
     @Emit('closeSwitch')
     closeSwitch() {
         this.closed = true;
@@ -93,53 +106,75 @@ export default class PlaylistSwitch extends Vue {
 
 <style lang="scss" scoped>
     .whomstdve {
+        font-family: 'Montserrat';
         font-size: 1.8vw;
         font-weight: lighter;
         text-align: center;
-        padding-top: 3%;
-        padding-bottom: 2%;
-        color: white;
+        padding-top: 1%;
+        padding-bottom: 4%;
+        color: black;
     }
 
     .playlist-selector {
-        background-color: rgb(25, 40, 50);
+        background-color: white;
         position: fixed;
         top: 50%;
         left: 50%;
         height: 30vw;
         width: 40vw;
-        padding: 0% 5% 20% 5%;
+        padding: 0% 2% 20% 2%;
         border-radius: 1.2%;
         border-top-left-radius: 1%; border-top-right-radius: 1%;
         transform: translate(-50%, -50%);
     }
 
-    .playlist-selector::after {
-        background: linear-gradient(to right, #269E84 25%,#D9CF9F 25%, #E9B342 50%, #EA3C36 50%, #EA3C36 75%, #4F9DB4 75%);
-        position: absolute;
-        border-radius: 10px;
-        content: '';
-        height: 4px;
-        right: 0;
-        left: 0;
-        top: 0;
-    }
+    // .playlist-selector::after {
+    //     background: linear-gradient(to right, #269E84 25%,#D9CF9F 25%, #E9B342 50%, #EA3C36 50%, #EA3C36 75%, #4F9DB4 75%);
+    //     position: absolute;
+    //     border-radius: 10px;
+    //     content: '';
+    //     height: 4px;
+    //     right: 0;
+    //     left: 0;
+    //     top: 0;
+    // }
 
     .playlists {
         color: whitesmoke;
-        height: 20vw;
-        max-height: 20vw;
+        height: 23vw;
+        max-height: 23vw;
         overflow: auto;
-        background-color: #253e4d;
+        //background-color: #253e4d;
+        background-color: white;
     }
 
     .playlist-list {
         max-height: 50px;
         overflow: auto;
     }
+
+    .playlist-element {
+        //border-bottom: black;
+        //border-style: solid;
+        background-color:rgba(192, 189, 189, 0.4);
+        margin-top: 1%;
+        margin-bottom: 1%;
+        width: 100%;
+    }
+
+    .playlistName {
+        text-align: left !important;
+        //width: 30.5vw;
+        width: 93%;
+    }
+
+    .deleteBtn {  
+        margin-right: 0; 
+    }
+
     .close {
-        padding-left: 32vw;
-        padding-top: 4%;
+        padding-left: 36vw;
+        padding-top: 1%;
 
         .close-button {
             cursor: pointer;

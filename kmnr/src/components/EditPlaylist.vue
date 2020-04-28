@@ -59,10 +59,10 @@
             });
     }
 
-        @Emit('closeEdit') 
-            closeEdit() {
-                this.close = true;
-            }
+    @Emit('closeEdit') 
+        closeEdit() {
+            this.close = true;
+        }
 
     updatePlaylist() {
         console.log(this.name, this.current_playlist, this.current_show, this.playlistName, this.showName);
@@ -75,6 +75,8 @@
         }
         this.$store.dispatch('updatePlaylist', playlistParams).then(res => {
             console.log(res);
+            console.log(this.$store.state.currentPlaylist)
+            this.closeEdit();
             //this.newPlaylistCreated(playlistParams.dj_id, playlistParams.p_name, playlistParams.show);
         })
     }

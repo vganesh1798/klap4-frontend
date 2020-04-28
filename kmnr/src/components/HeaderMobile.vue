@@ -7,35 +7,66 @@
       <li><router-link to="/">Home</router-link></li>
       <li><router-link to="/stream">Stream</router-link></li>
       <li><router-link to='/programming'>Programming</router-link></li>
-      <li><router-link to="/playlists">Playlists</router-link></li>
-      <li><router-link to="/albums">Albums</router-link></li>
-      <li><router-link to="/artists">Artists</router-link></li>
-      <li><router-link to="/new-charts">Charts</router-link></li>
-      <li><router-link to="/login">Login</router-link></li>
+      <li><router-link to="/log">Playlists</router-link></li>
+      <li><router-link to="/search">Search</router-link></li>
+      <li><router-link to="/charts">Charts</router-link></li>
+      <li><a @click="openLogin()">Login</a></li>
     </ul>
+    <login v-if="loginOpen || (route === '/programming' && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
   </div>
 </template>
 
-<script>
-export default {};
+<script lang='ts'>
+import { Component, Vue, Watch } from 'vue-property-decorator';
+    import router from '../router/index';
+
+    import login from './Login.vue';
+
+    @Component({
+    components: { login }
+})
+export default class HeaderMobile extends Vue {
+  loginOpen = false
+  on = false
+  userAuth = false
+  openLogin() {
+            this.loginOpen = true;
+        }
+  get curUser() {
+            return this.$store.state.currentUser
+        }
+  @Watch('closeLogin')
+        closeLogin() {
+            this.on = true;
+            this.loginOpen = false;
+            return this.loginOpen;
+        }
+  loggedIn() {
+            this.closeLogin()
+            this.userAuth = true
+        }
+}
 </script>
 
 <style lang="scss" scoped>
 #navigation-mobile {
+  z-index: 99999;
   ul {
     list-style: none;
     width: 200px;
     padding-left: 40px;
+
     li {
       color: #fff;
       font-size: 2rem;
       font-weight: bold;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       cursor: pointer;
       &:hover {
         color: #111;
       }
     }
+    
   }
   .search {
     position: relative;

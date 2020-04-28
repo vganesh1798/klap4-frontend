@@ -30,18 +30,22 @@ export default class LogPage extends Vue {
     artist: string = "";
     album: string = "";
     entries: Object[] = [];
-    num: number = 0;
+    //num: number = 0;
     uploadBox: Boolean = false;
     playlistBox: Boolean = false;
     editBox: Boolean = false;
     switchBox: Boolean = false;
     showPlaylists: Boolean = false;
     djname = "";
+    allowEdits: Boolean = false;
 
     getSongs() {
+        console.log("in getSongs function, ", this.$store.state.currentUser, this.$store.state.currentPlaylist)
         const PlaylistParam = {
-                dj_id: "test",
-                playlistName: this.currentPlaylist
+                dj_id: this.$store.state.currentUser,
+                //dj_id: "test",
+                //playlistName: this.currentPlaylist
+                playlistName: this.$store.state.currentPlaylist
             }
         this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
             this.entries = res.playlist_entries || [];
@@ -52,10 +56,12 @@ export default class LogPage extends Vue {
     }
 
     addSong() {
-     console.log(this.currentPlaylist)
+     console.log(this.$store.state.currentPlaylist)
      const PlaylistParam = {
-       dj_id: "test",
-       playlistName: this.currentPlaylist,
+       //dj_id: "test",
+       dj_id: this.$store.state.currentUser,
+       playlistName: this.$store.state.currentPlaylist,
+       //playlistName: this.currentPlaylist,
        //index: ++this.num,
        entry: {song: this.song, artist: this.artist, album: this.album}
      }
@@ -66,24 +72,31 @@ export default class LogPage extends Vue {
      });
     }
 
+    mounted() { 
+        this.getSongs();
+    }
+
     removeSong(row) {
         const PlaylistParam = {
-            dj_id: "test",
-            playlistName: this.currentPlaylist,
+            //dj_id: "test",
+            dj_id: this.$store.state.currentUser,
+            playlistName: this.$store.state.currentPlaylist,
+            //playlistName: this.currentPlaylist,
             index: row.index,
             entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
           }
-          this.$store.dispatch('deletePlaylistEntry', PlaylistParam).then(res => {
+          this.$store.dispatch('deletePlaylistEntry', PlaylistParam).finally(() => {
              this.getSongs();
           });
-          this.num--;
+          //this.num--;
     }
 
     updateEntry(row) {
         console.log("updating entry", row.index)
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentPlaylist,
+            //playlistName: this.currentPlaylist,
+            playlistName: this.$store.state.currentPlaylist,
             index: row.index,
             entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album},
             newEntry: {song: 'newsong', artist: 'newartist', album:'newalbum'}
@@ -99,7 +112,8 @@ export default class LogPage extends Vue {
         //console.log("updating entry")
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentPlaylist,
+            //playlistName: this.currentPlaylist,
+            playlistName: this.$store.state.currentPlaylist,
             index: val.moved.oldIndex+1,
             newIndex: val.moved.newIndex+1
             //entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album},
@@ -139,7 +153,16 @@ export default class LogPage extends Vue {
     @Watch('closeEdit')
     closeEdit() {
         this.editBox = false;
+        this.getSongs();
         return this.editBox;
+    }
+
+    @Watch('newPlaylistSelected')
+    newPlaylistSelected() {
+        console.log("caught newplaylistselected")
+        this.editBox = false;
+        return this.editBox;
+        this.getSongs();
     }
 
     switchPlaylist() {
@@ -158,6 +181,7 @@ export default class LogPage extends Vue {
             this.currentPlaylist = id[1];
             this.currentShow = id[2];
             this.playlistSelected = true;
+            this.playlistBox = false;
             console.log("dj= ", this.djname, "currentPlaylist= ", this.currentPlaylist, "currentShow= ", this.currentShow)
             this.getSongs();
             return this.playlistSelected;
@@ -201,7 +225,8 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentPlaylist,
+            //playlistName: this.currentPlaylist,
+            playlistName: this.$store.state.currentPlaylist,
             index: entry.index,
             entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
             newEntry: {song: e.target.innerHTML, artist: entry.entry.artist, album: entry.entry.album}
@@ -222,7 +247,8 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentPlaylist,
+            //playlistName: this.currentPlaylist,
+            playlistName: this.$store.state.currentPlaylist,
             index: entry.index,
             entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
             newEntry: {song: entry.entry.song, artist: e.target.innerHTML, album: entry.entry.album}
@@ -243,7 +269,8 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            playlistName: this.currentPlaylist,
+            //playlistName: this.currentPlaylist,
+            playlistName: this.$store.state.currentPlaylist,
             index: entry.index,
             entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
             newEntry: {song: entry.entry.song, artist: entry.entry.artist, album: e.target.innerHTML}

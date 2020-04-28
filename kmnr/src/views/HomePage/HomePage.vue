@@ -16,10 +16,9 @@
                             'visibility': scrolledL ? 'visible' : 'hidden',
                             'animation-name': scrolledL ? 'moveInLeft' : ''
                         }"
-                        title="Search Songs"
-                        :description="search_des"
-                        :image_link="lxst_image"
-                        search_route="/search"/>
+                        title="About KMNR"
+                        :description="aboutus"
+                        />
                     <HomeCard class="card card-right-on-scroll col s12 l6 offset-l4" :style="{
                             'visibility': scrolledR ? 'visible' : 'hidden',
                             'animation-name': scrolledR ? 'moveInRight' : ''
@@ -32,9 +31,10 @@
                             'visibility': scrolledL ? 'visible' : 'hidden',
                             'animation-name': scrolledL ? 'moveInLeft' : ''
                         }"
-                        title="About KMNR"
-                        :description="aboutus"
-                        />
+                        title="Search Songs"
+                        :description="search_des"
+                        :image_link="lxst_image"
+                        search_route="/search"/>
                 </div>
             </div>
         </div>
@@ -59,8 +59,8 @@
 
     .text {
         position: absolute;
-        top: 48%;
-        left: 48%;
+        top: 55%;
+        left: 40%;
         transform: translate(-90%, -30%);
         text-align: center;
     }

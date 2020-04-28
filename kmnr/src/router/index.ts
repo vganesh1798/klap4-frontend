@@ -9,6 +9,7 @@ import ArtistPage from '../views/Artists/ArtistPage.vue';
 import ArtistDetail from '../views/Artists/ArtistDetail/Artistdeets.vue';
 import Charts from '../views/Charts/Charts.vue';
 import Programming from '../views/Programming/Programming.vue';
+import StreamPage from '../views/Stream/StreamPage.vue';
 import SearchPage from '../views/Search/Search.vue';
 
 Vue.use(VueRouter)
@@ -34,7 +35,16 @@ const routes = [
   {
     path: '/search',
     name: 'Search',
-    component: SearchPage
+    component: SearchPage,
+    props(route) {
+      console.log(route)
+      return route.query || {}
+    }
+  },
+  {
+    path: '/stream',
+    name: "Streaming",
+    component: StreamPage
   },
   {
     path: "/album-detail/:albumParam",  // PASSING ALBUM OBJECT AS PARAMETER
@@ -52,11 +62,6 @@ const routes = [
     path: '/charts',
     name: 'Charts',
     component: Charts
-  },
-  {
-    path: '/artists',
-    name: 'Artists',
-    component: ArtistPage
   },
   {
     path: '/programming',
