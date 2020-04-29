@@ -37,7 +37,9 @@ const routes = [
     name: 'Search',
     component: SearchPage,
     props(route) {
-      console.log(route)
+      for (let q in route.query) {
+        route.query[q].replace(/\s+/g, '+')
+      }
       return route.query || {}
     }
   },

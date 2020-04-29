@@ -220,15 +220,15 @@
            const searchParam = {
                 id: this.searchquery
             }
-            this.$store.dispatch('quicksearch', searchParam).then(res => {  
+            this.$store.dispatch('quicksearch', searchParam).then(res => {
                 if(res.type == "artist") { 
-                    this.$router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
+                    this.$router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } }).catch(() => {})
                 }
                 else if(res.type == "album") { 
-                    this.$router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
+                    this.$router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } }).catch(() => {})
                 }
                 else if(res.response.status == 404) {
-                    this.$router.push({ name: 'Search', query: {name: this.searchquery}})
+                    this.$router.push({ name: 'Search', query: {name: this.searchquery}}).catch(() => {})
                 }
         });
         }

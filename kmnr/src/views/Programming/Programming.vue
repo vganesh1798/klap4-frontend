@@ -62,7 +62,7 @@
             <a @click="pageDown()"><i class="material-icons-round">keyboard_arrow_up</i></a>
           </div>
           <div class="current-day">
-            <a @click="setToCurDay()"><i class="material-icons-round">today</i></a>
+            <a @click="setToCurDay()"><i class="material-icons-round tooltipped" data-tooltip="Today">today</i></a>
           </div>
           <div class="down">
             <a @click="pageUp()"><i class="material-icons-round">keyboard_arrow_down</i></a>

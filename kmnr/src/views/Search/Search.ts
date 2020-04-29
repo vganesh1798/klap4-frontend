@@ -1,4 +1,4 @@
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
 import Albums from '@/components/Album.vue'
 import ArtistPage from '@/components/Artist.vue'
 
@@ -21,6 +21,8 @@ export default class SearchPage extends Vue {
     artistInput: string = ''
     genreInput: string = ''
 
+    queriedSearch: boolean = false
+
     artistSearchParam: ArtistSearch = {
         genre: '',
         name: ''
@@ -42,13 +44,28 @@ export default class SearchPage extends Vue {
     artistKey: string = 'none'
     albumKey: string = 'none'
 
+    get curPath() {
+        return this.$route
+      }
+  
+    @Watch('curPath')
+    newPath(newPath, oldPath) {
+        this.searchInput = this.name
+        this.genreInput = this.genre
+        this.artistName = this.artistName
+
+        this.queriedSearch = true
+
+        this.search(null, true)
+    }
+
     albumKeyGen() {
         this.albumKey = this.albumSearchParam.album + this.albumSearchParam.artist + this.albumSearchParam.genre_abbr
 
         if (this.albumKey !== '') {
             this.albumLoaded = true
         }
-}
+    }
 
     artistKeyGen() {
         this.artistKey = this.artistSearchParam.genre + this.artistSearchParam.name
@@ -87,23 +104,21 @@ export default class SearchPage extends Vue {
         this.artistLoaded = false
         this.albumLoaded = false
 
-        if (this.searchInput !== '') {
-            this.$router.push({query: {name: this.searchInput}})
-        } else {
-            this.$router.push('/search')
-        }
-        
-        if (this.genreInput !== '') {
-            this.$router.push({query: {genre: this.genreInput}})
-        } else {
-            this.$router.push('/search')
+        if (!this.queriedSearch) {
+            if (this.searchInput !== '') {
+                this.$router.push({query: {name: this.searchInput}})
+            }
+            
+            if (this.genreInput !== '') {
+                this.$router.push({query: {genre: this.genreInput}})
+            }
+
+            if (this.artistInput !== '') {
+                this.$router.push({query: {artistName: this.artistInput}})
+            }
         }
 
-        if (this.artistInput !== '') {
-            this.$router.push({query: {artistName: this.artistInput}})
-        } else {
-            this.$router.push('/search')
-        }
+        this.queriedSearch = false
 
         const alSearch: AlbumSearch = {
             album: this.searchInput,

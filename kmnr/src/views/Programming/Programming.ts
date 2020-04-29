@@ -67,6 +67,7 @@ export default class Programming extends Vue {
     openTimes: any = []
 
     programSelected: any = {}
+    tooltipped = true
 
     curDay(ind) {
         return Days[ind]
@@ -116,6 +117,14 @@ export default class Programming extends Vue {
                 autocompleteLoaded = false
             }
         }, 500)
+    }
+
+    updated() {
+        if (this.tooltipped) {
+            this.tooltipped = false
+            const elemsTooltip = document.querySelectorAll('.tooltipped')
+            const tooltipInstance = M.Tooltip.init(elemsTooltip)
+        }
     }
 
     loadAutocomplete() {

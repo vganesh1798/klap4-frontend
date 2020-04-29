@@ -1,5 +1,5 @@
 <template>
-  <div class="full-deets" v-if="loaded">
+  <div class="full-deets">
     <h1>
       <span class="albums-heading-main">Album Information</span>
     </h1>
@@ -26,7 +26,7 @@
           <div class="card-image">
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
-          <div class="card-content">
+          <div class="card-content" v-if="loaded">
             <span class="card-title">{{album.name}} ({{album.id}})</span>
             <p>by {{album.artist}} ({{album.artist_id}})</p>
             <p v-if="album.label">{{album.label}}</p>
@@ -93,6 +93,23 @@
 
     beforeCreate() {
       this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
+        this.tracks = this.$store.state.singleAlbum.songs
+        this.album = this.$store.state.singleAlbum
+        console.log(this.album)
+      })
+      .finally(() => {
+        this.loaded = true
+      })
+    }
+
+    get curPath() {
+      return this.$route.path
+    }
+
+    @Watch('curPath')
+    newPath(newPath, oldPath) {
+      this.loaded = false
+            this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
         this.tracks = this.$store.state.singleAlbum.songs
         this.album = this.$store.state.singleAlbum
         console.log(this.album)

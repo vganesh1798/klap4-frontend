@@ -31,14 +31,13 @@
         <md-tab md-label="Playlist">
           <draggable v-model="queue" ghost-class="ghost" @end="onEnd">
                 <transition-group type="transition" name="flip-list">
-                    <div class='sortable' v-for="(song, index) in queue" :key="index" @click="updateSong(index)">{{ song.title }}</div>
+                    <div class='sortable' v-for="(song, index) in queue" :key="song.file" @click="updateSong(index)">{{ song.title }}</div>
             </transition-group>
             </draggable>
         </md-tab>
       </md-tabs>
         <md-dialog-actions>
         <md-button class="md-primary" @click="closeQueue()">Close</md-button>
-        <md-button class="md-primary" @click="closeQueue()">Save</md-button>
       </md-dialog-actions>
     </md-dialog>
     </div>
@@ -103,7 +102,7 @@
       curIndex: number = 0
 
       cDur: string = '0:00'
-      queue = []
+      queue: any = []
       curVol = 1
       muted = false
       currentTrack = ''
@@ -118,21 +117,82 @@
       nIndex = ''
       index: number = -1
 
+      dragging = false
+
+      get statefulQueue() {
+        return this.$store.state.queue
+      }
+
+      @Watch('statefulQueue')
+      newState(newQueue, oldQueue) {
+        for (let i in newQueue) {
+          if (this.queue.map(e => {return e.file}).indexOf(newQueue[i].file) !== -1) {
+            newQueue[i].song = new Howl({
+                src: [this.queue[i].file],
+                onend: () => {
+                    this.next()
+                },
+                onseek: () => {
+                  this.curDuration()
+                },
+                onplay: () => {
+                  this.curDuration()
+                },
+                onplayerror: () => {
+                  this.queue[i].song.once('unlock', () => {
+                    this.queue[i].song.play()
+                  })
+                },
+                html5: true,
+                buffer: true
+            }) 
+            this.queue.push(newQueue[i])
+          }
+        }
+      }
+
       created() {
         this.queue = this.$store.state.queue
+
+        this.loadAllSongs()
+      }
+
+      loadAllSongs() {
+        for (let i in this.queue) {
+          this.queue[i].song = new Howl({
+                  src: [this.queue[i].file],
+                  onend: () => {
+                      this.next()
+                  },
+                  onseek: () => {
+                    this.curDuration()
+                  },
+                  onplay: () => {
+                    this.curDuration()
+                  },
+                  onplayerror: () => {
+                    this.queue[i].song.once('unlock', () => {
+                      this.queue[i].song.play()
+                    })
+                  },
+                  html5: true,
+                  buffer: true
+              })
+        }
       }
 
       updateSong(index) {
-          this.index = index
+        this.queue[this.curIndex].song.stop()
+        this.curIndex = index
+        this.queue[this.curIndex].song.play()
       }
 
       onEnd(evt){
-        console.log(this.queue)
-          this.oIndex = evt.oldIndex
-          this.nIndex = evt.newIndex
-          console.log(this.oIndex)
-          console.log(this.nIndex)
+        let oldIdx = evt.oldIndex
+        if (evt.oldIndex === this.curIndex && evt.newIndex !== this.curIndex) {
+          this.curIndex = evt.newIndex
         }
+      }
       mousedownListener = (e) => {
         e.preventDefault()
         this.clickedInProgressBar = true
@@ -311,8 +371,8 @@
       }
 
       next() {
-        this.showsnackbar = true
         this.queue[this.curIndex].song.stop()
+        this.showsnackbar = true
 
         if ((this.curIndex + 1) > this.queue.length - 1) {
           this.curIndex = 0
@@ -370,6 +430,7 @@
 
       closeQueue() {
         this.queueOpen = false
+        this.$store.commit('setQueue', this.queue)
       }
   }
 </script>

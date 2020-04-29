@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="input-field col s4">
                     <input id="icon_prefix" @keyup="search" v-model="searchInput" type="text" class="search-input"/>
-                    <label for="icon_prefix" class="text-black">Search Artists or Albums</label>
+                    <label for="icon_prefix" class="text-black" :class="{'active': searchInput !== ''}">Search Artists or Albums</label>
                 </div>
                 <div class="search-close col">
                     <div class="search-icon" :class="{'centered': !(albumLoaded || artistLoaded)}">
@@ -20,11 +20,11 @@
                 </div>
                 <div class="input-field col s2 offset-s1">
                     <input id="icon_prefix" @keyup="search" v-model="genreInput" type="text" class="search-input"/>
-                    <label for="icon_prefix" class="text-black">Genre</label>
+                    <label for="icon_prefix" class="text-black" :class="{'active': genreInput !== ''}">Genre</label>
                 </div>
                 <div class="input-field col s2">
                     <input id="ident" @keyup="search" v-model="artistInput" type="text" class="search-input tooltipped" data-tooltip="Only for Albums"/>
-                    <label for="ident" class="text-black">Artist name</label>
+                    <label for="ident" class="text-black" :class="{'active': artistInput !== ''}">Artist name</label>
                 </div>  
             </div>
         </form>
