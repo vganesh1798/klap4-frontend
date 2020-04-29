@@ -26,7 +26,7 @@
 
 
 
-            
+           
 
             <div id="login" :class="{
                 'items-top': !scrolledTop && !preload && !preloadFull,
@@ -87,18 +87,11 @@
                 'preload': preload,
 				'preload-full': preloadFull
             }" to="/programming">KELP</router-link>
-
-            <a :class="{
-                'items-top': !scrolledTop && !preload && !preloadFull,
-                'items-full': scrolledTop && !preload && !preloadFull,
-                'preload': preload,
-				'preload-full': preloadFull
-            }" href="http://www.cleveland.kmnr.org">Cleveland</a>
             <a v-if="isAdmin" :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" href="localhost:5000/admin">Admin</a>
+            }" target="_blank" rel="noopener noreferrer" href="localhost:5000/admin">Admin</a>
             <div v-if="userAuth" :class="{
                 'items-top': !scrolledTop && !preload && !preloadFull,
                 'items-full': scrolledTop && !preload && !preloadFull,

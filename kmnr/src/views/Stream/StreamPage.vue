@@ -73,7 +73,6 @@
 
 <style type="scss" scoped> 
 .streaming{
-    background-image: url('../../assets/back9.jpg');
     background-size: cover;
     height: 100%;
 }
