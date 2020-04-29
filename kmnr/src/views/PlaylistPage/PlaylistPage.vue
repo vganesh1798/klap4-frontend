@@ -8,7 +8,7 @@
                 <div class="row">
                     <div class="input-field col s6">
                         <label required for="name">Name</label>
-                        <input type="text" id="name" />
+                        <input type="text" disabled id="name" />
                     </div>
                     <div class="input-field col s6">
                         <label required for="show">Show</label>

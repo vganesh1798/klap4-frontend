@@ -11,8 +11,8 @@
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
           <div class="card-content">
-            <span class="card-title">{{artist.name}}</span>
-            <p>{{artist.genre}}</p>
+            <span class="card-title"><em>{{artist.id}}</em><br/>{{artist.name}}</span>
+            <p>Genre: {{artist.genre}}</p>
           </div>
         </div>
         </div>
@@ -31,7 +31,7 @@
             <tbody>
               <tr v-for="item in albums" :key="item.id">
                 <td>{{ item.id }}</td>
-                <td>by <router-link :to="{name:'AlbumDetail', params:{albumParam:item.id} }" class="albumLink">{{item.album_name}}</router-link></td>
+                <td><router-link :to="{name:'AlbumDetail', params:{albumParam:item.id} }" class="albumLink">{{item.album_name}}</router-link></td>
                 <td><img :src="formatImage(item.album_format)" v-bind:alt="item.album_format"></td>
                 <td>
                   <i v-if="item.missing" class="material-icons-round lime-text text-darken-4 tooltipped" data-tooltip="Missing">warning</i>
@@ -105,6 +105,6 @@
   }
 
   .albumLink {
-    color: black !important;
+    color: #1976d2 !important;
   }
 </style>
