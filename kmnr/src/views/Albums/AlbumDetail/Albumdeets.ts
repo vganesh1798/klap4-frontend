@@ -39,10 +39,18 @@ export default class Albumdeeets extends Vue {
     })
   }
 
+  setSongNum(song_num) {
+    if (song_num / 10 < 1) {
+      return '0' + song_num
+    } else {
+      return song_num
+    }
+  }
+
   addToQueue(song) {
     let newSong = {
       title: song.song_name,
-      file: "/" + (this.album as any).artist + "/" + (this.album as any).name + "/" + song.song_number,
+      file: "/" + (this.album as any).artist + "/" + (this.album as any).name + "/" + this.setSongNum(song.song_num) + " " + song.song_name,
       song: null
     }
 

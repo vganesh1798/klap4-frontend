@@ -74,11 +74,6 @@ const routes = [
   {
     path: '*',
     name: 'Error',
-    component: HomePage
-  },
-  {
-    path: '/error-404',
-    name: 'error-404',
     component: ErrorPage
   },
 ]
