@@ -383,7 +383,7 @@ export default new Vuex.Store({
         'dj_id': reviewParams.reviewer,
         'content': reviewParams.review
       }
-
+      console.log(reviewParams.reviewer, reviewParams.review)
       return axios.post(`http://localhost:5000/album/review/${id}`, postObject)
       .then(res => {
         this.commit('addToReviews', (res.data as Array<AlbumReview>))
