@@ -6,7 +6,6 @@
                 <defaultButton class="closeBtn" @click.native="closeReview" type="submit">X</defaultButton>
             </div>
         </div>
-        <p>{{reviews}}</p>
         <div class="row">
             <a class="tooltipped" :data-tooltip="album"><h1 class="albumTitle">{{album}}</h1></a>
             <h2> by {{artist}}</h2>
@@ -89,8 +88,9 @@
             }
             this.$store.dispatch('postReview', reviewParams)
                 .then(res => {
-                    this.reviews = res.data
-                    console.log(res.data)
+                    this.reviews += res
+                    console.log(res)
+                    this.closeReview();
                 })
         }
 
