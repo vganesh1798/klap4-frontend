@@ -37,6 +37,23 @@ import {
       })
     }
 
+    get curPath() {
+      return this.$route.path
+    }
+
+    @Watch('curPath')
+    newPath(newPath, oldPath) {
+      this.loaded = false
+            this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
+        this.tracks = this.$store.state.singleAlbum.songs
+        this.album = this.$store.state.singleAlbum
+        console.log(this.album)
+      })
+      .finally(() => {
+        this.loaded = true
+      })
+    }
+
     updated() {
         if(this.tooltipped) {
             this.tooltipped = false;
