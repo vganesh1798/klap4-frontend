@@ -31,7 +31,7 @@
             <tbody>
               <tr v-for="item in albums" :key="item.id">
                 <td>{{ item.id }}</td>
-                <td>{{ item.album_name }}</td>
+                <td>by <router-link :to="{name:'AlbumDetail', params:{albumParam:item.id} }" class="albumLink">{{item.album_name}}</router-link></td>
                 <td><img :src="formatImage(item.album_format)" v-bind:alt="item.album_format" class="tooltipped" data-tooltip=/></td>
                 <td>
                   <i v-if="item.missing" class="material-icons-round tooltipped" data-tooltip="Missing">error</i>
@@ -98,5 +98,9 @@
     min-height: 100%;
     height: auto;
     padding-top: 4%;
+  }
+
+  .albumLink {
+    color: black !important;
   }
 </style>
