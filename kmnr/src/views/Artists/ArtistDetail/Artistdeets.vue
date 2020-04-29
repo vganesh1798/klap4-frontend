@@ -8,7 +8,7 @@
         <div class="col s2 offset-s2">
         <div class="card">
           <div class="card-image">
-            <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
+            <img :src="artist.image">
           </div>
           <div class="card-content">
             <span class="card-title"><em>{{artist.id}}</em><br/>{{artist.name}}</span>

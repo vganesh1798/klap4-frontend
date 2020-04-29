@@ -23,7 +23,7 @@
         <div class="col s2 offset-s2">
         <div class="card">
           <div class="card-image">
-            <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
+            <img :src="album.image" :alt="album.name">
           </div>
           <div class="card-content" v-if="loaded">
             <span class="card-title"><em>{{album.id}}</em> {{album.name}} <img :src="formatImage(album.format)" v-bind:alt="album.format"></span>

@@ -30,7 +30,7 @@
             <div class="col s10">
               <div class="d-flex justify-content-start flex-wrap artists" id="artists_container">
                 <artistCard v-for="artist in artistsPaginated" :key="artist.id"
-                  :id="artist.id" :item="artist" :val1="artist.name" :val2="artist.genre_abbr" newRoute="ArtistDetail">
+                  :id="artist.id" :item="artist" :val1="artist.name" :val2="artist.genre_abbr" :imgPath="artist.image" :akt="artist.name" newRoute="ArtistDetail">
                 </artistCard>
               </div>
             </div>
