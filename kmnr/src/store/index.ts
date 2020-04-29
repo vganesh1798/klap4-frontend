@@ -430,6 +430,7 @@ export default new Vuex.Store({
     getCurrUser() {
       return axios.get('http://localhost:5000/', {withCredentials: true})
         .then(res => {
+          console.log(res.data)
           this.commit('setUser', res.data['logged_in_as'])
           this.commit('setUserInfo', res.data)
           return res.data

@@ -4,6 +4,7 @@
       <input v-model="searchquery" id="search" placeholder="Quickjump" type="search" @keyup.enter="search()">
     </div>
     <ul>
+      <li v-if="userAuth"><md-chip>{{user['full_name']}}</md-chip></li>
       <li><router-link to="/">Home</router-link></li>
       <li><router-link to="/stream">Stream</router-link></li>
       <li><router-link to='/programming'>Programming</router-link></li>
@@ -14,6 +15,7 @@
       <a v-else @click="logOut()">Logout</a></li>
     </ul>
     <login v-if="loginOpen || (route === '/programming' && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
+    
   </div>
 </template>
 
@@ -31,6 +33,7 @@ export default class HeaderMobile extends Vue {
   on = false
   userAuth = false
   searchquery = ""
+  user = this.$store.state.currentUserInfo
   openLogin() {
             this.loginOpen = true;
         }

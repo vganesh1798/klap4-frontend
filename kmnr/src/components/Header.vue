@@ -6,13 +6,11 @@
                 'nav-full': scrolledTop,
                 'nav': true
             }">
-
             <router-link to="/"><img :src="logoSource" :class="{
                 'logo-top': !scrolledTop,
                 'logo-full': scrolledTop,
                 'preload': preload
             }" class="logo"></router-link>
-
             <div id="search-bar" :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
@@ -23,6 +21,9 @@
               <i class="material-icons" v-if="searching">close</i>-->
             </div>
 
+
+
+            
 
             <div id="login" :class="{
                 'items-top': !scrolledTop,
@@ -45,6 +46,7 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/charts">Charts</router-link>
+
 <!--
             <router-link :class="{
                 'items-top': !scrolledTop,
@@ -63,7 +65,7 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/search">Search</router-link>
-
+            
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
@@ -86,6 +88,16 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">Cleveland</a>
+            <div v-if="userAuth" :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }"><md-chip>{{user}}</md-chip></div>
+            
+
+            
+            
+            
         </nav>
         <login v-if="loginOpen || (route === '/programming' && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
     </div>
@@ -110,11 +122,11 @@
         logoSource = './radio.png'
         userAuth = false
         searchquery = "";
+        user = this.$store.state.currentUserInfo['full_name']
 
         get curUser() {
             return this.$store.state.currentUser
         }
-
         get route() {
             console.log(this.$route.path)
             return this.$route.path
@@ -230,7 +242,6 @@
 
 <style lang="scss">
     $blue:  rgba(17, 2, 65, .25);
-
     #logout {
         cursor: pointer;
     }
