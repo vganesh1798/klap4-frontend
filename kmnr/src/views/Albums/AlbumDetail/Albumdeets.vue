@@ -26,9 +26,10 @@
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
           <div class="card-content" v-if="loaded">
-            <span class="card-title"><em>{{album.id}}</em> {{album.name}}</span>
+            <span class="card-title"><em>{{album.id}}</em> {{album.name}} <img :src="formatImage(album.format)" v-bind:alt="album.format"></span>
             <p>by <router-link :to="{name:'ArtistDetail', params:{albumParam:album.artist_id} }" class="artistLink">{{album.artist}}</router-link></p>
             <p v-if="album.label">{{album.label}}</p>
+            <p v-if="album.promoter">{{album.promoter}}<p>
             <p>Added on {{album.date_added.substr(0, 11)}}</p>
             <p>Genre: {{ album.genre }}</p>
             <br/>
