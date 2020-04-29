@@ -52,7 +52,6 @@
           </div>
           </div>
     </div>
-    </div>
 </template>
 
 <script lang='ts'>
@@ -70,8 +69,6 @@
             super()
         }
 
-        testreviews = ['this album is awesome', 'hate it', 'i dont know what to say but i want this review to be really long so that is spans multiple lines, so i am just going to keep typing nothing important',
-                        'more reviews', 'this album sucks', 'sdalgjsd;g', 'dds;slkgjskl;djfkrjegfjfkl;e;jrgfdffgjkldskerlhgdjf','aslkdj']
         @Prop(String) album !: string
         @Prop(String) artist !: string
         @Prop(Object) reviews!: object
@@ -242,4 +239,4 @@ p {
 }
 
 
-</style>s
+</style>

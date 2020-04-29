@@ -9,7 +9,7 @@ import defaultButton from "../../../components/Button.vue";
 import review from "../../../components/Review.vue";
 import issue from "../../../components/Issue.vue";
 
-import M from 'materialize-css';
+import M, { options } from 'materialize-css';
 
 @Component({
   components: { defaultButton,
@@ -22,7 +22,9 @@ export default class Albumdeeets extends Vue {
   issueOpen = false;
   reviewOpen = false;
   fcc = 0;
+  fccOpen = false;
   tooltipped = true;
+  droppeddown = true;
 
   loaded = false;
 
@@ -58,9 +60,16 @@ export default class Albumdeeets extends Vue {
       if(this.tooltipped) {
           this.tooltipped = false;
           this.$nextTick(()=>{
-              const elemsTooltip = document.querySelectorAll('.tooltipped')
-              const tooltipInstance = M.Tooltip.init(elemsTooltip)
-          })
+              const elemsTooltip = document.querySelectorAll('.tooltipped');
+              const tooltipInstance = M.Tooltip.init(elemsTooltip);
+          });
+      }
+      if(this.droppeddown) {
+          this.droppeddown = false;
+          this.$nextTick(()=>{
+              const elemsDropdown = document.querySelectorAll('.dropdown-trigger');
+              const dropdownInstance = M.dropdown.init(elemsDropdown, options);
+          });
       }
   }
 
@@ -128,6 +137,12 @@ changeSingleFCC(songNumber) {
   openIssue() {
     this.issueOpen = true;
     return this.issueOpen;
+  }
+
+  toggleFCC() {
+      console.log(!this.fccOpen)
+      this.fccOpen = !this.fccOpen
+      return this.fccOpen
   }
 
   @Watch('closeIssue')

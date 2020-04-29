@@ -71,28 +71,27 @@
                 'items-full': scrolledTop,
                 'preload': preload
             }" to="/log">Playlists</router-link>
-
             <router-link :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }" to="/stream">Stream</router-link>
-            <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
-            }" to="/programming">Programming</router-link>
+            }" to="/programming">KELP</router-link>
 
             <a :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
             }" href="http://www.cleveland.kmnr.org">Cleveland</a>
+            <a v-if="isAdmin" :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }" href="localhost:5000/admin">Admin</a>
             <div v-if="userAuth" :class="{
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }"><md-chip>{{curUser}}</md-chip></div>
+            }"><md-chip v-if="scrolledTop">Logged in as {{curUser}}</md-chip></div>
             
             
         </nav>
@@ -129,6 +128,9 @@
         get route() {
             console.log(this.$route.path)
             return this.$route.path
+        }
+        get isAdmin() {
+            return this.$store.state.currentUserInfo['role']
         }
 
         beforeMount() {

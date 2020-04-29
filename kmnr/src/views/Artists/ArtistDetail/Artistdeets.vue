@@ -34,10 +34,10 @@
                 <td>by <router-link :to="{name:'AlbumDetail', params:{albumParam:item.id} }" class="albumLink">{{item.album_name}}</router-link></td>
                 <td><img :src="formatImage(item.album_format)" v-bind:alt="item.album_format"></td>
                 <td>
-                  <i v-if="item.missing" class="material-icons-round tooltipped" data-tooltip="Missing">error</i>
-                  <i v-if="item.has_reviews" class="material-icons-round tooltipped" data-tooltip="Has review">rate_review</i>
-                  <i v-if="item.has_problems" class="material-icons-round tooltipped" data-tooltip="Has problems">warning</i>
-                  <i v-if="item.new_album" class="material-icons-round tooltipped" data-tooltip="New album!">fiber_new</i>
+                  <i v-if="item.missing" class="material-icons-round lime-text text-darken-4 tooltipped" data-tooltip="Missing">warning</i>
+                  <i v-if="item.has_reviews" class="material-icons-round green-text text-accent-4 tooltipped" data-tooltip="Has review">rate_review</i>
+                  <i v-if="item.has_problems" class="material-icons-round tooltipped" data-tooltip="Has problems">report</i>
+                  <i v-if="item.new_album" class="material-icons-round light-blue-text text-accent-4 tooltipped" data-tooltip="New album!">fiber_new</i>
                 </td>
               </tr>
             </tbody>
@@ -77,6 +77,8 @@
   }
 
   .card {
+    margin-left: -10vw !important;
+    margin-top: -10vh !important;
     width: 250px;
     margin: 4px;
     display: inline-block;

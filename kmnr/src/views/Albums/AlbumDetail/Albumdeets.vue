@@ -6,8 +6,7 @@
     <div class="header-container">
       <div class="row">
         <div class="col s1 offset-s10">
-          <!--defaultButton class="colored headerbtn" @click.native="openReview()">Write a review</defaultButton-->
-          <defaultButton class="colored headerbtn" @click.native="openReview()">Reviews</defaultButton>
+          <defaultButton class="colored headerbtn" @click.native="openReview()">Reviews</defaultButton>      
         </div>
       </div>
       <div class="row buttons">
@@ -17,7 +16,7 @@
       </div>
     </div>
     <review :album="album.name" :artist="album.artist" :reviews="album.reviews" v-if="reviewOpen" @closeReview="closeReview"></review>
-    <issue :album="album.name" :artist="album.artist" v-if="issueOpen" @closeIssue="closeIssue"></issue>
+    <issue :album="album.name" :artist="album.artist" :problems="album.problems" v-if="issueOpen" @closeIssue="closeIssue"></issue>
     
     <div id="container">
       <div class="row">
@@ -27,25 +26,32 @@
             <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
           </div>
           <div class="card-content" v-if="loaded">
-            <span class="card-title">{{album.name}} ({{album.id}})</span>
-            <p>by <router-link :to="{name:'ArtistDetail', params:{albumParam:album.artist_id} }" class="artistLink">{{album.artist}}</router-link> ({{album.artist_id}})</p>
+            <span class="card-title"><em>{{album.id}}</em> {{album.name}}</span>
+            <p>by <router-link :to="{name:'ArtistDetail', params:{albumParam:album.artist_id} }" class="artistLink">{{album.artist}}</router-link></p>
             <p v-if="album.label">{{album.label}}</p>
-            <p>Added on {{album.date_added}}</p>
-            <p>{{ album.genre }}</p>
+            <p>Added on {{album.date_added.substr(0, 11)}}</p>
+            <p>Genre: {{ album.genre }}</p>
+            <br/>
+            <p>Additional notes:</p>
+            <i v-if="album.missing" class="material-icons-round lime-text text-darken-4 tooltipped" data-tooltip="Missing">warning</i>
+            <i v-if="album.reviews.length > 0" class="material-icons-round green-text text-accent-4 tooltipped" data-tooltip="Has review">rate_review</i>
+            <i v-if="album.problems.length > 0" class="material-icons-round tooltipped" data-tooltip="Has problems">report</i>
+            <i v-if="album.new_album" class="material-icons-round light-blue-text text-accent-4 tooltipped" data-tooltip="New album!">fiber_new</i>
           </div>
         </div>
         </div>
 
-        <div class="tracks col s4 offset-s1">
+        <div class="tracks col s7 offset-s1">
           <table class="tracksTable">
             <thead>
               <tr>
-                <th style="width: 16.67%;">Track</th>
-                <th style="width: 16.67%">Recommended</th>
+                <th style="width: 10%;">Track</th>
+                <th style="width: 15%;">Recommended</th>
                 <th style="width: 16.67%;">Name</th>
-                <th style="width: 16.67%;">FCC Status</th>
-                <th style="width: 16.67%">Last Played</th>
-                <th style="width: 16.67%;">Plays</th>
+                <th style="width: 10%;">FCC Status</th>
+                <th style="width: 16.67%;">Last Played</th>
+                <th style="width: 8%;">Plays</th>
+                <th style="width: 8%;"></th>
               </tr>
             </thead>
 
@@ -57,27 +63,31 @@
                 </td>
                 <td>{{ item.song_name }}</td>
                 <td>
-                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'clean'">
-                    <i class="material-icons-round green-text tooltipped" data-tooltip="Clean">check_circle</i>
-                  </defaultButton>
-                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'indecent'">
-                    <i class="material-icons-round orange-text text-lighten-2 tooltipped" data-tooltip="Indecent">error</i>
-                  </defaultButton>
-                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'obscene'">
-                    <i class="material-icons-round red-text tooltipped" data-tooltip="Oscene">error</i>
-                  </defaultButton>
-                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'unrated'">
-                    <i class="material-icons-round gray tooltipped" data-tooltip="Unrated">help</i>
+                  <defaultButton @click.native="toggleFCC()" class="dropdown-trigger btn" data-target='dropdown1'>
+                    <i v-if="getFCCStatus(item.fcc_status) == 'clean'" class="material-icons-round green-text tooltipped" data-tooltip="Clean">check_circle</i>
+                    <i v-if="getFCCStatus(item.fcc_status) == 'indecent'" class="material-icons-round orange-text text-lighten-2 tooltipped" data-tooltip="Indecent">error</i>
+                    <i v-if="getFCCStatus(item.fcc_status) == 'obscene'" class="material-icons-round red-text tooltipped" data-tooltip="Obscene">error</i>
+                    <i v-if="getFCCStatus(item.fcc_status) == 'unrated'" class="material-icons-round gray tooltipped" data-tooltip="Unrated">help</i>
                   </defaultButton>
                 </td>
-                <td>{{ item.last_played }}</td>
+                <td>{{ item.last_played.substr(0, 11) }}</td>
                 <td>{{ item.times_played }}</td>
-                <defaultButton @click.native="addToPlaylist(item, album)">
+                <td>
+                  <defaultButton @click.native="addToPlaylist(item, album)">
                     <i class="material-icons tooltipped" data-tooltip="Add to active playlist">add</i>
-                </defaultButton>
+                  </defaultButton>
+                </td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div v-if="fccOpen">    
+          <ul>
+            <li><i class="material-icons-round green-text tooltipped" data-tooltip="Clean">check_circle</i>Clean</li>
+            <li><i class="material-icons-round orange-text text-lighten-2 tooltipped" data-tooltip="Indecent">error</i>Indecent</li>
+            <li><i class="material-icons-round red-text tooltipped" data-tooltip="Obscene">error</i>Obscene</li>
+            <li><i class="material-icons-round gray tooltipped" data-tooltip="Unrated">help</i>Unrated</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -129,6 +139,8 @@
   }
 
   .card {
+    margin-left: -10vw !important;
+    margin-top: -10vh !important;
     width: 250px;
     margin: 4px;
     display: inline-block;
@@ -147,6 +159,6 @@
   }
 
   .artistLink {
-    color: black !important;
+    color: #1976d2 !important;
   }
 </style>
