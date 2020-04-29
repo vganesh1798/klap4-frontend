@@ -64,12 +64,6 @@
           <div class="col s12">
             <table class="defaultTable chartsTable" v-if="chartsPaginated.length > 0">
               <tbody>
-                <thead>
-                  <td >Rank</td>
-                  <td>Song</td>
-                  <td>Genre</td>
-                  <td>Times Played</td>
-                </thead>
                 <tr v-for="item in chartsPaginated" :key="item.album_id">
                   <td class="rank">
                     <p class="class-ranking">{{item.rank}}</p>
@@ -87,7 +81,7 @@
                       <li> {{ item.album_id }}</li>
                     </ul>
                   </td>
-                  <td class="play-time">
+                  <td class="play-time tooltipped" data-tooltip="Times played">
                     {{ item.times_played }}
                   </td>
                 </tr>

@@ -3,6 +3,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import defaultTable from "../../components/Table.vue";
 import defaultButton from "../../components/Button.vue";
 
+import M from 'materialize-css'
+
 @Component({
     components: { defaultTable,
                   defaultButton }
@@ -23,6 +25,8 @@ export default class ChartsPage extends Vue {
     weeks = 1;
     val = 0;
 
+    tooltipped = true
+
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
     }
@@ -33,6 +37,13 @@ export default class ChartsPage extends Vue {
         this.$store.dispatch('getAllChartData', this.weeks).then(res => {
             this.charts = res;
         });
+    }
+
+    updated() {
+        if (this.tooltipped) {
+            const ttElems = document.querySelectorAll('.tooltipped')
+            const instances = M.Tooltip.init(ttElems)
+        }
     }
 
     getNewCharts() {
