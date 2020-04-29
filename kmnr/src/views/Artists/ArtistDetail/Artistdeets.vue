@@ -32,7 +32,7 @@
               <tr v-for="item in albums" :key="item.id">
                 <td>{{ item.id }}</td>
                 <td>{{ item.album_name }}</td>
-                <td><img :src="formatImage(item.album_format)" v-bind:alt="item.album_format" class="tooltipped" data-tooltip=/></td>
+                <td><img :src="formatImage(item.album_format)" v-bind:alt="item.album_format"></td>
                 <td>
                   <i v-if="item.missing" class="material-icons-round tooltipped" data-tooltip="Missing">error</i>
                   <i v-if="item.has_reviews" class="material-icons-round tooltipped" data-tooltip="Has review">rate_review</i>
