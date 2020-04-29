@@ -5,7 +5,7 @@
     </div>
 </template>
 
-<script lang="ts"/>
+<script lang="ts" src="./ErrorPage.ts"/>
 
 <style lang="scss" scoped>
     .error-404 {
