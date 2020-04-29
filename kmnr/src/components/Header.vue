@@ -150,6 +150,9 @@
         userGot() {
             if (this.curUser === '') {
                 this.loginOpen = true
+            } else {
+                this.loginOpen = false
+                this.userAuth = true
             }
         }
 
