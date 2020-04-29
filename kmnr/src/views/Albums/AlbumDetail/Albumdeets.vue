@@ -40,21 +40,25 @@
           <table class="tracksTable">
             <thead>
               <tr>
-                <th style="width: 25%;">Track</th>
-                <th style="width: 25%;">Name</th>
-                <th style="width: 25%;">FCC Status</th>
-                <th style="width: 25%;">Plays</th>
+                <th style="width: 16.67%;">Track</th>
+                <th style="width: 16.67%">Recommended</th>
+                <th style="width: 16.67%;">Name</th>
+                <th style="width: 16.67%;">FCC Status</th>
+                <th style="width: 16.67%">Last Played</th>
+                <th style="width: 16.67%;">Plays</th>
               </tr>
             </thead>
 
             <tbody>
               <tr v-for="item in tracks" :key="item.number">
                 <td>{{ item.number }}</td>
+                <td>{{ item.recommended }}</td>
                 <td>{{ item.song_name }}</td>
                 <td>{{ item.fcc_status }}</td>
+                <td>{{ item.last_played }}</td>
                 <td>{{ item.times_played }}</td>
                 <defaultButton @click.native="addToPlaylist(item, album)">
-                    <i class="material-icons">add</i>
+                    <i class="material-icons tooltipped" data-tooltip="Add to active playlist">add</i>
                 </defaultButton>
               </tr>
             </tbody>
@@ -77,6 +81,8 @@
   import review from "../../../components/Review.vue";
   import issue from "../../../components/Issue.vue";
 
+  import M from 'materialize-css';
+
   @Component({
     components: { defaultButton,
                   review,
@@ -88,6 +94,7 @@
     issueOpen = false;
     reviewOpen = false;
     fcc = 0;
+    tooltipped = true;
 
     loaded = false;
 
@@ -100,6 +107,16 @@
       .finally(() => {
         this.loaded = true
       })
+    }
+
+    updated() {
+        if(this.tooltipped) {
+            this.tooltipped = false;
+            this.$nextTick(()=>{
+                const elemsTooltip = document.querySelectorAll('.tooltipped')
+                const tooltipInstance = M.Tooltip.init(elemsTooltip)
+            })
+        }
     }
 
     changeSingleFCC(songNumber) {

@@ -27,6 +27,7 @@ export default new Vuex.Store({
     albums: Array<Album>(),
     singleAlbum: {},
     currentUser: '',
+    currentUserInfo: {},
     currentPlaylist: '',
     programs: Array<Program>(),
     singleProgram: {},
@@ -71,6 +72,10 @@ export default new Vuex.Store({
     setUser(state, curUser: string) {
       console.log("recieved", curUser)
       state.currentUser = curUser
+    },
+    setUserInfo(state, userInfo: any) {
+      console.log("recived", userInfo)
+      state.currentUserInfo = userInfo;
     },
     setPlaylist(state, curPlaylist: string) {
       console.log("recieved", curPlaylist)
@@ -426,6 +431,7 @@ export default new Vuex.Store({
       return axios.get('http://localhost:5000/', {withCredentials: true})
         .then(res => {
           this.commit('setUser', res.data['logged_in_as'])
+          this.commit('setUserInfo', res.data)
           return res.data
         })
     },
