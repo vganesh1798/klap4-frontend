@@ -1,7 +1,7 @@
 <template>
   <div id="navigation-mobile">
     <div class="search">
-      <input type="text" placeholder="Search" />
+      <input v-model="searchquery" id="search" placeholder="Quickjump" type="search" @keyup.enter="search()">
     </div>
     <ul>
       <li><router-link to="/">Home</router-link></li>
@@ -30,6 +30,7 @@ export default class HeaderMobile extends Vue {
   loginOpen = false
   on = false
   userAuth = false
+  searchquery = ""
   openLogin() {
             this.loginOpen = true;
         }
@@ -66,6 +67,23 @@ export default class HeaderMobile extends Vue {
   logOut() {
             this.$store.dispatch('logout').then(res => this.userAuth = false)
         }
+   search() {
+           console.log("searching", this.searchquery);
+           const searchParam = {
+                id: this.searchquery
+            }
+            this.$store.dispatch('quicksearch', searchParam).then(res => {  
+                if(res.type == "artist") { 
+                    router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
+                }
+                else if(res.type == "album") { 
+                    router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
+                }
+                else if(res.response.status == 404) {
+                    router.push({ name: 'Search'})
+                }
+        });
+        }     
       
 }
 </script>
@@ -73,6 +91,25 @@ export default class HeaderMobile extends Vue {
 <style lang="scss" scoped>
 #navigation-mobile {
   z-index: 99999;
+    #search-bar .search {
+      color: black !important;
+      border-bottom-color: black;
+      font-family: Arvo;
+      font-size: 24px;
+      border-bottom-width: 2px;
+      width: 200px
+    }
+
+    #search-bar .search:focus {
+      border-bottom-color: black;
+      border-bottom-width: 2px;
+    }
+
+
+    #search-bar ::placeholder {
+      color: #595959 !important;
+    }
+
   ul {
     list-style: none;
     width: 200px;
