@@ -163,7 +163,7 @@ export default class PlaylistSwitch extends Vue {
 
     .playlistName {
         text-align: left !important;
-        width: 93%;
+        width: 33vw;
     }
 
     .deleteBtn {  

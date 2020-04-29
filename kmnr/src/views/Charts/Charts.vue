@@ -1,7 +1,7 @@
 <template>
     <div class="bg-charts full-container">
       <div class=" table-container">
-        <defaultButton class="colored exportBtn">Export for NACC</defaultButton>
+        <defaultButton disabled class="colored exportBtn">Export for NACC (Coming soon)</defaultButton>
         <div class="row">
           <span class="heading-charts-main fadein">Explore Charts</span>
         </div>
