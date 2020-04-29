@@ -11,7 +11,7 @@
         </div>
         <form class="col offset-s3 s6" @submit.prevent="createPlaylist">
                 <div class="row">
-                    <div class="input-field">
+                    <div class="input">
                         <label required for="name">Name</label>
                         <input type="text" id="name" v-model="name" />
                     </div>

@@ -131,14 +131,14 @@ export default new Vuex.Store({
         .catch(err => console.log(err))
     },
     deletePlaylistEntry({commit, state}, playlistDelete: any) {
-      axios.delete(`http://localhost:5000/playlist/display/${playlistDelete.dj_id}/${playlistDelete.playlistName}`, {
+      return axios.delete(`http://localhost:5000/playlist/display/${playlistDelete.dj_id}/${playlistDelete.playlistName}`, {
         data: {
           'index': playlistDelete.index,
           //'ref': playlistDelete.ref
           'entry': playlistDelete.entry
         },
         withCredentials: true
-      })
+      }).then((res) => console.log(res.data))
       .catch(err => console.log(err))
     },
     updatePlaylistEntry({commit, state}, playlistEntry: any) {
@@ -172,7 +172,7 @@ export default new Vuex.Store({
         'playlistName': newPlaylist.p_name,
         'show': newPlaylist.show
       }
-      
+
       return axios.post(`http://localhost:5000/playlist/${newPlaylist.dj_id}`, playlistData, {withCredentials: true})
         .then(res => {
           this.commit('setPlaylist', newPlaylist.p_name)
@@ -188,7 +188,6 @@ export default new Vuex.Store({
         'newName': editedPlaylist.new_name,
         'newShow': editedPlaylist.new_show
       }
-
       return axios.put(`http://localhost:5000/playlist/${editedPlaylist.dj_id}`, playlistData, {withCredentials: true})
         .then(res => {
           this.commit('setPlaylist', editedPlaylist.new_name)
@@ -285,13 +284,13 @@ export default new Vuex.Store({
       .catch(err => console.log(err))
     },
     deletePlaylist({commit, state}, playlistDelete: any) {
-      axios.delete(`http://localhost:5000/playlist/${playlistDelete.dj_id}`, {
+      return axios.delete(`http://localhost:5000/playlist/${playlistDelete.dj_id}`, {
         data: {
           'username': playlistDelete.dj_id,
           'playlistName': playlistDelete.p_name
         },
         withCredentials: true
-      })
+      }).then((res) => console.log(res))
       .catch(err => console.log(err))
     },
     getAllPrograms() {

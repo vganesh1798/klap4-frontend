@@ -3,7 +3,6 @@
     <h1>
       <span class="albums-heading-main">Album Information</span>
     </h1>
-    <h1>{{this.$store.state.currentPlaylist}}</h1>  
     <div class="header-container">
       <div class="row">
         <div class="col s1 offset-s10">
