@@ -10,30 +10,40 @@
             <a class="tooltipped" :data-tooltip="album"><h1 class="albumTitle">{{album}}</h1></a>
             <h2> by {{artist}}</h2>
         </div>
+        <div v-if="alreadyWritten">
+            <p class="warningmessage">You already wrote a review!</p>
+            <defaultButton class="colored warningbutton" @click.native="closeReview" type="submit">OK</defaultButton>
+        </div>
         <div v-if="reviews.length === 0">
             <h2 class="noentries">No reviews yet...write the first one!</h2>
-            <div class="input-field">
-              <label for="reviewbutton">Write a review</label>
-                <textarea v-model="review" type="text" class="materialize-textarea" id="review"></textarea>
+            <div>
+                <div class="row">
+                    <form>
+                        <div class="input-field">
+                            <label for="review">Write a review</label>
+                            <textarea required v-model="userreview" type="text" class="materialize-textarea" id="userreview"></textarea>
+                        </div>
+                    </form>
+                    <defaultButton class="colored submitbutton" @click.native="postReview()"  type="submit">Submit</defaultButton>
+                </div>
             </div>
-              <button v-on:click="postReview()" class="btn">Submit</button>
-          </div>
-          <div v-else>
+        </div>
+        <div v-else>
+            <div v-if="!hideReviewOption">
                 <defaultButton class="colored writereviewbtn" @click.native="writeReview()">Write A Review</defaultButton>
                 <div v-if="editSpace">
-                     <div class="row">
-                <form>
-                    <div class="input-field">
-                        <label for="review">Write a review</label>
-                        <textarea required v-model="userreview" type="text" class="materialize-textarea" id="userreview"></textarea>
+                    <div class="row">
+                        <form>
+                            <div class="input-field">
+                                <label for="review">Write a review</label>
+                                <textarea required v-model="userreview" type="text" class="materialize-textarea" id="userreview"></textarea>
+                            </div>
+                        </form>
+                        <defaultButton class="colored submitbutton" @click.native="postReview()"  type="submit">Submit</defaultButton>
                     </div>
-                
-                </form>
-                <defaultButton class="colored submitbutton" @click.native="postReview()"  type="submit">Submit</defaultButton>
-                     </div>
                 </div>
-            
-          
+            </div>
+        
           <div class="row">
               <div :class="{
                 'reviews': !editSpace,
@@ -71,12 +81,14 @@
 
         @Prop(String) album !: string
         @Prop(String) artist !: string
-        @Prop(Object) reviews!: object
+        @Prop(Array) reviews!: []
         editSpace: Boolean = false;
         tooltipped: Boolean = true;
+        alreadyWritten: Boolean = false;
+        hideReviewOption: Boolean = false;
 
         postReview() {
-            console.log("posting review")
+            console.log("posting review", this.userreview)
             this.editSpace = false;
             const reviewParams = {
                 'id': this.$route.params.albumParam,
@@ -92,6 +104,17 @@
         }
 
         writeReview() {
+            if(this.reviews
+                .filter((rev: any) => {
+                    return (rev.reviewer.includes(this.$store.state.currentUser));
+            }).length !== 0) {
+                console.log("review already written")
+                this.alreadyWritten = true;
+                this.editSpace = false;
+                this.hideReviewOption = true;
+                return;
+            }
+            this.editSpace = false;
             this.editSpace = !this.editSpace;
         }
 
@@ -172,19 +195,31 @@ p {
 .noentries {
     padding-top: 25%;
     font-size: 20px;
-
 }
 
+.warningmessage {
+    text-align: center;
+    font-style: bold;
+    
+}
+
+.warningbutton {
+    margin-left: 16.5vw;
+    margin-top: .5vw;
+    margin-bottom: 2vw;
+    padding:  2%  2% !important;
+    
+}
 .review {
     background-color:white;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    //height: 500px;
-    //width: 500px;
-    height: 90%;
-    width: 35%;
+    height: 90vh;
+    width: 40vw;
+    //height: 90%;
+    //width: 35%;
     padding: 0% 2% 20% 2%;
     border-radius: 3%;
     font-family: 'Montserrat';

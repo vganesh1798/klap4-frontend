@@ -28,7 +28,7 @@
 
         <div class="row table-header">
           <div class="col s3">
-            <div id="dropdown" v-bind="sort_selection">Sort By: {{ sort_selection }}
+            <div id="dropdown">Sort By: {{ sort_selection }}
               <i class="material-icons">arrow_drop_down</i>
               <div id="dropdown-list">
                 <a class="dropdown-item" @click="sortBy('Popularity')">Popularity</a>
