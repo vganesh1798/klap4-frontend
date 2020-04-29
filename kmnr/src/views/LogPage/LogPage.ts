@@ -48,7 +48,10 @@ export default class LogPage extends Vue {
                 playlistName: this.$store.state.currentPlaylist
             }
         this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
-            this.entries = res.playlist_entries || [];
+            if (res)
+                this.entries = res.playlist_entries;
+            else
+                this.entries = []
             console.log("the state variable" ,this.$store.state.logs)
             //this.num = this.entries.length;
             console.log(this.entries);

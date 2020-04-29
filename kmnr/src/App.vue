@@ -11,7 +11,7 @@
       <a @click="openMusic" v-if="!stream"><i class="material-icons-round">music_note</i></a>
       <a @click="closeMusic" v-if="stream"><i class="material-icons-round">music_off</i></a>
     </div>
-    <StreamingFooter :open="stream" class="streamer" :playlist="queue" index="0"/>
+    <StreamingFooter :open="stream" class="streamer" index="0"/>
     </div>
   </div>
 </template>
@@ -103,6 +103,7 @@ export default class App extends Vue {
             this.opened = false;
       }
     created() {
+      this.$store.commit('setQueue', this.queue)
       this.handleView();
       window.addEventListener('resize', this.handleView);
     }

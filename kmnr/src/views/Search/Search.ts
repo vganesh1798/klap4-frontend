@@ -13,9 +13,9 @@ import { ArtistSearch } from '@/Models/Artist'
     }
 })
 export default class SearchPage extends Vue {
-    @Prop() name?
-    @Prop() artistName?
-    @Prop() genre?
+    @Prop({default: ''}) name?
+    @Prop({default: ''}) artistName?
+    @Prop({default: ''}) genre?
 
     searchInput: string = ''
     artistInput: string = ''
@@ -58,11 +58,11 @@ export default class SearchPage extends Vue {
         }
     }
 
-    created() {
+    beforeMount() {
         if (this.name || this.artistName || this.genre) {
-            this.searchInput = this.name === '' ? null : this.name
-            this.genreInput = this.genre === '' ? null : this.genre
-            this.artistName = this.artistName === '' ? null : this.artistName
+            this.searchInput = this.name
+            this.genreInput = this.genre
+            this.artistName = this.artistName
 
             this.search(null, true)
         }
@@ -89,14 +89,20 @@ export default class SearchPage extends Vue {
 
         if (this.searchInput !== '') {
             this.$router.push({query: {name: this.searchInput}})
+        } else {
+            this.$router.push('/search')
         }
         
         if (this.genreInput !== '') {
             this.$router.push({query: {genre: this.genreInput}})
+        } else {
+            this.$router.push('/search')
         }
 
         if (this.artistInput !== '') {
             this.$router.push({query: {artistName: this.artistInput}})
+        } else {
+            this.$router.push('/search')
         }
 
         const alSearch: AlbumSearch = {

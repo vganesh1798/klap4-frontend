@@ -24,7 +24,7 @@
       </transition>
       <div class="progress-outer"><div id="prog-inner"></div></div>
       <div>
-      <md-dialog :md-active.sync="queueOpen">
+      <md-dialog :md-active.sync="queueOpen" style="z-index: 999999">
       <md-dialog-title>Edit Playlist</md-dialog-title>
 
       <md-tabs md-dynamic-height>
@@ -94,7 +94,6 @@
     }
   })
   export default class StreamingFooter extends Vue {
-      @Prop({type: Array}) playlist?
       @Prop({type: Number, default: 0}) newIndex
       @Prop({type: Boolean, default: false}) open
 
@@ -104,7 +103,7 @@
       curIndex: number = 0
 
       cDur: string = '0:00'
-      queue = this.playlist
+      queue = []
       curVol = 1
       muted = false
       currentTrack = ''
@@ -117,7 +116,11 @@
       clickedInVolumeSlider = false
       oIndex = ''
       nIndex = ''
-        index: number = -1
+      index: number = -1
+
+      created() {
+        this.queue = this.$store.state.queue
+      }
 
       updateSong(index) {
           this.index = index
@@ -201,8 +204,8 @@
         (document.getElementsByClassName('full-view')[0] as HTMLElement).addEventListener('mouseup', this.mouseupListener);
         (document.getElementsByClassName('full-view')[0] as HTMLElement).addEventListener('mousemove', this.mouseMove);
 
-        this.playlist[this.curIndex].song = new Howl({
-          src: [this.playlist[this.curIndex].file],
+        this.queue[this.curIndex].song = new Howl({
+          src: [this.queue[this.curIndex].file],
           onend: () => {
             this.next()
           },
@@ -213,8 +216,8 @@
             this.curDuration()
           },
           onplayerror: () => {
-            this.playlist[this.curIndex].song.once('unlock', () => {
-              this.playlist[this.curIndex].song.play()
+            this.queue[this.curIndex].song.once('unlock', () => {
+              this.queue[this.curIndex].song.play()
             })
           },
           html5: true,
@@ -231,7 +234,7 @@
       }
 
       get totalDuration() {
-        return this.secondsToHms(this.playlist[this.curIndex].song.duration())
+        return this.secondsToHms(this.queue[this.curIndex].song.duration())
       }
 
       setVol(vol) {
@@ -240,9 +243,9 @@
 
       curDuration() {
         // Get the Howl we want to manipulate.
-        (document.getElementById('prog-inner') as HTMLElement).style.width = ((this.playlist[this.curIndex].song.seek() / this.playlist[this.curIndex].song.duration()) * 100).toString() + "%"
+        (document.getElementById('prog-inner') as HTMLElement).style.width = ((this.queue[this.curIndex].song.seek() / this.queue[this.curIndex].song.duration()) * 100).toString() + "%"
 
-        this.cDur = this.secondsToHms(this.playlist[this.curIndex].song.seek())
+        this.cDur = this.secondsToHms(this.queue[this.curIndex].song.seek())
         if (this.playing) {
           setTimeout(() => {
             this.curDuration()
@@ -265,7 +268,7 @@
       playPause(index) {
         if (!this.playing){
           this.showsnackbar = true
-          this.currentTrack = this.playlist[this.curIndex].title
+          this.currentTrack = this.queue[this.curIndex].title
           this.play(index)
         }
         else
@@ -274,12 +277,12 @@
 
       play(index) {
         this.curIndex = index
-        if (this.playlist[this.curIndex].song) {
-            this.playlist[this.curIndex].song.play()
+        if (this.queue[this.curIndex].song) {
+            this.queue[this.curIndex].song.play()
         }
         else {
-            this.playlist[this.curIndex].song = new Howl({
-                src: [this.playlist[this.curIndex].file],
+            this.queue[this.curIndex].song = new Howl({
+                src: [this.queue[this.curIndex].file],
                 onend: () => {
                     this.next()
                 },
@@ -290,56 +293,56 @@
                   this.curDuration()
                 },
                 onplayerror: () => {
-                  this.playlist[this.curIndex].song.once('unlock', () => {
-                    this.playlist[this.curIndex].song.play()
+                  this.queue[this.curIndex].song.once('unlock', () => {
+                    this.queue[this.curIndex].song.play()
                   })
                 },
                 html5: true,
                 buffer: true
             })
-            this.playlist[this.curIndex].song.play()
+            this.queue[this.curIndex].song.play()
         }
         this.playing = true
       }
 
       pause() {
-          this.playlist[this.curIndex].song.pause()
+          this.queue[this.curIndex].song.pause()
           this.playing = false
       }
 
       next() {
         this.showsnackbar = true
-        this.playlist[this.curIndex].song.stop()
+        this.queue[this.curIndex].song.stop()
 
-        if ((this.curIndex + 1) > this.playlist.length - 1) {
+        if ((this.curIndex + 1) > this.queue.length - 1) {
           this.curIndex = 0
         } else {
           this.curIndex++
         }
-        this.currentTrack = this.playlist[this.curIndex].title
+        this.currentTrack = this.queue[this.curIndex].title
         this.play(this.curIndex)
       }
 
       prev() {
         this.showsnackbar = true
-        const pastFive = this.playlist[this.curIndex].song.seek()
-        this.playlist[this.curIndex].song.stop()
+        const pastFive = this.queue[this.curIndex].song.seek()
+        this.queue[this.curIndex].song.stop()
 
         if (!(pastFive > 5)) {
           if ((this.curIndex - 1) < 0) {
-            this.curIndex = this.playlist.length - 1
+            this.curIndex = this.queue.length - 1
           } else {
             this.curIndex--
           }
         } else {
           
         }
-       this.currentTrack = this.playlist[this.curIndex].title
+       this.currentTrack = this.queue[this.curIndex].title
         this.play(this.curIndex)
       }
 
       seek(percentage) {
-        this.playlist[this.curIndex].song.seek(percentage * this.playlist[this.curIndex].song.duration())
+        this.queue[this.curIndex].song.seek(percentage * this.queue[this.curIndex].song.duration())
       }
 
       changeVol(vol?) {
@@ -347,15 +350,15 @@
         const eleIn = (document.getElementById('volume-inner') as HTMLElement)
 
         if (vol) {
-          this.playlist[this.curIndex].song.volume(vol)
+          this.queue[this.curIndex].song.volume(vol)
           this.muted = false
         } else if (this.muted) {
-          this.playlist[this.curIndex].song.volume(this.curVol)
+          this.queue[this.curIndex].song.volume(this.curVol)
           console.log(this.curVol)
           eleIn.style.width = (this.curVol * ele.clientWidth).toString() + "%"
           this.muted = false
         } else {
-          this.playlist[this.curIndex].song.volume(0)
+          this.queue[this.curIndex].song.volume(0)
           eleIn.style.width = "0%"
           this.muted = true
         }

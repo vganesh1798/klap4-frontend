@@ -222,13 +222,13 @@
             }
             this.$store.dispatch('quicksearch', searchParam).then(res => {  
                 if(res.type == "artist") { 
-                    router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
+                    this.$router.push({ name: 'ArtistDetail', params: { albumParam: this.searchquery } })
                 }
                 else if(res.type == "album") { 
-                    router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
+                    this.$router.push({ name: 'AlbumDetail', params: { albumParam: this.searchquery } })
                 }
                 else if(res.response.status == 404) {
-                    router.push({ name: 'Search'})
+                    this.$router.push({ name: 'Search', query: {name: this.searchquery}})
                 }
         });
         }

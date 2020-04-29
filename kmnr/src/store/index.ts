@@ -34,7 +34,8 @@ export default new Vuex.Store({
     reviews: Array<AlbumReview>(),
     problems: Array<AlbumProblem>(),
     schedule: Array<ProgramSlots>(),
-    fcc: {}
+    fcc: {},
+    queue: Array<any>()
   },
   // A function to be accessed with commit to modify any states
   mutations: {
@@ -97,8 +98,14 @@ export default new Vuex.Store({
     changeFCC(state, newFCC:FCCAlbum) {
       state.fcc = newFCC
     },
+    setQueue(state, fullQueue: any) {
+      state.queue = fullQueue
+    },
+    addToQueue(state, newSong: any) {
+      state.queue.push(newSong)
+    },
     redirect() {
-    }
+    },
   },
   // Functions that can be called outside of the index.ts file for when needed and can interface with mutations
   actions: {
@@ -407,7 +414,9 @@ export default new Vuex.Store({
 
           return true
         }).catch(err => {
-          console.log(err)
+          if (err.status !== 401) {
+            console.log(err)
+          }
         })
     },
     logout() {
