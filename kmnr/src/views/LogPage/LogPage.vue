@@ -29,14 +29,13 @@
                         <table class="defaultTable newPlaylist" v-if="entries.length > 0" v-bind="entries">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="min-width: 35px;"></th>
+                                    <th scope="col" style="min-width: 2vw; max-width: 2vw;"></th>
                                     <th scope="col" class="header">Song</th>
-                                    <th scope="col" style="min-width: 30px;"></th>
+                                    <th scope="col" style="min-width: 1.8vv; max-width: 1.8vw;"></th>
                                     <th scope="col" class="header">Artist</th>
-                                    <th scope="col" style="min-width: 30px;"></th>
+                                    <th scope="col" style="min-width: 1.8vw; max-width: 1.8vw;"></th>
                                     <th scope="col" class="header">Album</th>
-                                    <th scope="col" style="min-width: 35px"></th>
-                                    <th scope="col" class="delete" style="min-width: 20px;"></th>
+                                    <th scope="col" class="delete" style="min-width: 2vw; max-width: 2vw"></th>
                                 </tr>
                             </thead>
                             <!--tbody-->
@@ -44,7 +43,7 @@
                                     <tr v-for="(entry, index) in entries" :key="entry.id">
                                         <!--td id="tablecols" v-html="song" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)" @focusout="editstuff(entry)" @keyup.enter="editstuff(entry.index)"--->
                                         <!--td id="tablecols" @blur="updateSong" contenteditable="true" @click="storeOriginal(entry)"-->
-                                        <td style="min-width: 45px;">
+                                        <td style="min-width: 2.5vw; max-width: 2.5vw;">
                                             <defaultButton>
                                                 <i class="material-icons">drag_indicator</i>
                                             </defaultButton>
@@ -75,7 +74,7 @@
                                             </p>
                                         </td>
                                         
-                                        <td style="min-width: 45px;">
+                                        <td style="min-width: 2.7vw; max-width: 2.7vw;">
                                             <defaultButton  @click.native="removeSong(entry)">
                                                 <i class="material-icons">clear</i>
                                             </defaultButton>
@@ -110,7 +109,7 @@
                                         <input required v-model="album" type="text" id="album" />
                                     </div>
                                 </div>
-                                <defaultButton class="colored longbtn" style="margin-bottom: 10px;" type="submit">Add to log!</defaultButton>
+                                <defaultButton class="colored longbtn" style="margin-bottom: 1vh;" type="submit">Add to log!</defaultButton>
                                 <br/>
 
                                 <div class="row">
