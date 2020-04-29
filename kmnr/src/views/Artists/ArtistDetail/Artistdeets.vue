@@ -1,14 +1,14 @@
 <template>
   <div class="full-deets">
     <h1>
-      <span class="artists-heading-main">Artist Information</span>
+      <span class="artists-heading-main fadein">Artist Information</span>
     </h1>
     <div id="container">
       <div class="row">
         <div class="col s2 offset-s2">
         <div class="card">
           <div class="card-image">
-            <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
+            <img :src="artist.image">
           </div>
           <div class="card-content">
             <span class="card-title"><em>{{artist.id}}</em><br/>{{artist.name}}</span>
@@ -74,8 +74,36 @@
     margin-bottom: 0%;
     color: rgb(70, 68, 68);
     font-family: 'Covered By Your Grace';
+    -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 3s; /* Firefox < 16 */
+        -ms-animation: fadein 3s; /* Internet Explorer */
+         -o-animation: fadein 3s; /* Opera < 12.1 */
+            animation: fadein 3s;
   }
+  
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
   .card {
     margin-left: -10vw !important;
     margin-top: -10vh !important;
