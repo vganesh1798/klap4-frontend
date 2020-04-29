@@ -4,7 +4,7 @@
       <input v-model="searchquery" id="search" placeholder="Quickjump" type="search" @keyup.enter="search()">
     </div>
     <ul>
-      <li v-if="userAuth"><md-chip>{{user['full_name']}}</md-chip></li>
+      <li v-if="userAuth"><md-chip>{{curUser}}</md-chip></li>
       <li><router-link to="/">Home</router-link></li>
       <li><router-link to="/stream">Stream</router-link></li>
       <li><router-link to='/programming'>Programming</router-link></li>
@@ -38,7 +38,7 @@ export default class HeaderMobile extends Vue {
             this.loginOpen = true;
         }
   get curUser() {
-            return this.$store.state.currentUser
+            return this.$store.state.currentUserInfo['full_name']
         }
   get route() {
             console.log(this.$route.path)
@@ -61,7 +61,7 @@ export default class HeaderMobile extends Vue {
                 this.userAuth = true
             }
         }
-  beforeUpdate() {
+  mounted() {
             if (this.$cookies.isKey('csrf_access_token')) {
                 this.$store.dispatch('getCurrUser')
                 this.userAuth = true

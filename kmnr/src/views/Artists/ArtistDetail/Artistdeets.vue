@@ -94,8 +94,9 @@
   }
 
   .full-deets {
-    background-image: url('../../../assets/back8.jpg');
-    background-size: cover;
+    background: #1fa2ff; /* fallback for old browsers */
+    background: -webkit-linear-gradient(160deg, #1fa2ff, #12d8fa, #a6ffcb); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(160deg, #1fa2ff, #12d8fa, #a6ffcb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    background-size: cover;
     min-height: 100%;
     height: auto;
     padding-top: 4%;

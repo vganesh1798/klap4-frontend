@@ -1,20 +1,23 @@
 <template>
     <div id="Header">
       <nav :class="{
-                'nav-top': !scrolledTop,
-                'preload-nav': preload,
-                'nav-full': scrolledTop,
+                'nav-top': !scrolledTop && !preload && !preloadFull,
+                'nav-full': scrolledTop && !preload && !preloadFull,
+                'preload-navbar': preload,
+                'preload-navbar-full': preloadFull,
                 'nav': true
             }">
             <router-link to="/"><img :src="logoSource" :class="{
-                'logo-top': !scrolledTop,
-                'logo-full': scrolledTop,
-                'preload': preload
+                'logo-top': !scrolledTop && !preload && !preloadFull,
+                'logo-full': scrolledTop && !preload && !preloadFull,
+                'preload-logo': preload,
+                'preload-logo-full': preloadFull
             }" class="logo"></router-link>
             <div id="search-bar" :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }">
               <input v-model="searchquery" id="search" placeholder="Quickjump" type="search" @keyup.enter="search()">
               <!--<label class="label-icon" for="search"><i class="material-icons">search</i></label>
@@ -26,72 +29,83 @@
             
 
             <div id="login" :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" v-if="!userAuth" @click="openLogin()">
                 Log In
             </div>
 
             <div id="logout" :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" v-else @click="logOut()">
                 Log Out
             </div>
 
            <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/charts">Charts</router-link>
 
 <!--
             <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/artists">Artists</router-link>
 
             <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/albums">Albums</router-link>
 -->
             <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/search">Search</router-link>
             
             <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/log">Playlists</router-link>
 
             <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/stream">Stream</router-link>
             <router-link :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" to="/programming">Programming</router-link>
 
             <a :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }" href="http://www.cleveland.kmnr.org">Cleveland</a>
             <div v-if="userAuth" :class="{
-                'items-top': !scrolledTop,
-                'items-full': scrolledTop,
-                'preload': preload
+                'items-top': !scrolledTop && !preload && !preloadFull,
+                'items-full': scrolledTop && !preload && !preloadFull,
+                'preload': preload,
+				'preload-full': preloadFull
             }"><md-chip>{{curUser}}</md-chip></div>
             
             
@@ -119,16 +133,28 @@
         logoSource = './radio.png'
         userAuth = false
         searchquery = "";
-        user = this.$store.state.currentUserInfo['full_name']
+        firstLoad = true
+        preloadFull = false
 
-        @Prop({type: String}) firstLoad
+        user = this.$store.state.currentUserInfo['full_name']
 
         get curUser() {
             return this.$store.state.currentUserInfo['full_name']
         }
         get route() {
-            console.log(this.$route.path)
             return this.$route.path
+        }
+        
+        @Watch('route')
+        disablePreload() {
+            this.preloadFull = false
+            this.preload = false
+        }
+
+        created() {
+            let onHomePage = this.route === '/' || this.route === '/home'
+            this.preload = onHomePage
+            this.preloadFull = !onHomePage
         }
 
         beforeMount() {
@@ -184,7 +210,6 @@
         }
 
         updated() {
-            this.preload = false
             if (document.getElementsByClassName('nav-top').length > 0) {
                 (document.getElementsByClassName('nav-top') as HTMLCollectionOf<HTMLElement>)[0].style.animation = 'fadeOut ease-in .5s'
             }
@@ -195,6 +220,10 @@
 
         navScroll() {
             this.scrolledTop = (!this.homepage || (this.homepage && (scrollY > 0)))
+            if (this.scrolledTop) {
+                this.preload = false
+                this.preloadFull = false
+            }
             let images = require.context('../assets/', false, /\.png$/)
 
             if (!this.scrolledTop) {
@@ -205,7 +234,6 @@
         }
 
         openLogin() {
-            console.log(this.scrolledTop, this.homepage, this.preload)
             this.loginOpen = true;
             return this.loginOpen;
         }
@@ -256,6 +284,18 @@
         animation: fadeOut ease-in .5s;
     }
 
+    .preload-navbar {
+        color: white;
+        min-height: 0px;
+        height: 0px;
+        background-color: rgba(255,255,255,0);
+    }
+
+    .preload-navbar-full {
+        background-color: $blue;
+        z-index: 1;
+    }
+
     .nav {
         position: fixed;
         font-family: Arvo;
@@ -274,10 +314,6 @@
         }
     }
 
-    #Header .preload {
-        animation: fade ease-in 1s !important;
-    }
-
     #Header .nav-full {
         background-color: $blue;
         z-index: 1;
@@ -289,6 +325,17 @@
         float: left;
         cursor: pointer;
     }
+
+    #Header .preload-logo {
+        width: 300px;
+        margin-left: 1.5em;
+        margin-top: 0.6em;
+    }
+
+    #Header .preload-logo-full {
+        width: 75px;
+        object-fit: scale-down;
+    }    
 
     #Header .logo-top {
         width: 300px;
@@ -303,6 +350,59 @@
         object-fit: scale-down;
         animation-name: scaleDown;
         animation-duration: .5s;
+    }
+
+    #Header .preload {
+        margin-top: 1.4em;
+        float: right;
+        margin-right: 35px;
+        outline: none;
+        font-size: 24px;
+        color: black;
+        text-decoration: none;
+
+        &:hover {
+            outline: none;
+            color: #ff4d5a;
+            text-decoration: none;
+        }
+        &:focus {
+            outline: none;
+            color: #ff4d5a;
+            text-decoration: none;
+        }
+
+        &:active {
+            outline: none;
+            color: #ff4d5a;
+            text-decoration: none;
+        }
+    }
+
+    #Header .preload-full {
+        float: right;
+        margin-right: 35px;
+        outline: none;
+        font-size: 18px;
+        color: white;
+
+        text-decoration: none;
+            &:hover {
+            outline: none;
+            color: #ff4d5a;
+            text-decoration: none;
+            }
+            &:focus {
+            outline: none;
+            color: #ff4d5a;
+            text-decoration: none;
+            }
+
+            &:active {
+            outline: none;
+            color: #ff4d5a;
+            text-decoration: none;
+        }
     }
 
     #Header .items-top{
@@ -327,7 +427,7 @@
             text-decoration: none;
             }
 
-            &:actived {
+            &:active {
             outline: none;
             color: #ff4d5a;
             text-decoration: none;
@@ -355,7 +455,7 @@
             text-decoration: none;
             }
 
-            &:actived {
+            &:active {
             outline: none;
             color: #ff4d5a;
             text-decoration: none;
@@ -431,5 +531,9 @@
     .material-icons {
         display: inline !important;
         color: black !important;
+    }
+
+    .preload, .preload-navbar, .preload-logo, .preload-full, .preload-logo-full, .preload-navbar-full {
+        animation: fade ease-in 1s !important;
     }
 </style>

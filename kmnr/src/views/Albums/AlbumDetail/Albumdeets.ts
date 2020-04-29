@@ -10,6 +10,7 @@ import {
   import issue from "../../../components/Issue.vue";
 
   import M from 'materialize-css';
+import DisplayAlbum from '@/Models/Album';
 
   @Component({
     components: { defaultButton,
@@ -25,6 +26,16 @@ import {
     tooltipped = true;
 
     loaded = false;
+
+    addToQueue(song) {
+      let newSong = {
+        title: song.song_name,
+        file: "/" + (this.album as any).artist + "/" + (this.album as any).name + "/" + song.song_number,
+        song: null
+      }
+
+      this.$store.commit('addToQueue', newSong)
+    }
 
     beforeCreate() {
       this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {

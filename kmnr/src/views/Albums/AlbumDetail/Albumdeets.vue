@@ -75,6 +75,9 @@
                 <defaultButton @click.native="addToPlaylist(item, album)">
                     <i class="material-icons tooltipped" data-tooltip="Add to active playlist">add</i>
                 </defaultButton>
+                <defaultButton @click.native="addToQueue(item)">
+                    <i class="material-icons tooltipped song-queue" data-tooltip="Add to song queue">playlist_add</i>
+                </defaultButton>
               </tr>
             </tbody>
           </table>
@@ -88,6 +91,11 @@
 
 <style lang="scss" scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+
+  .song-queue {
+    position: relative;
+    margin-left: 13%;
+  }
 
 
   .full-deets {

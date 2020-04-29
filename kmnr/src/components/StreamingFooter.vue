@@ -59,6 +59,8 @@
   import StreamQueue from './StreamQueue.vue'
   import { Howl } from 'howler'
   import draggable from 'vuedraggable'
+  import {mapState} from 'vuex'
+
   let handleOutsideClick
 
   @Component({
@@ -120,13 +122,14 @@
       dragging = false
 
       get statefulQueue() {
-        return this.$store.state.queue
+        return mapState(['queue'])
       }
 
       @Watch('statefulQueue')
       newState(newQueue, oldQueue) {
         for (let i in newQueue) {
           if (this.queue.map(e => {return e.file}).indexOf(newQueue[i].file) !== -1) {
+            /**
             newQueue[i].song = new Howl({
                 src: [this.queue[i].file],
                 onend: () => {
@@ -145,7 +148,7 @@
                 },
                 html5: true,
                 buffer: true
-            }) 
+            })  */
             this.queue.push(newQueue[i])
           }
         }

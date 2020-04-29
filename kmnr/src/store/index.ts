@@ -38,6 +38,9 @@ export default new Vuex.Store({
     fcc: {},
     queue: Array<any>()
   },
+  getters: {
+    queue: state => state.queue
+  },
   // A function to be accessed with commit to modify any states
   mutations: {
     // Mutations are necessary to push any changes to states
@@ -107,6 +110,7 @@ export default new Vuex.Store({
       state.queue = fullQueue
     },
     addToQueue(state, newSong: any) {
+      console.log(newSong)
       state.queue.push(newSong)
     },
     redirect() {

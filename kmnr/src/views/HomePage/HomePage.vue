@@ -59,8 +59,8 @@
 
     .text {
         position: absolute;
-        top: 55%;
-        left: 40%;
+        top: 45%;
+        left: 46%;
         transform: translate(-90%, -30%);
         text-align: center;
     }
@@ -69,9 +69,9 @@
     overflow-x: hidden;
 }
     .heading-primary{
-            display: flex;
-
+        display: flex;
     }
+
     .heading-primary-main {
         font-size: 12vw;
         font-weight: 50;
@@ -84,13 +84,12 @@
         color: Black;
         font-family: 'Covered By Your Grace';
     }
-
     .heading-primary-sub {
         flex-direction: row;
         float: right;
-        font-size: 10vw;
+        font-size: 8vw;
         font-family: Montserrat;
-        padding-top: 25vw;
+        padding-top: 20vw;
         animation-name: moveInRight;
         animation-duration: 2s;
         color: black; 
