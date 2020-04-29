@@ -42,8 +42,7 @@
                         type="text"
                         v-model="entrySchedule[curIndex][index][index2]"
                         :disabled="Math.abs(curIndex - today) > 1"
-                        :class="{'disabled': Math.abs(curIndex - today) > 1,
-                                  ['autocomplete-' + type.program_type.replace(/[^0-9A-Za-z]+/g, '-')]: true}"
+                        :class="{'disabled': Math.abs(curIndex - today) > 1}"
                         @keyup.enter="insertProgram(index, index2)"
                         @keyup.esc="cancelInsert(index,index2)"
                         placeholder="Program Name"/>
@@ -102,6 +101,13 @@
 
 <style lang="scss" scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+  .autocomplete-content {
+    z-index: 9999999999 !important;
+    li img {
+      opacity: 0 !important;
+    }
+  }
+
   .heading-charts-main {
     padding-top: 5.5%;
     display: block;
@@ -204,8 +210,6 @@
       background-color:rgba(220,225,220,.15);
       border-radius: 5px;
 
-      z-index: 99;
-
       .type {
         position: relative;
         left: 3%;
@@ -285,6 +289,10 @@
         height: 30px;
         white-space: nowrap;
         display: inline-block;
+      }
+
+      .program-input {
+        z-index: 999 !important;
       }
 
       label {
