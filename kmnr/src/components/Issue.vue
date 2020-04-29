@@ -10,31 +10,42 @@
             <a class="tooltipped" :data-tooltip="album"><h1 class="albumTitle">{{album}}</h1></a>
             <h2> by {{artist}}</h2>
         </div>
+        <div v-if="alreadyWritten">
+            <p class="warningmessage">You have already reported an issue!</p>
+            <defaultButton class="colored warningbutton" @click.native="closeIssue" type="submit">OK</defaultButton>
+        </div>
         <div v-if="problems.length === 0">
             <h2 class="noentries">Looks like you're the first one to have noticed an issue...</h2>
-            <div class="input-field">
-              <label for="problembutton">Report a problem</label>
-                <textarea v-model="userProblem" type="text" class="materialize-textarea" id="problem"></textarea>
-            </div>
-              <button v-on:click="postIssue()" class="btn">Submit</button>
-          </div>
-          <div v-else>
-                <defaultButton class="colored writeproblembtn" @click.native="writeIssue()">Report a problem</defaultButton>
-                <div v-if="editSpace">
-                     <div class="row">
-                <form>
-                    <div class="input-field">
-                        <label for="problem">Report a problem</label>
-                        <textarea required v-model="userProblem" type="text" class="materialize-textarea" id="userproblem"></textarea>
-                    </div>
-                
-                </form>
-                <defaultButton class="colored submitbutton" @click.native="postIssue()"  type="submit">Submit</defaultButton>
-                     </div>
+            <div>
+                <div class="row">
+                    <form>
+                        <div class="input-field">
+                            <label for="problembutton">Write a review</label>
+                            <textarea required v-model="userProblem" type="text" class="materialize-textarea" id="userproblem"></textarea>
+                        </div>
+                    </form>
+                    <defaultButton class="colored submitbutton" @click.native="postIssue()" type="submit">Submit</defaultButton>
                 </div>
+            </div>
+        </div>
+        <div v-else>
+            <div v-if="!hideReviewOption">
+            <defaultButton class="colored writeproblembtn" @click.native="writeIssue()">Report a problem</defaultButton>
+            <div v-if="editSpace">
+                    <div class="row">
+                        <form>
+                            <div class="input-field">
+                                <label for="problembutton">Write a review</label>
+                                <textarea required v-model="userProblem" type="text" class="materialize-textarea" id="userproblem"></textarea>
+                            </div>
+                        </form>
+                        <defaultButton class="colored submitbutton" @click.native="postIssue()"  type="submit">Submit</defaultButton>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
-              <div :class="{
+                <div :class="{
                 'problems': !editSpace,
                 'shrunkproblems' : editSpace}">
                     <ul id="problem-list">
@@ -43,12 +54,12 @@
                             v-for="problem in problems" 
                             :key="problem['id']">
                             <p class="reporterName">{{problem.reporter}}</p>
-                            <p class="reportText">{{problem.report}}</p>
+                            <p class="reportText">{{problem.problem}}</p>
                         </li>
                     </ul>
                 </div>
-          </div>
-          </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -68,12 +79,14 @@
         }
         @Prop(String) album !: string
         @Prop(String) artist !: string
-        @Prop(String) problems !: object
+        @Prop(Array) problems !: []
         editSpace: Boolean = false;
         tooltipped: Boolean = true;
-
+        alreadyWritten: Boolean = false;
+        hideReviewOption: Boolean = false;
 
         postIssue() {
+            console.log("posting issue", this.userProblem)
             this.editSpace = false;
             const problemParams = {
                 'id': this.$route.params.albumParam,
@@ -82,11 +95,22 @@
             }
             this.$store.dispatch('postProblem', problemParams)
                 .then(res => {
-                    console.log(res.data)
+                    console.log(res.data);
+                    this.closeIssue();
                 })
         }
 
         writeIssue() {
+             if(this.problems
+                .filter((prob: any) => {
+                    return (prob.reporter.includes(this.$store.state.currentUser));
+            }).length !== 0) {
+                console.log("review already written")
+                this.alreadyWritten = true;
+                this.editSpace = false;
+                this.hideReviewOption = true;
+                return;
+            }
             this.editSpace = !this.editSpace;
         }
 
@@ -134,6 +158,19 @@ p {
     white-space: nowrap;
 }
 
+.warningmessage {
+    text-align: center;
+    font-style: bold;
+    
+}
+
+.warningbutton {
+    margin-left: 16.5vw;
+    margin-top: .5vw;
+    margin-bottom: 2vw;
+    padding:  2%  2% !important;
+    
+}
 .material-tooltip {
     z-index: 9999999 !important;
 }
@@ -173,8 +210,8 @@ p {
     transform: translate(-50%, -50%);
     //height: 500px;
     //width: 500px;
-    height: 90%;
-    width: 35%;
+    height: 90vh;
+    width: 40vw;
     padding: 0% 2% 20% 2%;
     border-radius: 3%;
     font-family: 'Montserrat';
