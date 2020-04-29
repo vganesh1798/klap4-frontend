@@ -37,6 +37,7 @@
                   <i v-if="item.missing" class="material-icons-round tooltipped" data-tooltip="Missing">error</i>
                   <i v-if="item.has_reviews" class="material-icons-round tooltipped" data-tooltip="Has review">rate_review</i>
                   <i v-if="item.has_problems" class="material-icons-round tooltipped" data-tooltip="Has problems">warning</i>
+                  <i v-if="item.new_album" class="material-icons-round tooltipped" data-tooltip="New album!">fiber_new</i>
                 </td>
               </tr>
             </tbody>
