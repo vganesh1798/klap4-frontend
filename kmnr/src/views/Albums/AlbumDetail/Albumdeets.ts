@@ -161,8 +161,16 @@ changeSingleFCC(songNumber) {
     }
 
   openIssue() {
-    this.issueOpen = true;
-    return this.issueOpen;
+    this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
+      this.tracks = this.$store.state.singleAlbum.songs
+      this.album = this.$store.state.singleAlbum
+      console.log(this.album)
+    })
+    .finally(() => {
+      this.loaded = true
+      this.issueOpen = true;
+      return this.issueOpen;
+    })
   }
 
   openFcc() {
