@@ -76,10 +76,11 @@
                 <td>
                   <defaultButton @click.native="addToPlaylist(item, album)">
                     <i class="material-icons tooltipped" data-tooltip="Add to active playlist">add</i>
-                </defaultButton>
-                <defaultButton @click.native="addToQueue(item)">
-                    <i class="material-icons tooltipped song-queue" data-tooltip="Add to song queue">playlist_add</i>
-                </defaultButton>
+                  </defaultButton>
+                  <defaultButton @click.native="addToQueue(item)">
+                      <i class="material-icons tooltipped song-queue" data-tooltip="Add to song queue">playlist_add</i>
+                  </defaultButton>
+                </td>
               </tr>
             </tbody>
           </table>
