@@ -20,7 +20,7 @@ import M from 'materialize-css';
 })
 export default class Albumdeeets extends Vue {
   album = {}
-  tracks = []
+  tracks: any = []
   issueOpen = false;
   reviewOpen = false;
   fcc = 0;
@@ -30,7 +30,7 @@ export default class Albumdeeets extends Vue {
 
   fccModalOpen = false
 
-  fccSong = {}
+  fccSong: any = {}
 
   loaded = false;
 

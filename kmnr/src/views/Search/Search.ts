@@ -105,17 +105,19 @@ export default class SearchPage extends Vue {
         this.albumLoaded = false
 
         if (!this.queriedSearch) {
+            let newQuery = {}
             if (this.searchInput !== '') {
-                this.$router.push({query: {name: this.searchInput}})
+                newQuery['name'] = this.searchInput
             }
             
             if (this.genreInput !== '') {
-                this.$router.push({query: {genre: this.genreInput}})
+                newQuery['genre'] = this.genreInput
             }
 
             if (this.artistInput !== '') {
-                this.$router.push({query: {artistName: this.artistInput}})
+                newQuery['artistName'] = this.artistInput
             }
+            this.$router.push({query: newQuery})
         }
 
         this.queriedSearch = false
