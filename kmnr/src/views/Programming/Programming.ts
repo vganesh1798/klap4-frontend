@@ -531,6 +531,16 @@ export default class Programming extends Vue {
         this.logEntries[logEntryIdx] = logSlot
     }
 
+    addToQueue(program) {
+        let newProgram = {
+            title: program.name,
+            file: "T:\\digilib\\E-Carts and Productions\\" + (program.type) + "\\" + (program.name),
+            program: null
+        }
+
+        this.$store.commit('addToQueue', newProgram)
+    }
+
     closeTable() {
         this.timeTableOpen = false
     }

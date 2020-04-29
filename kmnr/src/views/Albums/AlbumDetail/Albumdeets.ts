@@ -161,8 +161,16 @@ changeSingleFCC(songNumber) {
     }
 
   openIssue() {
-    this.issueOpen = true;
-    return this.issueOpen;
+    this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
+      this.tracks = this.$store.state.singleAlbum.songs
+      this.album = this.$store.state.singleAlbum
+      console.log(this.album)
+    })
+    .finally(() => {
+      this.loaded = true
+      this.issueOpen = true;
+      return this.issueOpen;
+    })
   }
 
   openFcc() {
@@ -257,14 +265,11 @@ changeSingleFCC(songNumber) {
     const PlaylistParam = {
      dj_id: "test",
      playlistName: this.$store.state.currentPlaylist,
-     //try to get it so that you don't need to pass an index to add a song
-     //index: 1,
      entry: {song: item.song_name, artist: album.artist, album: album.name }
    }
    this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
-      //this.entries = res.playlist_entries;
-      //console.log(res);
-      //this.getSongs();
+    if(this.$store.state.currentPlaylist != '')
+      this.$router.push({ name: 'Playlists'})
    });
   }
 }
