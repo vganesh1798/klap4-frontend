@@ -3,11 +3,11 @@
     <h1>
       <span class="albums-heading-main">Album Information</span>
     </h1>
-    <h1>{{this.$store.state.currentPlaylist}}</h1>  
     <div class="header-container">
       <div class="row">
         <div class="col s1 offset-s10">
-          <defaultButton class="colored headerbtn" @click.native="openReview()">Write a review</defaultButton>
+          <!--defaultButton class="colored headerbtn" @click.native="openReview()">Write a review</defaultButton-->
+          <defaultButton class="colored headerbtn" @click.native="openReview()">Reviews</defaultButton>
         </div>
       </div>
       <div class="row buttons">
@@ -16,7 +16,7 @@
         </div>
       </div>
     </div>
-    <review :album="album.name" :artist="album.artist" v-if="reviewOpen" @closeReview="closeReview"></review>
+    <review :album="album.name" :artist="album.artist" :reviews="album.reviews" v-if="reviewOpen" @closeReview="closeReview"></review>
     <issue :album="album.name" :artist="album.artist" v-if="issueOpen" @closeIssue="closeIssue"></issue>
     
     <div id="container">
@@ -28,7 +28,7 @@
           </div>
           <div class="card-content" v-if="loaded">
             <span class="card-title">{{album.name}} ({{album.id}})</span>
-            <p>by {{album.artist}} ({{album.artist_id}})</p>
+            <p>by <router-link :to="{name:'ArtistDetail', params:{albumParam:album.artist_id} }" class="artistLink">{{album.artist}}</router-link> ({{album.artist_id}})</p>
             <p v-if="album.label">{{album.label}}</p>
             <p>Added on {{album.date_added}}</p>
             <p>{{ album.genre }}</p>
@@ -40,21 +40,40 @@
           <table class="tracksTable">
             <thead>
               <tr>
-                <th style="width: 25%;">Track</th>
-                <th style="width: 25%;">Name</th>
-                <th style="width: 25%;">FCC Status</th>
-                <th style="width: 25%;">Plays</th>
+                <th style="width: 16.67%;">Track</th>
+                <th style="width: 16.67%">Recommended</th>
+                <th style="width: 16.67%;">Name</th>
+                <th style="width: 16.67%;">FCC Status</th>
+                <th style="width: 16.67%">Last Played</th>
+                <th style="width: 16.67%;">Plays</th>
               </tr>
             </thead>
 
             <tbody>
               <tr v-for="item in tracks" :key="item.number">
                 <td>{{ item.number }}</td>
+                <td>
+                  <i v-if="item.recommended" class="material-icons-round yellow-text text-accent-4">grade</i>
+                </td>
                 <td>{{ item.song_name }}</td>
-                <td>{{ item.fcc_status }}</td>
+                <td>
+                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'clean'">
+                    <i class="material-icons-round green-text tooltipped" data-tooltip="Clean">check_circle</i>
+                  </defaultButton>
+                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'indecent'">
+                    <i class="material-icons-round orange-text text-lighten-2 tooltipped" data-tooltip="Indecent">error</i>
+                  </defaultButton>
+                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'obscene'">
+                    <i class="material-icons-round red-text tooltipped" data-tooltip="Oscene">error</i>
+                  </defaultButton>
+                  <defaultButton v-if="getFCCStatus(item.fcc_status) == 'unrated'">
+                    <i class="material-icons-round gray tooltipped" data-tooltip="Unrated">help</i>
+                  </defaultButton>
+                </td>
+                <td>{{ item.last_played }}</td>
                 <td>{{ item.times_played }}</td>
                 <defaultButton @click.native="addToPlaylist(item, album)">
-                    <i class="material-icons">add</i>
+                    <i class="material-icons tooltipped" data-tooltip="Add to active playlist">add</i>
                 </defaultButton>
               </tr>
             </tbody>
@@ -65,124 +84,7 @@
   </div>
 </template>
 
-<script lang="ts">
-  import {
-    Component,
-    Vue,
-    Watch,
-    Prop
-  } from 'vue-property-decorator';
-
-  import defaultButton from "../../../components/Button.vue";
-  import review from "../../../components/Review.vue";
-  import issue from "../../../components/Issue.vue";
-
-  @Component({
-    components: { defaultButton,
-                  review,
-                  issue }
-  })
-  export default class Albumdeeets extends Vue {
-    album = {}
-    tracks = []
-    issueOpen = false;
-    reviewOpen = false;
-    fcc = 0;
-
-    loaded = false;
-
-    beforeCreate() {
-      this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
-        this.tracks = this.$store.state.singleAlbum.songs
-        this.album = this.$store.state.singleAlbum
-        console.log(this.album)
-      })
-      .finally(() => {
-        this.loaded = true
-      })
-    }
-
-    get curPath() {
-      return this.$route.path
-    }
-
-    @Watch('curPath')
-    newPath(newPath, oldPath) {
-      this.loaded = false
-            this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
-        this.tracks = this.$store.state.singleAlbum.songs
-        this.album = this.$store.state.singleAlbum
-        console.log(this.album)
-      })
-      .finally(() => {
-        this.loaded = true
-      })
-    }
-
-    changeSingleFCC(songNumber) {
-      const FCCParams = {
-        'id': this.$route.params.albumParam,
-        'songNumber': songNumber,
-        'fcc': this.fcc
-      };
-      this.$store.dispatch('changeSingleFCC', FCCParams)
-        .then(res => {
-          console.log(res.data);
-        })
-    }
-
-    changeAlbumFCC() {
-      const FCCParams = {
-        'id': this.$route.params.albumParam,
-        'songNumber': null,
-        'fcc': this.fcc
-      };
-      this.$store.dispatch('changeAlbumFCC', FCCParams)
-        .then(res => {
-          console.log(res.data);
-        })
-    }
-
-    openReview() {
-      this.reviewOpen = true;
-      return this.reviewOpen;
-    }
-
-    @Watch('closeReview')
-      closeReview() {
-        this.reviewOpen = false;
-        return this.reviewOpen;
-      }
-
-    openIssue() {
-      this.issueOpen = true;
-      return this.issueOpen;
-    }
-
-    @Watch('closeIssue')
-      closeIssue() {
-        this.issueOpen = false;
-        return this.issueOpen;
-      }
-
-    addToPlaylist(item, album) {
-      console.log(item)
-      const PlaylistParam = {
-       dj_id: "test",
-       playlistName: this.$store.state.currentPlaylist,
-       //try to get it so that you don't need to pass an index to add a song
-       //index: 1,
-       entry: {song: item.song_name, artist: album.artist, album: album.name }
-     }
-     this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
-        //this.entries = res.playlist_entries;
-        //console.log(res);
-        //this.getSongs();
-     });
-    }
-  }
-</script>
-
+<script lang="ts" src='./Albumdeets.ts'/>
 
 <style lang="scss" scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
@@ -241,5 +143,9 @@
 
   h1 {
     margin: 0px;
+  }
+
+  .artistLink {
+    color: black !important;
   }
 </style>

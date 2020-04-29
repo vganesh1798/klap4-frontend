@@ -3,7 +3,7 @@
         <div class="bg-home">
             <div class="text">
                 <h1 class="heading-primary">
-                    <span class="heading-primary-main">KMNR</span>
+                    <span class="heading-primary-main">KLAP4</span>
                     <span class="heading-primary-sub">89.7FM</span>
                 </h1>
             </div>

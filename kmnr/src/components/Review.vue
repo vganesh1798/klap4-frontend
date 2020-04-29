@@ -6,47 +6,106 @@
                 <defaultButton class="closeBtn" @click.native="closeReview" type="submit">X</defaultButton>
             </div>
         </div>
+        <p>{{reviews}}</p>
         <div class="row">
-            <h1>Writing review for {{album}} by {{artist}}</h1>
+            <a class="tooltipped" :data-tooltip="album"><h1 class="albumTitle">{{album}}</h1></a>
+            <h2> by {{artist}}</h2>
         </div>
-          <div class="row">
+        <div v-if="reviews.length === 0">
+            <h2 class="noentries">No reviews yet...write the first one!</h2>
             <div class="input-field">
-              <label for="review">Write a review</label>
-              <textarea v-model="review" type="text" class="materialize-textarea" id="review"></textarea>
+              <label for="reviewbutton">Write a review</label>
+                <textarea v-model="review" type="text" class="materialize-textarea" id="review"></textarea>
             </div>
-              <button v-on:click=postReview() class="btn">Submit</button>
+              <button v-on:click="postReview()" class="btn">Submit</button>
           </div>
-        </div>
+          <div v-else>
+                <defaultButton class="colored writereviewbtn" @click.native="writeReview()">Write A Review</defaultButton>
+                <div v-if="editSpace">
+                     <div class="row">
+                <form>
+                    <div class="input-field">
+                        <label for="review">Write a review</label>
+                        <textarea required v-model="userreview" type="text" class="materialize-textarea" id="userreview"></textarea>
+                    </div>
+                
+                </form>
+                <defaultButton class="colored submitbutton" @click.native="postReview()"  type="submit">Submit</defaultButton>
+                     </div>
+                </div>
+            
+          
+          <div class="row">
+              <div :class="{
+                'reviews': !editSpace,
+                'shrunkreviews' : editSpace}">
+                    <ul id="review-list">
+                        <li 
+                            class="review-element" 
+                            v-for="review in reviews" 
+                            :key="review['id']">
+                            <p class="reviewerName">{{review.reviewer}}</p>
+                            <p class="reviewedDate">{{review.date_entered.split(" ")[0]}}</p>
+                            <p class="reviewText">{{review.review}}</p>
+                        </li>
+                    </ul>
+                </div>
+          </div>
+          </div>
+    </div>
     </div>
 </template>
 
 <script lang='ts'>
     import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
     import defaultButton from "../components/Button.vue";
+    import M from "materialize-css";
 
     @Component ({
         components: { defaultButton }
     })
     export default class review extends Vue {
         close = false;
-        review = "";
+        userreview = "";
         constructor() {
             super()
         }
 
+        testreviews = ['this album is awesome', 'hate it', 'i dont know what to say but i want this review to be really long so that is spans multiple lines, so i am just going to keep typing nothing important',
+                        'more reviews', 'this album sucks', 'sdalgjsd;g', 'dds;slkgjskl;djfkrjegfjfkl;e;jrgfdffgjkldskerlhgdjf','aslkdj']
         @Prop(String) album !: string
         @Prop(String) artist !: string
+        @Prop(Object) reviews!: object
+        editSpace: Boolean = false;
+        tooltipped: Boolean = true;
 
         postReview() {
+            console.log("posting review")
+            this.editSpace = false;
             const reviewParams = {
                 'id': this.$route.params.albumParam,
                 'reviewer': this.$store.state.currentUser,
-                'review': this.review
+                'review': this.userreview
             }
             this.$store.dispatch('postReview', reviewParams)
                 .then(res => {
+                    this.reviews = res.data
                     console.log(res.data)
                 })
+        }
+
+        writeReview() {
+            this.editSpace = !this.editSpace;
+        }
+
+        mounted() {
+            if (this.tooltipped) {
+                this.tooltipped = false
+                const elemsTooltip = document.querySelectorAll('.tooltipped')
+                console.log(elemsTooltip)
+                
+                const tooltipInstance = M.Tooltip.init(elemsTooltip)
+            }
         }
 
         @Emit('closeReview') 
@@ -63,11 +122,41 @@ h1 {
     font-size: 48px;
 }
 
-a {
-    font-size: 14px;
-    position: absolute;
-    bottom: 0%;
-    right: 5%;
+h2 {
+    text-align: center;
+    font-size: 36px;
+}
+
+p {
+    padding: 0;
+    margin: 0;
+}
+
+
+.albumTitle {
+    color: black;
+    text-align: center;
+    font-size: 48px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.material-tooltip {
+    z-index: 9999999 !important;
+}
+
+.reviewerName {
+    font-size: 14px;   
+}
+
+.reviewedDate {
+    color: rgb(61, 61, 61);
+    font-size: 10px;
+}
+
+.reviewText {
+    font-size: 20px;
 }
 
 .closeBtn {
@@ -77,15 +166,29 @@ a {
     cursor: pointer;
 }
 
+.writereviewbtn {
+    padding: 2% !important;
+    margin-left: 40% !important;
+    margin-bottom: 5%;
+}
+
+.noentries {
+    padding-top: 25%;
+    font-size: 20px;
+
+}
+
 .review {
     background-color:white;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 500px;
-    width: 500px;
-    padding: 0% 5% 20% 5%;
+    //height: 500px;
+    //width: 500px;
+    height: 90%;
+    width: 35%;
+    padding: 0% 2% 20% 2%;
     border-radius: 3%;
     font-family: 'Montserrat';
     z-index: 9999;
@@ -101,5 +204,42 @@ a {
     margin: 0 0 0 0;
     width: 50%;
 }
+
+.submitbutton {
+    padding: 2% !important;
+    margin-left: 44% !important;
+}
+.reviews {
+    color: whitesmoke;
+    height: 27vw;
+    max-height: 27vw;
+    overflow: auto;
+    //background-color: #253e4d;
+    background-color: rgb(245, 241, 241);
+}
+
+.shrunkreviews {
+    color: whitesmoke;
+    height: 19.3vw;
+    max-height: 19.3vw;
+    overflow: auto;
+    //background-color: #253e4d;
+    background-color: rgb(245, 241, 241);
+}
+
+.review-list {
+    max-height: 50px;
+    overflow: auto;
+}
+
+.review-element {
+    color: black;
+    background-color:rgba(146, 143, 143, 0.4);
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding: 3%;
+    width: 100%;
+}
+
 
 </style>s

@@ -73,9 +73,19 @@ export default class PlaylistSwitch extends Vue {
         console.log(playlistParam);
         this.$store.dispatch('deletePlaylist', playlistParam).then(res => {
             //this.playlists = res;
-            //console.log(this.playlists);
-    });
-    this.getPlaylists();
+            console.log(res);
+            this.getPlaylists();
+        });
+        if(this.$store.state.currentPlaylist == playlistParam.p_name) {
+             const PlaylistParam = {
+                playlist_name: ''
+            }
+            console.log("i am updating to a new playlist", PlaylistParam.playlist_name)
+            this.$store.dispatch('setCurrPlaylist', PlaylistParam).then(() => {
+                console.log("after", this.$store.state.currentPlaylist)
+                this.closeSwitch();
+            });
+        }
     }
 
     updatePlaylist(id, playlist, show) {
@@ -86,7 +96,7 @@ export default class PlaylistSwitch extends Vue {
         console.log("i am updating to a new playlist", PlaylistParam.playlist_name)
         this.$store.dispatch('setCurrPlaylist', PlaylistParam).then(() => {
                 console.log("after", this.$store.state.currentPlaylist)
-                //this.getPlaylists();
+
                 this.newPlaylist(id, playlist, show)
             });
     }
@@ -126,18 +136,9 @@ export default class PlaylistSwitch extends Vue {
         border-radius: 1.2%;
         border-top-left-radius: 1%; border-top-right-radius: 1%;
         transform: translate(-50%, -50%);
+        z-index: 999;
     }
 
-    // .playlist-selector::after {
-    //     background: linear-gradient(to right, #269E84 25%,#D9CF9F 25%, #E9B342 50%, #EA3C36 50%, #EA3C36 75%, #4F9DB4 75%);
-    //     position: absolute;
-    //     border-radius: 10px;
-    //     content: '';
-    //     height: 4px;
-    //     right: 0;
-    //     left: 0;
-    //     top: 0;
-    // }
 
     .playlists {
         color: whitesmoke;
@@ -154,8 +155,6 @@ export default class PlaylistSwitch extends Vue {
     }
 
     .playlist-element {
-        //border-bottom: black;
-        //border-style: solid;
         background-color:rgba(192, 189, 189, 0.4);
         margin-top: 1%;
         margin-bottom: 1%;
@@ -164,7 +163,6 @@ export default class PlaylistSwitch extends Vue {
 
     .playlistName {
         text-align: left !important;
-        //width: 30.5vw;
         width: 93%;
     }
 

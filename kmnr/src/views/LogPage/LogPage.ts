@@ -30,7 +30,6 @@ export default class LogPage extends Vue {
     artist: string = "";
     album: string = "";
     entries: Object[] = [];
-    //num: number = 0;
     uploadBox: Boolean = false;
     playlistBox: Boolean = false;
     editBox: Boolean = false;
@@ -43,8 +42,6 @@ export default class LogPage extends Vue {
         console.log("in getSongs function, ", this.$store.state.currentUser, this.$store.state.currentPlaylist)
         const PlaylistParam = {
                 dj_id: this.$store.state.currentUser,
-                //dj_id: "test",
-                //playlistName: this.currentPlaylist
                 playlistName: this.$store.state.currentPlaylist
             }
         this.$store.dispatch('getPlaylist', PlaylistParam).then(res => {
@@ -53,7 +50,6 @@ export default class LogPage extends Vue {
             else
                 this.entries = []
             console.log("the state variable" ,this.$store.state.logs)
-            //this.num = this.entries.length;
             console.log(this.entries);
         });
     }
@@ -61,16 +57,11 @@ export default class LogPage extends Vue {
     addSong() {
      console.log(this.$store.state.currentPlaylist)
      const PlaylistParam = {
-       //dj_id: "test",
        dj_id: this.$store.state.currentUser,
        playlistName: this.$store.state.currentPlaylist,
-       //playlistName: this.currentPlaylist,
-       //index: ++this.num,
        entry: {song: this.song, artist: this.artist, album: this.album}
      }
      this.$store.dispatch('addPlaylistEntry', PlaylistParam).then(res => {
-        this.entries = res.playlist_entries;
-        console.log(res);
         this.getSongs();
      });
     }
@@ -81,24 +72,21 @@ export default class LogPage extends Vue {
 
     removeSong(row) {
         const PlaylistParam = {
-            //dj_id: "test",
             dj_id: this.$store.state.currentUser,
             playlistName: this.$store.state.currentPlaylist,
-            //playlistName: this.currentPlaylist,
             index: row.index,
             entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album}
           }
-          this.$store.dispatch('deletePlaylistEntry', PlaylistParam).finally(() => {
+          this.$store.dispatch('deletePlaylistEntry', PlaylistParam).then(res => {
+              console.log(res)
              this.getSongs();
           });
-          //this.num--;
     }
 
     updateEntry(row) {
         console.log("updating entry", row.index)
         const PlaylistParam = {
             dj_id: "test",
-            //playlistName: this.currentPlaylist,
             playlistName: this.$store.state.currentPlaylist,
             index: row.index,
             entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album},
@@ -111,16 +99,11 @@ export default class LogPage extends Vue {
     }
 
     movePlaylistEntry(val){
-        //console.log("moved row", val.moved.newIndex, val.moved.oldIndex)
-        //console.log("updating entry")
         const PlaylistParam = {
             dj_id: "test",
-            //playlistName: this.currentPlaylist,
             playlistName: this.$store.state.currentPlaylist,
             index: val.moved.oldIndex+1,
             newIndex: val.moved.newIndex+1
-            //entry: {song: row.entry.song, artist: row.entry.artist, album: row.entry.album},
-            //newEntry: {song: 'newsong', artist: 'newartist', album:'newalbum'}
         }
         console.log(PlaylistParam.index, PlaylistParam.newIndex);
         this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
@@ -200,7 +183,6 @@ export default class LogPage extends Vue {
             console.log(this.djname, this.currentPlaylist, this.currentShow)
             this.getCurrentPlaylist(this.currentPlaylist);
             this.getCurrentUser();
-            //this.getCurrentPlaylist(this.currentPlaylist);
             this.getSongs();
         }
     
@@ -228,7 +210,6 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            //playlistName: this.currentPlaylist,
             playlistName: this.$store.state.currentPlaylist,
             index: entry.index,
             entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
@@ -236,11 +217,9 @@ export default class LogPage extends Vue {
           }
      
            this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-              //this.entries = res.playlist_entries;
               console.log(res);
               this.getSongs();
            });
-        // console.log(entry.index);
     }
 
     updateArtist(e, entry) {
@@ -250,7 +229,6 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            //playlistName: this.currentPlaylist,
             playlistName: this.$store.state.currentPlaylist,
             index: entry.index,
             entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
@@ -258,11 +236,9 @@ export default class LogPage extends Vue {
           }
      
            this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-              //this.entries = res.playlist_entries;
               console.log(res);
               this.getSongs();
            });
-        // console.log(entry.index);
     }
 
     updateAlbum(e, entry) {
@@ -272,7 +248,6 @@ export default class LogPage extends Vue {
 
         const PlaylistParam = {
             dj_id: "test",
-            //playlistName: this.currentPlaylist,
             playlistName: this.$store.state.currentPlaylist,
             index: entry.index,
             entry: {song: entry.entry.song, artist: entry.entry.artist, album: entry.entry.album},
@@ -280,10 +255,8 @@ export default class LogPage extends Vue {
           }
      
            this.$store.dispatch('updatePlaylistEntry', PlaylistParam).then(res => {
-              //this.entries = res.playlist_entries;
               console.log(res);
               this.getSongs();
            });
-        // console.log(entry.index);
     }
 }

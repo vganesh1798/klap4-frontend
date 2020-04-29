@@ -11,6 +11,7 @@ import Charts from '../views/Charts/Charts.vue';
 import Programming from '../views/Programming/Programming.vue';
 import StreamPage from '../views/Stream/StreamPage.vue';
 import SearchPage from '../views/Search/Search.vue';
+import ErrorPage from '../views/ErrorPage/ErrorPage.vue';
 
 Vue.use(VueRouter)
 
@@ -74,6 +75,11 @@ const routes = [
     path: '*',
     name: 'Error',
     component: HomePage
+  },
+  {
+    path: '/error-404',
+    name: 'error-404',
+    component: ErrorPage
   },
 ]
 

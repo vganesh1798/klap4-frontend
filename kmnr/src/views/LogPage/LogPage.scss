@@ -1,5 +1,5 @@
 .full-page {
-    background-image: linear-gradient(white, rgb(36, 206, 107));
+    background-image: linear-gradient(rgb(155, 240, 197), rgb(50, 172, 101));
     background-size: 100% auto;
     background-repeat: repeat;
     padding-top: 7%;
@@ -45,18 +45,32 @@ h1 {
     height: 58vh;
     width: 30vw;
     overflow: auto;
-    background-color: rgba(114, 107, 107, 0.2); 
-    border-radius: 2%;
+    background-color: rgba(114, 107, 107, 0.2);
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12); 
+    border-radius: 3px;
+    overflow: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.inner-col {
+    padding-left: 2%;
+    padding-right: 2%;
 }
 
 #tablecols {
-    min-width: 150px;
-    max-width: 150px;
+    min-width: 143px;
+    max-width: 143px;
+}
+
+#routingcols {
+    min-width: 25px;
+    max-width: 25px;
 }
 
 .header {
-    min-width: 115px;
-    max-width: 115px;
+    min-width: 140px;
+    max-width: 140px;
 }
 
 .newButton {
@@ -68,10 +82,7 @@ h1 {
 }
 
 .editButton {
-    //background-color: rgba(100, 100, 100, .2);
-    //color: rgb(70, 68, 68);
     position: fixed;
-    //display: block;
     font-size: .8vw;
     top: 16%;
     left: 1%;
@@ -85,11 +96,9 @@ td.last {
 
 .form {
     padding: 5% 5%;
-    //background-color: rgba(255,255,255,.2);
-    background-color: rgba(114, 107, 107, 0.2);
-    border-radius: 3%;
-    //margin-top: 50px;
-    //width: 35vw;
+    background-color: rgba(203, 248, 223, 0.2);
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+    border-radius: 3px;
     height: 58vh;
     width: 30vw;
 }
@@ -131,5 +140,5 @@ label {
     width: 26.7vw;
     height: 5vh;
     padding: 1.5% !important;
-    margin-top: 25px;
+    margin-top: 0px;
 }

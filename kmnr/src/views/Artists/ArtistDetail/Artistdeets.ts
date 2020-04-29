@@ -1,5 +1,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 
+import M from 'materialize-css';
+
 @Component({})
 export default class Albumdeets extends Vue {
     constructor() {
@@ -8,6 +10,7 @@ export default class Albumdeets extends Vue {
 
     artist = {};
     albums = [];
+    tooltipped = true;
 
     getArtistInfo() {
         this.$store.dispatch('displayArtist', this.$route.params.albumParam).then(res => {
@@ -28,8 +31,56 @@ export default class Albumdeets extends Vue {
         })
     }
 
+    formatImage(formatCode) {
+        let imgPath: string = '';
+        let parsedFormat: string = '';
+        switch(formatCode) {
+            case 0b00001:
+                imgPath = 'LP.png';
+                parsedFormat = 'LP';
+                break;
+            case 0b00010:
+                imgPath = 'CD.png';
+                parsedFormat = 'CD';
+                break;
+            case 0b00100:
+                imgPath = 'Digital.png';
+                parsedFormat = 'Digital';
+                break;
+            case 0b10000:
+                imgPath = '7.png';
+                parsedFormat = '7\"';
+                break;
+            case 0b01001:
+                imgPath = '12.png';
+                parsedFormat = '12\" (Single)';
+                break;
+            case 0b01010:
+                imgPath = 'CDS.png';
+                parsedFormat = 'CD (Single)';
+                break;
+            case 0b01100:
+                imgPath = 'Digital.png';
+                parsedFormat = 'Digital (Single)';
+                break;
+            default:
+                break;
+        }
+        return require('../../../assets/formats/'+imgPath)
+    }
+
     created() {
         this.getArtistInfo();
+    }
+
+    updated() {
+        if(this.tooltipped) {
+            this.tooltipped = false;
+            this.$nextTick(()=>{
+                const elemsTooltip = document.querySelectorAll('.tooltipped')
+                const tooltipInstance = M.Tooltip.init(elemsTooltip)
+            })
+        }
     }
 
 }

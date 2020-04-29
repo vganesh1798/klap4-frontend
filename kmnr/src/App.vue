@@ -1,8 +1,8 @@
 <template>
   <div class="full-view" >
-    <HeaderMobile/>
+    <HeaderMobile />
     <div class="content" :class="{'open':opened}" >
-        <div v-on:click="toggle()" id="navigation-icon" v-if="mobileView">
+        <div class='ham' v-on:click="toggle()" id="navigation-icon" v-if="mobileView">
           <i  class="fas fa-bars"></i>
         </div>
             <Header v-if="!mobileView"/>
@@ -111,6 +111,9 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+  .ham{
+    z-index: 99999;
+  }
   .stream-open, .stream-closed {
     margin-left: 92%;
     cursor: pointer;
