@@ -92,10 +92,7 @@
                 'items-top': !scrolledTop,
                 'items-full': scrolledTop,
                 'preload': preload
-            }"><md-chip>{{user}}</md-chip></div>
-            
-
-            
+            }"><md-chip>{{curUser}}</md-chip></div>
             
             
         </nav>
@@ -125,7 +122,7 @@
         user = this.$store.state.currentUserInfo['full_name']
 
         get curUser() {
-            return this.$store.state.currentUser
+            return this.$store.state.currentUserInfo['full_name']
         }
         get route() {
             console.log(this.$route.path)
@@ -164,9 +161,7 @@
                     this.logoSource = images('./radio.png')
                 }
             })
-        }
 
-        beforeUpdate() {
             if (this.$cookies.isKey('csrf_access_token')) {
                 this.$store.dispatch('getCurrUser')
                 this.userAuth = true
