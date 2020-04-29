@@ -5,7 +5,7 @@
         <div class="row">
           <span class="heading-charts-main">Explore Charts</span>
         </div>
-        <div class="row">
+        <div class="row btns">
           <div class="col s5"></div>
           <defaultButton class="colored" style="margin-right: 5%;" @click.native="getCharts()">Top Charts</defaultButton>
           <defaultButton class="colored" @click.native="getNewCharts()">New Charts</defaultButton>

@@ -81,19 +81,12 @@
                 'preload': preload,
 				'preload-full': preloadFull
             }" to="/log">Playlists</router-link>
-
             <router-link :class="{
                 'items-top': !scrolledTop && !preload && !preloadFull,
                 'items-full': scrolledTop && !preload && !preloadFull,
                 'preload': preload,
 				'preload-full': preloadFull
-            }" to="/stream">Stream</router-link>
-            <router-link :class="{
-                'items-top': !scrolledTop && !preload && !preloadFull,
-                'items-full': scrolledTop && !preload && !preloadFull,
-                'preload': preload,
-				'preload-full': preloadFull
-            }" to="/programming">Programming</router-link>
+            }" to="/programming">KELP</router-link>
 
             <a :class="{
                 'items-top': !scrolledTop && !preload && !preloadFull,
@@ -101,12 +94,17 @@
                 'preload': preload,
 				'preload-full': preloadFull
             }" href="http://www.cleveland.kmnr.org">Cleveland</a>
+            <a v-if="isAdmin" :class="{
+                'items-top': !scrolledTop,
+                'items-full': scrolledTop,
+                'preload': preload
+            }" href="localhost:5000/admin">Admin</a>
             <div v-if="userAuth" :class="{
                 'items-top': !scrolledTop && !preload && !preloadFull,
                 'items-full': scrolledTop && !preload && !preloadFull,
                 'preload': preload,
 				'preload-full': preloadFull
-            }"><md-chip>{{curUser}}</md-chip></div>
+            }"><md-chip>Logged in as {{curUser}}</md-chip></div>
             
             
         </nav>
@@ -155,6 +153,10 @@
             let onHomePage = this.route === '/' || this.route === '/home'
             this.preload = onHomePage
             this.preloadFull = !onHomePage
+        }
+
+        get isAdmin() {
+            return this.$store.state.currentUserInfo['role']
         }
 
         beforeMount() {

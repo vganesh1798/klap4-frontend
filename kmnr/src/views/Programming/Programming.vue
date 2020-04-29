@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col s12">
           <h1>
-            <span class="prog-heading-main">Programming</span>
+            <span class="heading-charts-main">Programming</span>
           </h1>
         </div>
       </div>
@@ -102,7 +102,17 @@
 
 <style lang="scss" scoped>
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
-
+  .heading-charts-main {
+    padding-top: 5.5%;
+    display: block;
+    font-size: 3.75vw;
+    text-align:center;
+    padding-bottom: 0%;
+    padding-left: 10%;
+    margin-bottom: 0%;
+    color: black;
+    font-family: 'Covered By Your Grace';
+  }
   .nav-buttons {
     padding-left: 0px;
     padding-right: 0px;

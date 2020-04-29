@@ -6,7 +6,6 @@
                 <defaultButton class="closeBtn" @click.native="closeReview" type="submit">X</defaultButton>
             </div>
         </div>
-        <p>{{reviews}}</p>
         <div class="row">
             <a class="tooltipped" :data-tooltip="album"><h1 class="albumTitle">{{album}}</h1></a>
             <h2> by {{artist}}</h2>
@@ -53,7 +52,6 @@
           </div>
           </div>
     </div>
-    </div>
 </template>
 
 <script lang='ts'>
@@ -71,8 +69,6 @@
             super()
         }
 
-        testreviews = ['this album is awesome', 'hate it', 'i dont know what to say but i want this review to be really long so that is spans multiple lines, so i am just going to keep typing nothing important',
-                        'more reviews', 'this album sucks', 'sdalgjsd;g', 'dds;slkgjskl;djfkrjegfjfkl;e;jrgfdffgjkldskerlhgdjf','aslkdj']
         @Prop(String) album !: string
         @Prop(String) artist !: string
         @Prop(Object) reviews!: object
@@ -89,8 +85,9 @@
             }
             this.$store.dispatch('postReview', reviewParams)
                 .then(res => {
-                    this.reviews = res.data
-                    console.log(res.data)
+                    this.reviews += res
+                    console.log(res)
+                    this.closeReview();
                 })
         }
 
@@ -242,4 +239,4 @@ p {
 }
 
 
-</style>s
+</style>
