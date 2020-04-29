@@ -65,14 +65,15 @@
   }
 
   .artists-heading-main {
-    display: block;
-    font-size: 60px;
-    font-weight: 60;
     padding-top: 5%;
-    padding-left: 35%;
-    padding-bottom: 1%;
-    color: Black;
-    font-family: 'Montserrat';
+    padding-bottom: 10%;
+    display: block;
+    font-size: 3.75vw;
+    text-align:center;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
   }
 
   .card {
