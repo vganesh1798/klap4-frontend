@@ -1,7 +1,6 @@
 .full-container {
   vertical-align: top;
 }
-
 .bg-charts {
   background-image: url('../../assets/new.jpg');
   background-position: center;
@@ -22,13 +21,15 @@
 }
 
 .heading-charts-main {
-  padding-top: 2.5%;
-  display: block;
-  font-size: 3.75vw;
-  text-align:center;
-  padding-bottom: 1%;
-  color: rgb(70, 68, 68);
-  font-family: 'Covered By Your Grace';
+    padding-top: 5.5%;
+    padding-bottom: 10%;
+    display: block;
+    font-size: 3.75vw;
+    text-align:center;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
 }
 
 .chartsTable {
