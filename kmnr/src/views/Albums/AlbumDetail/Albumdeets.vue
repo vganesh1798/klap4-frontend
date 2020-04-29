@@ -6,7 +6,8 @@
     <div class="header-container">
       <div class="row">
         <div class="col s1 offset-s10">
-          <defaultButton class="colored headerbtn" @click.native="openReview()">Write a review</defaultButton>
+          <!--defaultButton class="colored headerbtn" @click.native="openReview()">Write a review</defaultButton-->
+          <defaultButton class="colored headerbtn" @click.native="openReview()">Reviews</defaultButton>
         </div>
       </div>
       <div class="row buttons">
@@ -15,7 +16,7 @@
         </div>
       </div>
     </div>
-    <review :album="album.name" :artist="album.artist" v-if="reviewOpen" @closeReview="closeReview"></review>
+    <review :album="album.name" :artist="album.artist" :reviews="album.reviews" v-if="reviewOpen" @closeReview="closeReview"></review>
     <issue :album="album.name" :artist="album.artist" v-if="issueOpen" @closeIssue="closeIssue"></issue>
     
     <div id="container">
@@ -27,7 +28,7 @@
           </div>
           <div class="card-content">
             <span class="card-title">{{album.name}} ({{album.id}})</span>
-            <p>by {{album.artist}} ({{album.artist_id}})</p>
+            <p>by <router-link :to="{name:'ArtistDetail', params:{albumParam:album.artist_id} }" class="artistLink">{{album.artist}}</router-link> ({{album.artist_id}})</p>
             <p v-if="album.label">{{album.label}}</p>
             <p>Added on {{album.date_added}}</p>
             <p>{{ album.genre }}</p>
@@ -142,5 +143,9 @@
 
   h1 {
     margin: 0px;
+  }
+
+  .artistLink {
+    color: black !important;
   }
 </style>

@@ -383,7 +383,7 @@ export default new Vuex.Store({
         'dj_id': reviewParams.reviewer,
         'content': reviewParams.review
       }
-
+      console.log(reviewParams.reviewer, reviewParams.review)
       return axios.post(`http://localhost:5000/album/review/${id}`, postObject)
       .then(res => {
         this.commit('addToReviews', (res.data as Array<AlbumReview>))
@@ -430,6 +430,7 @@ export default new Vuex.Store({
     getCurrUser() {
       return axios.get('http://localhost:5000/', {withCredentials: true})
         .then(res => {
+          console.log(res.data)
           this.commit('setUser', res.data['logged_in_as'])
           this.commit('setUserInfo', res.data)
           return res.data
