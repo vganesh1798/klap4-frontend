@@ -3,7 +3,7 @@
       <div class=" table-container">
         <defaultButton class="colored exportBtn">Export for NACC</defaultButton>
         <div class="row">
-          <span class="heading-charts-main">Explore Charts</span>
+          <span class="heading-charts-main fadein">Explore Charts</span>
         </div>
         <div class="row btns">
           <div class="col s5"></div>
