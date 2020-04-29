@@ -80,7 +80,7 @@
               md-content="Your post <strong>Material Design is awesome</strong> has been created." />
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell class="add-btn-col" md-label="Add">
-                <a class="program-adder" @click="addToQueue(item)"><i class="material-icons-round">playlist_add</i></a>
+                <a class="program-adder queue" @click="addToQueue(item)"><i class="material-icons-round">playlist_add</i></a>
                 <a class="program-adder" @click="openLogEntries(item)"><i class="material-icons-round">queue</i></a>
               </md-table-cell>
               <md-table-cell md-label="Type" md-sort-by="id" md-numeric>{{ item.type }}
@@ -101,6 +101,10 @@
 
 
 <style lang="scss" scoped>
+  .queue {
+    margin-right: 10px;
+  }
+
   @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
   .autocomplete-content {
     z-index: 9999999999 !important;
