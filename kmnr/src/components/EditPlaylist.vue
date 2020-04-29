@@ -1,8 +1,6 @@
 <template>
     <div class="playlist">
         <div class="row">
-            <p>{{this.current_playlist}}</p>
-            <p>{{this.current_show}}</p>
             <div class="col l11"></div>
             <div class="col l1">
                 <defaultButton class="closeBtn" @click.native="closeEdit" type="submit">X</defaultButton>

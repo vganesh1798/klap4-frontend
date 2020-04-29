@@ -31,10 +31,12 @@
                                 <tr>
                                     <th scope="col" style="min-width: 35px;"></th>
                                     <th scope="col" class="header">Song</th>
+                                    <th scope="col" style="min-width: 30px;"></th>
                                     <th scope="col" class="header">Artist</th>
+                                    <th scope="col" style="min-width: 30px;"></th>
                                     <th scope="col" class="header">Album</th>
                                     <th scope="col" style="min-width: 35px"></th>
-                                    <th scope="col" class="delete" style="min-width: 35px;"></th>
+                                    <th scope="col" class="delete" style="min-width: 20px;"></th>
                                 </tr>
                             </thead>
                             <!--tbody-->
@@ -52,24 +54,28 @@
                                                 {{ entry.entry.song }}
                                             </p>
                                         </td>
+                                         <td id="routingcols">
+                                            <router-link v-if="entry.reference_type==1" style="padding-left: 30%;" :to="{name:'ArtistDetail', params:{albumParam:entry.reference.substring(0,3)} }">
+                                                <i class="material-icons" style="display:inline-block; font-size: 18px;">launch</i>
+                                            </router-link>
+                                        </td>
                                         <td id="tablecols">
                                             <p v-html="entry.entry.artist" @blur="updateArtist($event, entry)" :="allowEdits" contenteditable="allowEdits" style="display: inline-block;">
                                                 {{entry.entry.artist }}
                                             </p>
-                                            <router-link v-if="entry.reference_type==1" :to="{name:'ArtistDetail', params:{albumParam:entry.reference.substring(0,3)} }"><p style="display: inline-block;">+</p></router-link>
+                                        </td>
+                                       <td id="routingcols">
+                                            <router-link v-if="entry.reference_type==1" style="padding-left: 30%;" :to="{name:'AlbumDetail', params:{albumParam:entry.reference} }">
+                                                <i class="material-icons" style="display:inline-block; font-size: 18px;">launch</i>
+                                            </router-link>
                                         </td>
                                         <td id="tablecols">
                                             <p v-html="entry.entry.album" @blur="updateAlbum($event, entry)" contenteditable="true" style="display: inline-block;">
                                                 {{entry.entry.album}}
                                             </p>
-                                            <router-link v-if="entry.reference_type==1" :to="{name:'AlbumDetail', params:{albumParam:entry.reference} }"><i class="material-icons" style="display:inline-block; font-size: 18px;">launch</i></router-link>
                                         </td>
-                                        <td style="min-width: 10px;">
-                                            <defaultButton @click.native="allowEdit()">
-                                                <i class="material-icons">edit</i>
-                                            </defaultButton>
-                                        </td>
-                                        <td style="min-width: 10px;">
+                                        
+                                        <td style="min-width: 45px;">
                                             <defaultButton  @click.native="removeSong(entry)">
                                                 <i class="material-icons">clear</i>
                                             </defaultButton>
@@ -79,39 +85,45 @@
                             <!--/tbody-->
                         </table>
                     </div>
-                        <div class="col s6 offset-s1">
+                        <div class="col s1 inner-col"></div>
+                        <div class="col s6">
                         <div class="form">
                             <form @submit.prevent="addSong">
                                 <div class="row">
                                     <h2 class="form-header">Add Songs to Playlist</h2>
                                 </div>
                                 <div class="row">
-                                    <div class="col s12">
+                                    <div class="input-field col s12">
                                         <label for="song">Song</label>
-                                        <input v-model="song" required type="text" id="song" />
+                                        <input required v-model="song" type="text" id="song" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s12">
+                                    <div class="input-field col s12">
                                         <label for="artist">Artist</label>
-                                        <input v-model="artist" required type="text" id="artist" />
+                                        <input required v-model="artist" type="text" id="artist" />
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s12">
+                                    <div class="input-field col s12">
                                         <label for="album">Album</label>
-                                        <input v-model="album" required type="text" id="album" />
+                                        <input required v-model="album" type="text" id="album" />
                                     </div>
                                 </div>
-                                <defaultButton class="colored longbtn" style="margin-bottom: 10px;" type="button" @click.native="addSong()">Add to log!</defaultButton>
+                                <defaultButton class="colored longbtn" style="margin-bottom: 10px;" type="submit">Add to log!</defaultButton>
                                 <br/>
 
-                                <defaultButton class="colored mybtn" type="submit" style="margin-right: 15px;">Post playlist!</defaultButton>
+                                <div class="row">
+                                    <div class="col s6">
+                                <defaultButton class="colored mybtn" type="submit">Post playlist!</defaultButton>
+                                    </div>
+                                    <div class="col s6">
                                 <defaultButton class="colored mybtn" type="submit">Save playlist!</defaultButton>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
-                    <div class="col s1"></div>
                 </div>
             </div>
             <div v-else>

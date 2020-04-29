@@ -16,7 +16,6 @@
             </div>
               <button v-on:click=postReview() class="btn">Submit</button>
           </div>
-        </div>
     </div>
 </template>
 
