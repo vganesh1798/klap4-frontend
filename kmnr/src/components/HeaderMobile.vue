@@ -10,7 +10,8 @@
       <li><router-link to="/log">Playlists</router-link></li>
       <li><router-link to="/search">Search</router-link></li>
       <li><router-link to="/charts">Charts</router-link></li>
-      <li><a @click="openLogin()">Login</a></li>
+      <li><a v-if="!userAuth" @click="openLogin()">Login</a>
+      <a v-else @click="logOut()">Logout</a></li>
     </ul>
     <login v-if="loginOpen || (route === '/programming' && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
   </div>
@@ -35,6 +36,10 @@ export default class HeaderMobile extends Vue {
   get curUser() {
             return this.$store.state.currentUser
         }
+  get route() {
+            console.log(this.$route.path)
+            return this.$route.path
+        }
   @Watch('closeLogin')
         closeLogin() {
             this.on = true;
@@ -45,6 +50,23 @@ export default class HeaderMobile extends Vue {
             this.closeLogin()
             this.userAuth = true
         }
+
+  beforeMount() {
+            if (this.$cookies.isKey('csrf_access_token')) {
+                this.$store.dispatch('getCurrUser')
+                this.userAuth = true
+            }
+        }
+  beforeUpdate() {
+            if (this.$cookies.isKey('csrf_access_token')) {
+                this.$store.dispatch('getCurrUser')
+                this.userAuth = true
+            }
+        }
+  logOut() {
+            this.$store.dispatch('logout').then(res => this.userAuth = false)
+        }
+      
 }
 </script>
 
