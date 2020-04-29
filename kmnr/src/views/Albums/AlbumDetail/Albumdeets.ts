@@ -50,7 +50,7 @@ export default class Albumdeeets extends Vue {
   addToQueue(song) {
     let newSong = {
       title: song.song_name,
-      file: "/" + (this.album as any).artist + "/" + (this.album as any).name + "/" + this.setSongNum(song.song_num) + " " + song.song_name,
+      file: "T:\\digilib\\Airable Music\\" + (this.album as any).artist + "\\" + (this.album as any).name + "\\" + this.setSongNum(song.song_num) + " " + song.song_name,
       song: null
     }
 
