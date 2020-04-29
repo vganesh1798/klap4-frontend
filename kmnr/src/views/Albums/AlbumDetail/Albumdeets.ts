@@ -8,13 +8,15 @@ import {
 import defaultButton from "../../../components/Button.vue";
 import review from "../../../components/Review.vue";
 import issue from "../../../components/Issue.vue";
+import FCC from '../../../components/FCC.vue'
 
-import M, { options } from 'materialize-css';
+import M from 'materialize-css';
 
 @Component({
   components: { defaultButton,
                 review,
-                issue }
+                issue,
+                FCC }
 })
 export default class Albumdeeets extends Vue {
   album = {}
@@ -25,6 +27,10 @@ export default class Albumdeeets extends Vue {
   fccOpen = false;
   tooltipped = true;
   droppeddown = true;
+
+  fccModalOpen = false
+
+  fccSong = {}
 
   loaded = false;
 
@@ -48,13 +54,15 @@ export default class Albumdeeets extends Vue {
   }
 
   addToQueue(song) {
-    let newSong = {
-      title: song.song_name,
-      file: "T:\\digilib\\Airable Music\\" + (this.album as any).artist + "\\" + (this.album as any).name + "\\" + this.setSongNum(song.song_num) + " " + song.song_name,
-      song: null
-    }
+    if ((this.album as any).format === 4) {
+      let newSong = {
+        title: song.song_name,
+        file: "T:\\digilib\\Airable Music\\" + (this.album as any).artist + "\\" + (this.album as any).name + "\\" + this.setSongNum(song.song_num) + " " + song.song_name,
+        song: null
+      }
 
-    this.$store.commit('addToQueue', newSong)
+      this.$store.commit('addToQueue', newSong)
+    }
   }
 
   get curPath() {
@@ -64,9 +72,9 @@ export default class Albumdeeets extends Vue {
   @Watch('curPath')
   newPath(newPath, oldPath) {
     this.loaded = false
-          this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
-      this.tracks = this.$store.state.singleAlbum.songs
-      this.album = this.$store.state.singleAlbum
+      this.$store.dispatch('displayAlbum', this.$route.params.albumParam).then(res => {
+        this.tracks = this.$store.state.singleAlbum.songs
+        this.album = this.$store.state.singleAlbum
       console.log(this.album)
     })
     .finally(() => {
@@ -86,7 +94,7 @@ export default class Albumdeeets extends Vue {
           this.droppeddown = false;
           this.$nextTick(()=>{
               const elemsDropdown = document.querySelectorAll('.dropdown-trigger');
-              const dropdownInstance = M.dropdown.init(elemsDropdown, options);
+              const dropdownInstance = M.Dropdown.init(elemsDropdown);
           });
       }
   }
@@ -157,10 +165,47 @@ changeSingleFCC(songNumber) {
     return this.issueOpen;
   }
 
-  toggleFCC() {
-      console.log(!this.fccOpen)
-      this.fccOpen = !this.fccOpen
-      return this.fccOpen
+  openFcc() {
+    this.fccModalOpen = true
+    return this.fccModalOpen
+  }
+
+  @Watch('closeFcc')
+  closeFcc() {
+    this.fccModalOpen = false;
+    return this.fccModalOpen
+  }
+
+  toggleFCC(song) {
+    this.fccSong = song
+    this.fccOpen = !this.fccOpen
+    return this.fccOpen
+  }
+
+  changeStatus(fccStatus) {
+    let fccParams = {
+      'songNumber': (this.fccSong as any).number,
+      'id': (this.album as any).id,
+      'FCC': fccStatus
+    }
+
+    this.fccOpen = !this.fccOpen
+
+    this.$store.dispatch('changeSingleFCC', fccParams).then(res =>{
+      for (let i in this.tracks) {
+        if (this.tracks[i].number === this.fccSong.number) {
+          this.tracks[i].fcc_status = fccStatus
+        }
+      }
+
+      this.$nextTick(() => this.$forceUpdate())
+    })
+  }
+
+  @Watch('status')
+  handleStatus(newS, oldS) {
+    for (let i in this.tracks)
+      this.tracks[i].fcc_status = +newS
   }
 
   formatImage(formatCode) {

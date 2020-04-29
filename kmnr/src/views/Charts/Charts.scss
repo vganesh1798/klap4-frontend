@@ -10,6 +10,15 @@
   height: auto;
 }
 
+.defaultTable td {
+  width: 20%;
+}
+
+.play-time {
+  width: 20%;
+  position: relative;
+}
+
 .table-container {
   padding: 4% 10% 0% 10%;
 }
@@ -34,7 +43,7 @@
 
 .chartsTable {
   display: inline-block;
-  height: 53vh;
+  height: 50vh;
   overflow: auto;
 }
 

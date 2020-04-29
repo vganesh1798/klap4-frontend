@@ -24,11 +24,11 @@
       </transition>
       <div class="progress-outer"><div id="prog-inner"></div></div>
       <div>
-      <md-dialog :md-active.sync="queueOpen" style="z-index: 999999">
+      <md-dialog :md-active.sync="queueOpen" style="z-index: 999999; width: 25%">
       <md-dialog-title>Edit Playlist</md-dialog-title>
 
       <md-tabs md-dynamic-height>
-        <md-tab md-label="Playlist">
+        <md-tab md-label="Playlist" class="md-primary">
           <draggable v-model="queue" ghost-class="ghost" @end="onEnd">
                 <transition-group type="transition" name="flip-list">
                     <div class='sortable' v-for="(song, index) in queue" :key="song.file" @click="updateSong(index)">{{ song.title }}</div>
@@ -46,7 +46,6 @@
       :md-duration="isInfinity ? Infinity : duration"
       :md-active.sync="showsnackbar"
       md-persistent
-      style="z-index: 999999"
     >
       <span>Now Playing: {{this.currentTrack}}</span>
     </md-snackbar>
@@ -188,12 +187,18 @@
         this.queue[this.curIndex].song.stop()
         this.curIndex = index
         this.queue[this.curIndex].song.play()
+        this.playing = true
       }
 
       onEnd(evt){
         let oldIdx = evt.oldIndex
+        console.log(evt.oldIndex, evt.newIndex)
         if (evt.oldIndex === this.curIndex && evt.newIndex !== this.curIndex) {
           this.curIndex = evt.newIndex
+        } else if (evt.newIndex >= this.curIndex && oldIdx < this.curIndex) {
+          this.curIndex--
+        } else if (evt.newIndex <= this.curIndex && oldIdx > this.curIndex) {
+          this.curIndex++
         }
       }
       mousedownListener = (e) => {
@@ -440,7 +445,9 @@
 
 <style lang="scss" scoped>
 .snack{
-  padding-bottom: 10%
+  height: auto;
+  margin-bottom: 6.3em;
+  z-index: 99999999;
 }
 .queue {
   position:fixed;

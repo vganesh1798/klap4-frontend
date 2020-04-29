@@ -33,7 +33,7 @@
                 'items-full': scrolledTop && !preload && !preloadFull,
                 'preload': preload,
 				'preload-full': preloadFull
-            }" v-if="!userAuth" @click="openLogin()">
+            }" v-if="!isLoggedIn || !userAuth" @click="openLogin()">
                 Log In
             </div>
 
@@ -108,7 +108,7 @@
             
             
         </nav>
-        <login v-if="loginOpen || ((route === '/programming' || route === '/log') && curUser === '')" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
+        <login v-if="loginOpen || ((route === '/programming' || route === '/log') && curUser === undefined)" @closeLogin="closeLogin" @loggedIn="loggedIn"></login>
     </div>
 </template>
 
@@ -119,8 +119,8 @@
     import login from './Login.vue';
 
     @Component({
-    components: { login }
-})
+        components: { login }
+    })
     export default class Header extends Vue {
         searching = false
         homepage = true
@@ -147,16 +147,35 @@
         disablePreload() {
             this.preloadFull = false
             this.preload = false
+
+            if ((this.route === '/programming' || this.route === '/log') && this.curUser === undefined) {
+                this.loginOpen = true
+            }
+        }
+
+        @Watch('curUser')
+        userGot() {
+            if (this.curUser === '') {
+                this.loginOpen = true
+            }
         }
 
         created() {
             let onHomePage = this.route === '/' || this.route === '/home'
             this.preload = onHomePage
             this.preloadFull = !onHomePage
+
+            if ((this.route === '/programming' || this.route === '/log') && this.curUser === undefined) {
+                this.loginOpen = true
+            }
         }
 
         get isAdmin() {
             return this.$store.state.currentUserInfo['role']
+        }
+
+        get isLoggedIn() {
+            return this.$store.state.currentUserInfo !== ''
         }
 
         beforeMount() {
@@ -191,16 +210,13 @@
                     this.logoSource = images('./radio.png')
                 }
             })
-
-            if (this.$cookies.isKey('csrf_access_token')) {
-                this.$store.dispatch('getCurrUser')
-                this.userAuth = true
-            }
         }
 
+        @Watch('loggedIn')
         loggedIn() {
-            this.closeLogin()
             this.userAuth = true
+
+            this.closeLogin()
         }
 
         logOut() {

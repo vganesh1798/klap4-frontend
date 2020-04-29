@@ -14,10 +14,17 @@
           <defaultButton class="colored headerbtn" @click.native="openIssue()">Report an issue</defaultButton>
         </div>
       </div>
+      <br/>
+      <div class="row buttons">
+        <div class="col s1 offset-s10">
+          <defaultButton class="colored headerbtn" @click.native="openFcc()">Change all FCC</defaultButton>
+        </div>
+      </div>
     </div>
     <review :album="album.name" :artist="album.artist" :reviews="album.reviews" v-if="reviewOpen" @closeReview="closeReview"></review>
     <issue :album="album.name" :artist="album.artist" :problems="album.problems" v-if="issueOpen" @closeIssue="closeIssue"></issue>
-    
+    <FCC v-if="fccModalOpen" :album_id="album.id" @status="handleStatus" @closeFcc="closeFcc"/>
+
     <div id="container">
       <div class="row">
         <div class="col s2 offset-s2">
@@ -42,7 +49,7 @@
         </div>
         </div>
 
-        <div class="tracks col s7 offset-s1">
+        <div class="tracks col s7">
           <table class="tracksTable">
             <thead>
               <tr>
@@ -64,7 +71,7 @@
                 </td>
                 <td>{{ item.song_name }}</td>
                 <td>
-                  <defaultButton @click.native="toggleFCC()" class="dropdown-trigger btn" data-target='dropdown1'>
+                  <defaultButton @click.native="toggleFCC(item)" class="dropdown-trigger btn" data-target='dropdown1'>
                     <i v-if="getFCCStatus(item.fcc_status) == 'clean'" class="material-icons-round green-text tooltipped" data-tooltip="Clean">check_circle</i>
                     <i v-if="getFCCStatus(item.fcc_status) == 'indecent'" class="material-icons-round orange-text text-lighten-2 tooltipped" data-tooltip="Indecent">error</i>
                     <i v-if="getFCCStatus(item.fcc_status) == 'obscene'" class="material-icons-round red-text tooltipped" data-tooltip="Obscene">error</i>
@@ -77,7 +84,9 @@
                   <defaultButton @click.native="addToPlaylist(item, album)">
                     <i class="material-icons tooltipped" data-tooltip="Add to active playlist">add</i>
                   </defaultButton>
-                  <defaultButton @click.native="addToQueue(item)">
+                </td>
+                <td v-if="album.format === 4">
+                    <defaultButton @click.native="addToQueue(item)">
                       <i class="material-icons tooltipped song-queue" data-tooltip="Add to song queue">playlist_add</i>
                   </defaultButton>
                 </td>
@@ -85,12 +94,12 @@
             </tbody>
           </table>
         </div>
-        <div v-if="fccOpen">    
+        <div class="dropdown-content" id="dropdown1">    
           <ul>
-            <li><i class="material-icons-round green-text tooltipped" data-tooltip="Clean">check_circle</i>Clean</li>
-            <li><i class="material-icons-round orange-text text-lighten-2 tooltipped" data-tooltip="Indecent">error</i>Indecent</li>
-            <li><i class="material-icons-round red-text tooltipped" data-tooltip="Obscene">error</i>Obscene</li>
-            <li><i class="material-icons-round gray tooltipped" data-tooltip="Unrated">help</i>Unrated</li>
+            <li @click="changeStatus(1)"><i class="material-icons-round green-text">check_circle</i>Clean</li>
+            <li @click="changeStatus(2)"><i class="material-icons-round orange-text text-lighten-2">error</i>Indecent</li>
+            <li @click="changeStatus(3)"><i class="material-icons-round red-text">error</i>Obscene</li>
+            <li @click="changeStatus(4)"><i class="material-icons-round gray">help</i>Unrated</li>
           </ul>
         </div>
       </div>

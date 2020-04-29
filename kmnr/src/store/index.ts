@@ -432,6 +432,7 @@ export default new Vuex.Store({
           if (res.status !== 200)
             return false
           this.commit('setUser', '')
+          this.commit('setUserInfo', {})
           return true
         }).catch(err => {
           console.log(err)
@@ -468,7 +469,7 @@ export default new Vuex.Store({
         'song_number': FCCParams.songNumber,
         'fcc': FCCParams.FCC
       }
-      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/single}`, fccChange)
+      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/single`, fccChange)
       .then(res => {
         this.commit('changeFCC', (res.data as FCCAlbum))
         return res.data
@@ -480,7 +481,8 @@ export default new Vuex.Store({
         'id': FCCParams.id,
         'fcc': FCCParams.FCC
       }
-      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/all}`, fccChange)
+
+      return axios.put(`http://localhost:5000/fcc/change/${FCCParams.id}/all`, fccChange)
       .then(res => {
         this.commit('changeFCC', (res.data as FCCAlbum))
         return res.data
