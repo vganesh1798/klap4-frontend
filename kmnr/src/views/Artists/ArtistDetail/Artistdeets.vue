@@ -1,18 +1,18 @@
 <template>
   <div class="full-deets">
     <h1>
-      <span class="artists-heading-main">Artist Information</span>
+      <span class="artists-heading-main fadein">Artist Information</span>
     </h1>
     <div id="container">
       <div class="row">
         <div class="col s2 offset-s2">
         <div class="card">
           <div class="card-image">
-            <img src="http://cdn.onlinewebfonts.com/svg/img_264570.png">
+            <img :src="artist.image">
           </div>
           <div class="card-content">
-            <span class="card-title">{{artist.name}}</span>
-            <p>{{artist.genre}}</p>
+            <span class="card-title"><em>{{artist.id}}</em><br/>{{artist.name}}</span>
+            <p>Genre: {{artist.genre}}</p>
           </div>
         </div>
         </div>
@@ -31,9 +31,14 @@
             <tbody>
               <tr v-for="item in albums" :key="item.id">
                 <td>{{ item.id }}</td>
-                <td>{{ item.album_name }}</td>
-                <td>{{ item.album_format }}</td>
-                <td>{{ item.missing }}</td>
+                <td><router-link :to="{name:'AlbumDetail', params:{albumParam:item.id} }" class="albumLink">{{item.album_name}}</router-link></td>
+                <td><img :src="formatImage(item.album_format)" v-bind:alt="item.album_format"></td>
+                <td>
+                  <i v-if="item.missing" class="material-icons-round lime-text text-darken-4 tooltipped" data-tooltip="Missing">warning</i>
+                  <i v-if="item.has_reviews" class="material-icons-round green-text text-accent-4 tooltipped" data-tooltip="Has review">rate_review</i>
+                  <i v-if="item.has_problems" class="material-icons-round tooltipped" data-tooltip="Has problems">report</i>
+                  <i v-if="item.new_album" class="material-icons-round light-blue-text text-accent-4 tooltipped" data-tooltip="New album!">fiber_new</i>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -60,17 +65,48 @@
   }
 
   .artists-heading-main {
-    display: block;
-    font-size: 60px;
-    font-weight: 60;
     padding-top: 5%;
-    padding-left: 35%;
-    padding-bottom: 1%;
-    color: Black;
-    font-family: 'Montserrat';
+    padding-bottom: 10%;
+    display: block;
+    font-size: 3.75vw;
+    text-align:center;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+    -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 3s; /* Firefox < 16 */
+        -ms-animation: fadein 3s; /* Internet Explorer */
+         -o-animation: fadein 3s; /* Opera < 12.1 */
+            animation: fadein 3s;
   }
+  
 
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
   .card {
+    margin-left: -10vw !important;
+    margin-top: -10vh !important;
     width: 250px;
     margin: 4px;
     display: inline-block;
@@ -89,10 +125,15 @@
   }
 
   .full-deets {
-    background-image: url('../../../assets/back8.jpg');
-    background-size: cover;
+    background: #1fa2ff; /* fallback for old browsers */
+    background: -webkit-linear-gradient(160deg, #1fa2ff, #12d8fa, #a6ffcb); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(160deg, #1fa2ff, #12d8fa, #a6ffcb); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */    background-size: cover;
     min-height: 100%;
     height: auto;
     padding-top: 4%;
+  }
+
+  .albumLink {
+    color: #1976d2 !important;
   }
 </style>

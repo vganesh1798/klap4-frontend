@@ -1,6 +1,6 @@
 <template>
     <div class="my_container">
-        <img :src="this.imgPath">
+        <img :src="imgPath">
         
         <h6 class="title_header">{{ this.id }}</h6>
         <p class="artist_header">{{ this.val1 }}</p>

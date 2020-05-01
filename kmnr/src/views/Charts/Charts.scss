@@ -1,7 +1,6 @@
 .full-container {
   vertical-align: top;
 }
-
 .bg-charts {
   background-image: url('../../assets/new.jpg');
   background-position: center;
@@ -9,6 +8,15 @@
   background-size: cover;
   min-height: 100%;
   height: auto;
+}
+
+.defaultTable td {
+  width: 20%;
+}
+
+.play-time {
+  width: 20%;
+  position: relative;
 }
 
 .table-container {
@@ -22,18 +30,47 @@
 }
 
 .heading-charts-main {
-  padding-top: 2.5%;
-  display: block;
-  font-size: 3.75vw;
-  text-align:center;
-  padding-bottom: 1%;
-  color: rgb(70, 68, 68);
-  font-family: 'Covered By Your Grace';
+    padding-top: 5.5%;
+    padding-bottom: 10%;
+    display: block;
+    font-size: 3.75vw;
+    text-align:center;
+    padding-bottom: 0%;
+    margin-bottom: 0%;
+    color: rgb(70, 68, 68);
+    font-family: 'Covered By Your Grace';
+    -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 3s; /* Firefox < 16 */
+        -ms-animation: fadein 3s; /* Internet Explorer */
+         -o-animation: fadein 3s; /* Opera < 12.1 */
+            animation: fadein 3s;
 }
 
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
 .chartsTable {
   display: inline-block;
-  height: 53vh;
+  height: 50vh;
   overflow: auto;
 }
 

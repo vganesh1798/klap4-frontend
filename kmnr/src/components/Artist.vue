@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 import defaultButton from "./Button.vue";
 import artistCard from "./Card.vue";
@@ -49,6 +49,10 @@ import { ArtistSearch } from '../Models/Artist';
     }
 
     @Prop({type: Object}) searchQuery?
+
+    get curRoute() {
+      return this.$route.path
+    }
 
     artists = []
     range = 0
@@ -108,7 +112,6 @@ import { ArtistSearch } from '../Models/Artist';
     SearchByArtist() {    
         this.$store.dispatch('getQueryArtists', this.searchQuery).then(res => {
             this.artists = res;
-            console.log(this.artists);
         })
         .finally(() => this.loading = false)
 

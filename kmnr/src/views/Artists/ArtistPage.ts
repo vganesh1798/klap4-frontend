@@ -28,7 +28,6 @@ import artistCard from "../../components/Card.vue";
     getArtists() {
         this.$store.dispatch('getAllArtists').then(res => {
             this.artists = res;
-            console.log(this.artists);
         });
     }
 
@@ -68,7 +67,6 @@ import artistCard from "../../components/Card.vue";
         
         this.$store.dispatch('getQueryArtists', searchSlug ).then(res => {
             this.artists = res;
-            console.log(this.artists);
         });
 
       this.cancelSearchVisibility = "visible";

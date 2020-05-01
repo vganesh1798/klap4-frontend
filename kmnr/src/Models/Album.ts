@@ -24,7 +24,7 @@ export class Album {
 
 export class AlbumReview {
     date_entered ?: string | null
-    reviwer ?: string | null
+    reviewer ?: string | null
     review ?: string | null
 }
 
@@ -40,6 +40,12 @@ export class Song {
     times_played ?: number | null
     last_played ?: string | null
     recommended ?: boolean | null
+}
+
+export class FCCAlbum {
+    id ?: number | null
+    songNumber ?: number | null
+    FCC ?: number | null
 }
 
 export default class DisplayAlbum {

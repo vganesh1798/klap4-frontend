@@ -2,12 +2,16 @@
   <div class="full-view" >
     <HeaderMobile />
     <div class="content" :class="{'open':opened}" >
-        <div id="navigation-icon" v-if="mobileView"
-          v-on:click="toggle()">
-          <i class="fas fa-bars"></i>
+        <div class='ham' v-on:click="toggle()" id="navigation-icon" v-if="mobileView">
+          <i  class="fas fa-bars"></i>
         </div>
             <Header v-if="!mobileView"/>
-    <router-view />
+    <router-view></router-view>
+    <div :class="{'stream-open': stream, 'stream-closed': !stream}">
+      <a @click="openMusic" v-if="!stream"><i class="material-icons-round">music_note</i></a>
+      <a @click="closeMusic" v-if="stream"><i class="material-icons-round">music_off</i></a>
+    </div>
+    <StreamingFooter :open="stream" class="streamer" index="0"/>
     </div>
   </div>
 </template>
@@ -18,42 +22,120 @@ import { Component } from 'vue-property-decorator';
 
 import Header from './components/Header.vue';
 import HeaderMobile from './components/HeaderMobile.vue';
+import StreamingFooter from './components/StreamingFooter.vue';
 
 @Component({
   components: {
     Header,
-    HeaderMobile
+    HeaderMobile,
+    StreamingFooter
   }
 })
 export default class App extends Vue {
-      mobileView = false
-      showNav = false
-      opened = false
-    handleView() {
-      this.mobileView = window.innerWidth <= 1420;
+    mobileView = false
+    showNav = false
+    opened = false
+
+    stream = false
+
+    openMusic() {this.stream = true}
+    closeMusic() {this.stream = false}
+
+    queue = [
+      {
+        title: "Sicko Mode",
+        file: "./Travis_Scott_-_Sicko_Mode_Ft_Drake.mp3",
+        song: null
+      },
+      {
+        title: "On and On",
+        file: "./on_on.mp3",
+        song: null
+      },
+      {
+        title: 'Do You Wanna Get High',
+        file: './05 Do You Wanna Get High-.mp3',
+        song: null
+      },
+      {
+        title: 'Thank God for Girls',
+        file: './03 Thank God for Girls.mp3',
+        song: null
+      },
+      {
+        title: 'This is Our Time',
+        file: './Miles Malone - This is Our Time (single) - 01 This is Our Time.mp3',
+        song: null
+      }
+    ]
+
+    index: number = -1
+
+    updateSong(index) {
+        this.index = index
     }
+    handleView() {
+      if(window.innerWidth <= 1420){
+        this.mobileView = true 
+      }
+      else{
+        this.mobileView = false
+        this.hide()
+      }
+    }
+
+    
     toggle () {
-            if (this.opened) {
-                return this.hide()
-            }
-            return this.show()
-        }
+      if (this.opened) {
+          return this.hide()
+      }
+      return this.show()
+    }
     show () {
             this.opened = true;
-            setTimeout(() => document.addEventListener('click',this.hide), 0);
         }
     hide () {
             this.opened = false;
-            document.removeEventListener('click',this.hide);
       }
-   created() {
-    this.handleView();
-    window.addEventListener('resize', this.handleView);
+    created() {
+      this.$store.commit('setQueue', this.queue)
+      this.handleView();
+      window.addEventListener('resize', this.handleView);
     }
 };
 </script>
 
 <style lang="scss">
+  .ham{
+    z-index: 99999;
+  }
+  .stream-open, .stream-closed {
+    margin-left: 92%;
+    cursor: pointer;
+    position: fixed;
+    font-size: 100px;
+
+    .material-icons-round {
+      font-size: 4em;
+      color: grey;
+    }
+  }
+
+  .stream-open {
+    bottom: 1.25em;
+    transition: all .3s cubic-bezier(.09, .56, .33, 1.18);
+  }
+
+  .stream-closed {
+    bottom: .2em;
+    transition: all .5s cubic-bezier(1,.06,.45,1.4);
+  }
+
+  .streamer {
+    position: fixed;
+    z-index: 999999999;
+  }
+
   .full-view {
     height: 100%;
   }
@@ -85,6 +167,7 @@ export default class App extends Vue {
 }
 
 html {
+  top: 0px;
   height: 100%;
   width: 100%;
 }

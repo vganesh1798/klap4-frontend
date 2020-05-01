@@ -5,10 +5,28 @@
             <defaultButton class="corner-btn" style="font-size: 20px;" @click.native="closeUpload()" type="submit">X</defaultButton>
         </div>
         <h1>Upload a Playlist</h1>
+        <div class="row">
+                    <div class="input-field">
+                        <label required for="name">PlaylistName</label>
+                        <input type="text" id="name" v-model="playlistname" />
+                    </div>
+        </div>
         <form enctype="multipart/form-data">
             <input type="file" name="file" id="filebtn" accept=".txt, .csv" v-on:change="fileChange($event.target.files)" />
             <defaultButton class="colored uploadBtn" type="submit" @click.native="upload()">Upload</defaultButton>
-        </form>     
+        </form>
+       <!--form enctype="multipart/form-data">
+       <div class="dropbox">
+            <input type="file" name="file" id="filebtn" accept=".txt, .csv" v-on:change="fileChange($event.target.files)" />
+            <p v-if="isInitial">
+              Drag your file(s) here to begin<br> or click to browse
+            </p>
+            <p v-if="isSaving">
+              Uploading {{ fileCount }} files...
+            </p>
+            <defaultButton class="colored uploadBtn" type="submit" @click.native="upload()">Upload</defaultButton>
+       </div>
+        </form-->
     </div>
 </template>
 
@@ -23,6 +41,9 @@
     export default class upload extends Vue {
         files = new FormData();
         close = false
+        isInitial = true;
+        isSaving = false;
+        playlistname = "";
         
         constructor() {
             super()
@@ -34,15 +55,27 @@
             }
 
         fileChange(fileList) {
+            console.log(fileList)
+            console.log(fileList[0])
+            console.log(fileList[0].name)
+            console.log(fileList[0].data)
             this.files.append("file", fileList[0], fileList[0].name);
         }
 
         upload() {
-            axios({ method: "POST", "url": "http://localhost:3000", "data": this.files }).then(result => {
-                console.dir(result.data);
-            }, error => {
-                console.error(error);
-            });
+            // axios({ method: "POST", "url": "http://localhost:3000", "data": this.files }).then(result => {
+            //     console.dir(result.data);
+            // }, error => {
+            //     console.error(error);
+            // });
+            const playlistParams = {
+                dj_id: "test",
+                playlistName: this.playlistname,
+                file: this.files      
+            }
+                this.$store.dispatch('uploadPlaylist', playlistParams).then(res => {
+            
+            })
         }
     }
 </script>
@@ -73,7 +106,7 @@ h1 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 200px;
+    height: 400px;
     width: 600px;
     padding: 0% 5% 17% 5%;
     border-radius: 3%;
@@ -93,5 +126,4 @@ h1 {
     left: 94%;
     top: 1%;
 }
-
 </style>

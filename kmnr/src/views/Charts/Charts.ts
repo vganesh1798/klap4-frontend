@@ -3,6 +3,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import defaultTable from "../../components/Table.vue";
 import defaultButton from "../../components/Button.vue";
 
+import M from 'materialize-css'
+
 @Component({
     components: { defaultTable,
                   defaultButton }
@@ -23,6 +25,8 @@ export default class ChartsPage extends Vue {
     weeks = 1;
     val = 0;
 
+    tooltipped = true
+
     get chartsPaginated() {
         return this.charts.slice(this.range, this.range + 10);
     }
@@ -30,18 +34,23 @@ export default class ChartsPage extends Vue {
     getCharts() {
         this.new_charts = false;
         this.range = 0;
-        this.$store.dispatch('getAllChartData').then(res => {
+        this.$store.dispatch('getAllChartData', this.weeks).then(res => {
             this.charts = res;
-            console.log(this.charts);
         });
+    }
+
+    updated() {
+        if (this.tooltipped) {
+            const ttElems = document.querySelectorAll('.tooltipped')
+            const instances = M.Tooltip.init(ttElems)
+        }
     }
 
     getNewCharts() {
         this.new_charts = true;
         this.range = 0;
-        this.$store.dispatch('getNewChartData').then(res => {
+        this.$store.dispatch('getNewChartData', this.weeks).then(res => {
             this.charts = res;
-            console.log(this.charts);
         });
     }
 
@@ -74,9 +83,12 @@ export default class ChartsPage extends Vue {
     }
 
     SearchByChartName() {
-        this.charts = this.charts.filter((alb: any) => {
-        return alb.artist_name.toLowerCase().includes(this.chartsSearch.toLowerCase());
-        });
+        this.charts = this.charts
+        .filter((alb: any) => {
+            return (alb.artist_name.toLowerCase().includes(this.chartsSearch.toLowerCase()) || 
+                    alb.album_name.toLowerCase().includes(this.chartsSearch.toLowerCase()) || 
+                    alb.genre.toLowerCase().includes(this.chartsSearch.toLowerCase()));
+        })
 
         this.cancelSearchVisibility = "visible";
     }
@@ -93,5 +105,46 @@ export default class ChartsPage extends Vue {
 
     sortBy(field) {
         this.sort_selection = field;
+        if(field=="Popularity") {
+            this.getCharts();
+            // this.charts.sort((n1, n2) => {
+            //     if(n1.times_played < n2.times_played) {
+            //         return 1;
+            //     }
+            //     if(n1.times_played > n2.times_played)
+            //         return -1;
+            //     return 0;
+            // })
+        }
+        if(field=="Genre") {
+            this.charts.sort((n1: any, n2: any) => {
+                if(n1.genre > n2.genre) {
+                    return 1;
+                }
+                if(n1.genre < n2.genre)
+                    return -1;
+                return 0;
+            })
+        }
+        if(field=="Artist") {
+            this.charts.sort((n1: any, n2: any) => {
+                if(n1.artist_name > n2.artist_name) {
+                    return 1;
+                }
+                if(n1.artist_name < n2.artist_name)
+                    return -1;
+                return 0;
+            })
+        }
+        if(field=="Album") {
+            this.charts.sort((n1: any, n2: any) => {
+                if(n1.album_name > n2.album_name) {
+                    return 1;
+                }
+                if(n1.album_name < n2.album_name)
+                    return -1;
+                return 0;
+            })
+        }
     }
 };

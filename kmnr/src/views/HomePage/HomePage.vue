@@ -3,7 +3,7 @@
         <div class="bg-home">
             <div class="text">
                 <h1 class="heading-primary">
-                    <span class="heading-primary-main">KMNR</span>
+                    <span class="heading-primary-main">KLAP4</span>
                     <span class="heading-primary-sub">89.7FM</span>
                 </h1>
             </div>
@@ -16,14 +16,25 @@
                             'visibility': scrolledL ? 'visible' : 'hidden',
                             'animation-name': scrolledL ? 'moveInLeft' : ''
                         }"
+                        title="About KMNR"
+                        :description="aboutus"
+                        />
+                    <HomeCard class="card card-right-on-scroll col s12 l6 offset-l4" :style="{
+                            'visibility': scrolledR ? 'visible' : 'hidden',
+                            'animation-name': scrolledR ? 'moveInRight' : ''
+                        }"
+                        title="Stream Music"
+                        :description="stream_des"
+                        :image_link="stream_image"
+                        search_route="/stream"/>
+                    <HomeCard class="card card-left-on-scroll col s12 l6" :style="{
+                            'visibility': scrolledL ? 'visible' : 'hidden',
+                            'animation-name': scrolledL ? 'moveInLeft' : ''
+                        }"
                         title="Search Songs"
                         :description="search_des"
                         :image_link="lxst_image"
                         search_route="/search"/>
-                    <HomeCard class="card card-right-on-scroll col s12 l6 offset-l4" :style="{
-                            'visibility': scrolledR ? 'visible' : 'hidden',
-                            'animation-name': scrolledR ? 'moveInRight' : ''
-                        }"/>
                 </div>
             </div>
         </div>
@@ -48,8 +59,8 @@
 
     .text {
         position: absolute;
-        top: 48%;
-        left: 48%;
+        top: 45%;
+        left: 46%;
         transform: translate(-90%, -30%);
         text-align: center;
     }
@@ -58,9 +69,9 @@
     overflow-x: hidden;
 }
     .heading-primary{
-            display: flex;
-
+        display: flex;
     }
+
     .heading-primary-main {
         font-size: 12vw;
         font-weight: 50;
@@ -73,13 +84,12 @@
         color: Black;
         font-family: 'Covered By Your Grace';
     }
-
     .heading-primary-sub {
         flex-direction: row;
         float: right;
         font-size: 8vw;
         font-family: Montserrat;
-        padding-top: 25vw;
+        padding-top: 20vw;
         animation-name: moveInRight;
         animation-duration: 2s;
         color: black; 

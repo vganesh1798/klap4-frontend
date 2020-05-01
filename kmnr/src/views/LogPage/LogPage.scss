@@ -1,6 +1,5 @@
 .full-page {
-    //background-image: url('../../assets/green.jpg');
-    background-image: linear-gradient(white, rgb(36, 206, 107));
+    background-image: linear-gradient(rgb(155, 240, 197), rgb(50, 172, 101));
     background-size: 100% auto;
     background-repeat: repeat;
     padding-top: 7%;
@@ -24,12 +23,6 @@ h1 {
     font-family: 'Covered By Your Grace';
 }
 
-.list-group {
-    color: purple;
-    border-color: black;
-    border-style: solid;
-}
-
 .topbutton {
     padding-top: 10%;
 }
@@ -42,27 +35,47 @@ h1 {
     width: 15vw;
 }
 
+.tables-row {
+    margin-top: 5%;
+}
+
 .newPlaylist {
-    //position: absolute;
-    //right: 2%;
     display: block;
     table-layout: fixed;
     height: 58vh;
-    width: 23vw;
+    width: 31vw;
     overflow: auto;
-    background-color: rgba(114, 107, 107, 0.2); 
-    border-radius: 2%;
+    background-color: rgba(114, 107, 107, 0.2);
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12); 
+    border-radius: 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-.tablecols {
-    min-width: 130px;
+#tablecols {
+    //min-width: 143px;
+    //max-width: 143px;
+    min-width: 7.2vw;
+    max-width: 7.2vw;
+}
+
+#routingcols {
+    //min-width: 25px;
+    //max-width: 25px;
+    min-width: 1.5vw;
+    max-width: 1.5vw;
 }
 
 .header {
-    min-width: 130px;
+    //min-width: 140px;
+    //max-width: 140px;
+    min-width: 7.8vw;
+    max-width: 7.8vw;
 }
 
-.uploadButton {
+.newButton {
     position: fixed;
     top: 10%;
     left: 1%;
@@ -71,10 +84,7 @@ h1 {
 }
 
 .editButton {
-    //background-color: rgba(100, 100, 100, .2);
-    //color: rgb(70, 68, 68);
     position: fixed;
-    //display: block;
     font-size: .8vw;
     top: 16%;
     left: 1%;
@@ -88,17 +98,33 @@ td.last {
 
 .form {
     padding: 5% 5%;
-    background-color: rgba(255,255,255,.2);
-    //background-color: rgba(114, 107, 107, 0.2);
-    border-radius: 3%;
-    margin-top: 50px;
-    width: 35vw;
+    background-color: rgba(203, 248, 223, 0.2);
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),0 2px 2px 0 rgba(0,0,0,.14),0 1px 5px 0 rgba(0,0,0,.12);
+    border-radius: 3px;
+    //height: 58vh;
+    height: 58vh;
+    max-height: 58vh;
+    width: 30vw;
+}
+
+.form-header {
+    font-family: 'Montserrat';
+    //font-size: 34px;
+    font-size: 1.5vw;
+    text-align: center;
+    margin-top: 0;
+    //margin-bottom: 20px;
+    margin-bottom: 3%;
 }
 
 input {
     color: rgb(70,68,68);
     border-bottom: 1px rgb(70, 68, 68) !important;
     box-shadow: 0 1px 0 0 rgb(70, 68, 68) !important;
+}
+
+.input-field {
+    height: 1.5rem;
 }
 
 label {
@@ -112,14 +138,18 @@ label {
 .mybtn {
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 15vw;
-    font-size: .8vw;
-    padding: 1.5% !important;
+    width: 13vw;
+    height: 5vh !important;
+    //font-size: .8vw;
+    //padding: 1.5% !important;
 }
 
 .longbtn {
+    margin-top: 1rem;
     background-color: rgba(100, 100, 100, .2);
     color: rgb(70, 68, 68);
-    width: 31vw;
-    padding: 1.5% !important;
+    width: 26.7vw;
+    height: 5vh !important;
+    //padding: 1.5% !important;
+    //margin-top: 0px;
 }
