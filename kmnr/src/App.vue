@@ -48,11 +48,6 @@ export default class App extends Vue {
         song: null
       },
       {
-        title: "Bitches Ain't Shit",
-        file: "./bitches_aint_shit.mp3",
-        song: null
-      },
-      {
         title: "On and On",
         file: "./on_on.mp3",
         song: null
